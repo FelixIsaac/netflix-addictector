@@ -20,8 +20,11 @@
               a 15.9155 15.9155 0 0 1 0 31.831
               a 15.9155 15.9155 0 0 1 0 -31.831"
           />
-          <text x="18" y="20.35" class="percentage">{{minutes_spent}} mins</text>
-          <text x="18" y="23" class="percentage-about">of {{time_limit}} minute time limit</text>
+          <text x="18" y="18.8" class="percentage">{{minutes_spent}} mins</text>
+          <text x="17.5" y="21.6" class="percentage-about">
+            <tspan dx="1">of {{time_limit}} minutes</tspan>
+            <tspan dx="-15.3" dy="2">daily time limit</tspan>
+          </text>
         </svg>
       </div>
     </section>
@@ -32,7 +35,7 @@
       <h2>Hours spent this month: <span id="month-hours"></span> hours</h2>
     </section>
     <section>
-      <h2>Hours spent since extension installation: <span id="installation-hours"></span> hours</h2>
+      <h2>Hours since installation: <span id="installation-hours"></span> hours</h2>
     </section>
     <button>Settings</button>
   </body>

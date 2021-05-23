@@ -28,7 +28,23 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { method: "time" }, (response) => {
         console.info(`Timer initialized. Response from content script: ${response || 'No response'}`);
+
+        // showing a badge
+        chrome.storage.onChanged.addListener(({ current_day }) => {
+          if (!current_day) return;
+        
+          chrome.action.setBadgeText({
+            text: `${current_day.newValue.minutes_spent.toFixed()} m`,
+            tabId
+          });
+
+          chrome.action.setBadgeBackgroundColor({
+            color: '#b81d24',
+            tabId
+          });
+        });
       });
+
     });
   }
 });

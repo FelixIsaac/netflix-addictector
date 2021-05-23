@@ -1,7 +1,8 @@
-chrome.runtime.onMessage.addListener(({ method }) => {
+chrome.runtime.onMessage.addListener(({ method, tabId }, sender, sendResponse) => {
     switch(method.toLowerCase()) {
         case 'time':
-            initTimer();
+            initTimer(tabId);
+            sendResponse('Timer initialized at tab', tabId)
             break;
     }
-})
+});

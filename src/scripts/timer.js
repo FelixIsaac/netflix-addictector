@@ -40,6 +40,7 @@ function initTimer() {
 function startTimer(video) {
     if (video.paused) return;
 
+    // start timer
     setTimer();
     console.log('starting timer');
 };
@@ -51,7 +52,8 @@ function startTimer(video) {
  */
 function stopTimer(video) {
     if (!video.paused) return;
-
+    
+    // reset timer
     addTime(false);
     clearTimeout(timer);
     timer = null;
