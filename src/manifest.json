@@ -10,6 +10,10 @@
   },
   "permissions": ["storage"],
   "host_permissions": ["*://*.netflix.com/*"],
+  "content_scripts": [{
+    "matches": ["*://*.netflix.com/*"],
+    "js": ["content.js", "/scripts/timer.js"]
+  }],
   "action": {
     "default_title": "",
     "default_popup": "popup/popup.html",
