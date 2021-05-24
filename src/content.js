@@ -5,4 +5,4 @@ chrome.runtime.onMessage.addListener(({ method, tabId }, sender, sendResponse) =
             sendResponse('Timer initialized at tab', tabId)
             break;
     }
-});
+}); 

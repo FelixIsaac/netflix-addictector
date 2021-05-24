@@ -11,9 +11,18 @@ document.addEventListener('DOMContentLoaded', function () {
         current_day,
         days
     }) => {
+        if (!current_day) {
+            current_day = {
+                day: Date.now(),
+                minutes_spent: 0
+            }
+
+            chrome.storage.sync.set(current_day);
+        }
+
         // overview stats
-        const currentPercentage = (current_day.minutes_spent / daily_limit).toFixed(2);
-        percentageText.innerHTML = percentageText.innerHTML.replace('{{minutes_spent}}', current_day.minutes_spent.toFixed(1));
+        const currentPercentage = ((current_day.minutes_spent / daily_limit) * 100).toFixed(2);
+        percentageText.innerHTML = percentageText.innerHTML.replace('{{minutes_spent}}', parseFloat(current_day.minutes_spent.toFixed(1)));
         percentageAboutText.innerHTML = percentageAboutText.innerHTML.replace('{{time_limit}}', daily_limit);
         percentageCircle.style.strokeDasharray = `${currentPercentage}, 100`
 

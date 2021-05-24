@@ -16,8 +16,20 @@ const initialData = {
 
 chrome.runtime.onInstalled.addListener(() => {
   // set init data
-  chrome.storage.sync.get('days', ({ days }) => !days && chrome.storage.sync.set(initialData));
-  resetSettings();
+  chrome.storage.sync.get(initialData, (data) => {
+    // Do not override initialized day history data on install
+    for (let key of Object.keys(initialData)) {
+      if (!data[key]) chrome.storage.sync.set(data[key]);
+    }
+  });
+
+  // set init settings
+  chrome.storage.sync.get(initialOptions, (options) => {
+    // Do not override synced options on install
+    for (let key of Object.keys(initialOptions)) {
+      if (!options[key]) chrome.storage.sync.set(options[key]);
+    }
+  });
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
