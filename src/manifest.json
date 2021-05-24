@@ -12,7 +12,7 @@
   "host_permissions": ["*://*.netflix.com/*"],
   "content_scripts": [{
     "matches": ["*://*.netflix.com/*"],
-    "js": ["content.js", "/scripts/timer.js"]
+    "js": ["content.js", "/scripts/timer.js", "/scripts/utils.js"]
   }],
   "action": {
     "default_title": "",

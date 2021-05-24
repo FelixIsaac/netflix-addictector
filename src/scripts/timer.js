@@ -1,5 +1,6 @@
 // timer data
 let timer = null;
+let timerStartTime = null;
 
 /**
  * Initialize the timer and get everything ready
@@ -22,7 +23,7 @@ function initTimer() {
 
         startTimer(video);
     } catch (err) {
-        console.info('Failed to search for a video element, retrying');
+        log('Failed to search for a video element, retrying');
         if (!searchingVideoTimeout) {
             searchingVideoTimeout = setTimeout(() => {
                 searchingVideoTimeout = undefined;
@@ -42,7 +43,7 @@ function startTimer(video) {
 
     // start timer
     setTimer();
-    console.log('starting timer');
+    log('Starting timer');
 };
 
 /**
@@ -54,15 +55,20 @@ function stopTimer(video) {
     if (!video.paused) return;
     
     // reset timer
-    addTime(false);
+    log('Timer start time', (Date.now() - timerStartTime)/60000)
+    addTime(false, (Date.now() - timerStartTime)/60000);
     clearTimeout(timer);
     timer = null;
-    console.log('stopping timer');
+    timerStartTime = null
+    log('Stopping timer');
 };
 
 function setTimer() {
     try {
-        if (!timer) timer = setTimeout(addTime, 6000);
+        if (timer) return;
+        
+        timerStartTime = Date.now();
+        timer = setTimeout(addTime, 6000);
     } catch (err) {
         setTimer();
         console.error(err);
@@ -70,25 +76,26 @@ function setTimer() {
     }
 };
 
-function addTime(repeats = true) {
+function addTime(repeats = true, time = 1/10) {
     chrome.storage.sync.get('current_day', ({ current_day }) => {
         if (!current_day) current_day = {
             day: Date.now(),
             minutes_spent: 0
         }
 
-        console.log('adding time. current time:', current_day.minutes_spent)
+        log('Adding time. current time:', current_day.minutes_spent)
 
         current_day = {
             ...current_day,
-            minutes_spent: current_day.minutes_spent += (1/10) // 6 seconds / 60 seconds (1 minute)
+            minutes_spent: current_day.minutes_spent += time // defaults to 6 seconds / 60 seconds (1 minute)
         }
 
         // set updated current day
         chrome.storage.sync.set({ current_day }, () => {
-            console.log('added time');
+            log('added time');
             timer = null;
+            timerStartTime = null
             repeats && setTimer();
-        })
+        });
     });
 }

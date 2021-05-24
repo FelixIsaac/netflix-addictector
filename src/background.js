@@ -44,9 +44,10 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         // showing a badge
         chrome.storage.onChanged.addListener(({ current_day }) => {
           if (!current_day) return;
-        
+          let minutes_spent = current_day.newValue.minutes_spent;
+
           chrome.action.setBadgeText({
-            text: `${current_day.newValue.minutes_spent.toFixed()} m`,
+            text: `${minutes_spent > 99 ? `99+` : minutes_spent.toFixed()} m`,
             tabId
           });
 
@@ -60,6 +61,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     });
   }
 });
+
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  switch(message.type) {
+    case 'background-log':
+      console[message.consoleType || 'log'](...message.args);
+      break;
+  }
+})
 
 function resetSettings() {
   chrome.storage.sync.set(initialOptions);
