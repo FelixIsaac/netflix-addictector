@@ -1,7 +1,7 @@
 const initialOptions = Object.freeze({
   daily_limit: 60, // in minutes
   weekly_limit: 500, // in minutes
-  block_type: 1, // enum: FIXED: 1, RANDOM: 2, BOTH: 3
+  block_type: 0, // enum: FIXED: 0, RANDOM: 0, BOTH: 0
   block_interval: 10, // in minutes
   block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button
   block_next_episode: true, // show s block screen before an episode starts
@@ -68,6 +68,9 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     case 'background-log':
       console[message.consoleType || 'log'](...message.args);
       break;
+    case 'reset-settings':
+      sendResponse('Settings reset')
+      resetSettings();
   }
 })
 

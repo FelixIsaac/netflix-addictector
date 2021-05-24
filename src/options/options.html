@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="../assets/css/options.css">
     <link rel="stylesheet" href="../assets/css/animation.css" id="animation-css">
     <script src="options.js"></script>
+    <title>Netflix Addictector</title>
   </head>
   <body>
     <div class="netflix-animation">NETFLIX ADDICTECTOR</div>
@@ -15,11 +16,11 @@
           <h2>Limit watch time</h2>
           <div>
             <label for="daily-limit">Daily watch time limit:</label>
-            <input id="daily-limit"/>
+            <input id="daily-limit" type="number"/>
           </div>
           <div>
             <label for="weekly-limit">Weekly watch time limit:</label>
-            <input id="weekly-limit"/>
+            <input id="weekly-limit" type="number"/>
           </div>
         </section>
         <hr/>
@@ -37,7 +38,7 @@
             <div class="flex-2">
               <div>
                 <label for="block-type">Block type:</label>
-                <select>
+                <select id="block-type">
                   <option>Fixed</option>
                   <option>Random</option>
                   <option>Both</option>
@@ -45,12 +46,14 @@
               </div>
               <div>
                 <label for="block-interval">Block interval</label>
-                <input id="block-interval"/>
+                <input id="block-interval" type="number"/>
               </div>
             </div>
            </div>
         </section>
         <hr/>
+        <button id="reset-settings">Reset settings</button>
+        <button id="save-settings">Save settings</button>
       </form>
     </main>
   </body>
