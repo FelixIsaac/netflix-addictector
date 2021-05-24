@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const weekHours = document.getElementById('week-hours');
     const monthHours = document.getElementById('month-hours');
     const installationHours = document.getElementById('installation-hours')
+    const optionsButton = document.getElementById('options');
+
+    optionsButton.addEventListener('click', () => chrome.runtime.openOptionsPage())
 
     chrome.storage.sync.get(null, ({
         daily_limit,

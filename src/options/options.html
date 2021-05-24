@@ -1,14 +1,57 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="../assets/css/button.css">
+    <link rel="stylesheet" href="../assets/css/options.css">
+    <link rel="stylesheet" href="../assets/css/animation.css" id="animation-css">
+    <script src="options.js"></script>
   </head>
   <body>
-    <div id="buttonDiv">
-    </div>
-    <div>
-      <p>Choose a different background color!</p>
-    </div>
+    <div class="netflix-animation">NETFLIX ADDICTECTOR</div>
+    <main style="display:none">
+      <h1>Welcome to <span>Netflix Addictector</span> options page</h1>
+      <hr/>
+      <form>
+        <section>
+          <h2>Limit watch time</h2>
+          <div>
+            <label for="daily-limit">Daily watch time limit:</label>
+            <input id="daily-limit"/>
+          </div>
+          <div>
+            <label for="weekly-limit">Weekly watch time limit:</label>
+            <input id="weekly-limit"/>
+          </div>
+        </section>
+        <hr/>
+        <section>
+          <h2>Screen block</h2>
+          <div>
+            <div>
+              <input type="checkbox" id="block-next-epi-btn"/>
+              <label for="block-next-epi-btn">Block next episode button</label>
+            </div>
+            <div>
+              <input type="checkbox" id="block-next-epi"/>
+              <label for="block-next-epi">Block next episode</label>
+            </div>
+            <div class="flex-2">
+              <div>
+                <label for="block-type">Block type:</label>
+                <select>
+                  <option>Fixed</option>
+                  <option>Random</option>
+                  <option>Both</option>
+                </select>
+              </div>
+              <div>
+                <label for="block-interval">Block interval</label>
+                <input id="block-interval"/>
+              </div>
+            </div>
+           </div>
+        </section>
+        <hr/>
+      </form>
+    </main>
   </body>
-  <script src="options.js"></script>
 </html>

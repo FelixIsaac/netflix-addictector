@@ -2,9 +2,10 @@ const initialOptions = Object.freeze({
   daily_limit: 60, // in minutes
   weekly_limit: 500, // in minutes
   block_type: 1, // enum: FIXED: 1, RANDOM: 2, BOTH: 3
+  block_interval: 10, // in minutes
   block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button
   block_next_episode: true, // show s block screen before an episode starts
-})
+});
 
 const initialData = {
   current_day: {
@@ -73,4 +74,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 function resetSettings() {
   chrome.storage.sync.set(initialOptions);
   console.info('Reset extension options across synced Google user data.')
+}
+
+function populateData(dayCount = 100) {
+  const newDays = Array(dayCount).fill().map((d, i) => ({
+    day: Date.now() - (i*8.64e+7),
+    minutes_spent: Math.floor(Math.random() * 60) * 1.3
+  })).reverse();
+
+  chrome.storage.sync.set({ days: newDays }, () => console.info('Populated data'));
 }
