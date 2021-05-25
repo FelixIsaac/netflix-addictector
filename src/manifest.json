@@ -8,7 +8,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "alarms"],
   "host_permissions": ["*://*.netflix.com/*"],
   "content_scripts": [{
     "matches": ["*://*.netflix.com/*"],
