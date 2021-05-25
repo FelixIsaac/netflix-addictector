@@ -78,10 +78,23 @@ function setTimer() {
 
 function addTime(repeats = true, time = 1/10) {
     chrome.storage.sync.get('current_day', ({ current_day }) => {
-        if (!current_day) current_day = {
-            day: Date.now(),
-            minutes_spent: 0
-        }
+        if (!current_day || msToDate(current_day?.day) !== msToDate(Date.now())) {
+            // new day, push current day to day records and set new day object
+            if (current_day) {
+                chrome.storage.sync.get('days', ({ days }) => {
+                    chrome.storage.sync.set(
+                        { days: [...days, current_day] },
+                        () => log('New day, created day entry')
+                    );
+                });
+            }
+
+            // day not found
+            current_day = {
+                day: Date.now(),
+                minutes_spent: 0
+            }
+        };
 
         log('Adding time. current time:', current_day.minutes_spent)
 
