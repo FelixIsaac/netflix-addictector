@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         
         chrome.storage.sync.set({
-            daily_limit: parseInt(dailyLimit.value),
-            weekly_limit: parseInt(weeklyLimit.value),
+            daily_limit: Number(dailyLimit.value),
+            weekly_limit: Number(weeklyLimit.value),
             block_type: blockType.selectedIndex,
-            block_interval: blockInterval.value,
+            block_interval: Number(blockInterval.value),
             block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
             block_next_episode: blockNextEpisodeCheckbox.checked,
         })
