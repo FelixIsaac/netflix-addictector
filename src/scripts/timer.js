@@ -5,32 +5,22 @@ let timerStartTime = null;
 /**
  * Initialize the timer and get everything ready
  */
-let searchingVideoTimeout;
 function initTimer() {
     // attach event listeners to video
-    try {
-        const video = document.querySelector('video');
+    const { video } = window.video;
+    if (!video) return window.video.addListener(initTimer, true);
 
-        video.addEventListener('playing', (e => {
-            const netflixSource = /(blob:)?http(s)?:\/\/(www\.)?netflix\.com\/(\w*(-)?)*/;
-            if (e.isTrusted && e.target.src.match(netflixSource)) startTimer(video);
-        }));
+    video.addEventListener('playing', (e => {
+        const netflixSource = /(blob:)?http(s)?:\/\/(www\.)?netflix\.com\/(\w*(-)?)*/;
+        if (e.isTrusted && e.target.src.match(netflixSource)) startTimer(video);
+    }));
 
-        video.addEventListener('pause', (e => {
-            const netflixSource = /(blob:)?http(s)?:\/\/(www\.)?netflix\.com\/(\w*(-)?)*/;
-            if (e.isTrusted && e.target.src.match(netflixSource)) stopTimer(video);
-        }));
+    video.addEventListener('pause', (e => {
+        const netflixSource = /(blob:)?http(s)?:\/\/(www\.)?netflix\.com\/(\w*(-)?)*/;
+        if (e.isTrusted && e.target.src.match(netflixSource)) stopTimer(video);
+    }));
 
-        startTimer(video);
-    } catch (err) {
-        log('Failed to search for a video element, retrying');
-        if (!searchingVideoTimeout) {
-            searchingVideoTimeout = setTimeout(() => {
-                searchingVideoTimeout = undefined;
-                initTimer();
-            }, 250);
-        }
-    }
+    startTimer(video);
 };
 
 /**

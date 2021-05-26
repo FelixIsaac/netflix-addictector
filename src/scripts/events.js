@@ -41,6 +41,7 @@ const initialOptions = Object.freeze({
       case 'reset-settings':
         sendResponse('Settings reset')
         resetSettings();
+        break;
     }
   });
   

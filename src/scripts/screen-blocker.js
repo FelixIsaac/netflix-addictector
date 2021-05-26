@@ -1,10 +1,14 @@
+chrome.storage.local.get('removing_screen', ({ removing_screen }) => removing_screen && removeNetflixScreen());
+
 function removeNetflixScreen(reason = 'Take a break for 30 seconds', seconds = 30) {
-    const [video] = document.getElementsByTagName('video');
-    const wasVideoPlaying = !video?.paused;
+    const { video } = window.video;
+    if (!video) return window.video.addListener(() => removeNetflixScreen(), true);
+
+    const wasVideoPlaying = !video.paused;
 
     // add overlay and pauses video
     replaceScreen(reason);
-    video?.pause();
+    video.pause();
 
     // hides video controls
     document.getElementById('appMountPoint').style.display = 'none';
@@ -12,19 +16,23 @@ function removeNetflixScreen(reason = 'Take a break for 30 seconds', seconds = 3
     // prevents user from playing video
     const controller = new AbortController();
     const { signal } = controller;
-    video?.addEventListener('play', preventPlay, { signal })
+    video.addEventListener('play', preventPlay, { signal });
 
-    // after set amount of seconds remove overlay, unhides video controls, and resumes video
+    // prevents user from refreshing and bypassing
+    chrome.storage.local.set({ removing_screen: true });
+
+    // after set amount of seconds remove overlay, show video controls, and resumes video
     setTimeout(() => {
+        chrome.storage.local.set({ removing_screen: false });
         document.getElementById('content-block').remove();
         document.getElementById('appMountPoint').style.display = '';
         controller.abort();
-        if (wasVideoPlaying) video?.play();
+        if (wasVideoPlaying) video.play();
     }, seconds * 1000);
 
     function preventPlay(e) {
         e.preventDefault();
-        video?.pause();
+        video.pause();
     }
 }
 
