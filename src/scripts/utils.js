@@ -58,3 +58,25 @@ function populateData(dayCount = 100) {
 
     chrome.storage.sync.set({ days: newDays }, () => console.info('Populated data'));
 }
+
+/**
+ * Checks if user is over daily or weekly limit
+ * @param {function} callback
+ */
+function checkOverLimit(callback) {
+    chrome.storage.sync.get(['daily_limit', 'weekly_limit', 'current_day', 'days'], ({
+      daily_limit,
+      weekly_limit,
+      current_day,
+      days
+    }) => {
+        const weekMinutes = [...days.splice(days.length - 6), current_day]
+            .map(days => days.minutes_spent)
+            .reduce((a, b) => a + b, 0);
+
+        const overDaily = current_day.minutes_spent >= daily_limit
+        const overWeekly = weekMinutes >= weekly_limit;
+        
+        callback(overDaily || overWeekly, `You have exceeded your ${overDaily ? 'daily' : 'weekly'} limit of Netflix`);
+    });
+}

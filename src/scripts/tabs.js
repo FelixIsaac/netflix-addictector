@@ -5,6 +5,15 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
           console.info(`Timer initialized. Response from content script: ${response || 'No response'}`);
         });
         
+        // block netflix if over limit
+        checkOverLimit((overLimit, reason) => {
+          if (!overLimit) return;
+
+          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason }, (response) => {
+            console.info(`Netflix screen block initialized. Response from content script: ${response || 'No response'}`)
+          })
+        });
+
         showBadge(tabs[0].id);
       });
     }

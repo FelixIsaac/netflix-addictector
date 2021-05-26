@@ -37,8 +37,13 @@ function removeNetflixScreen(reason = 'Take a break for 30 seconds', seconds = 3
 }
 
 function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netflix') {
-    // add overlay
+    const { video } = window.video;
+    if (!video) return window.video.addListener(() => blockNetflixScreen(), true);
+
+    // add overlay and removes video source
+    // due to Chrome still playing audio after video element removal
     replaceScreen(reason);
+    video.src = "";
 
     // remove video and video controls 
     document.getElementById('appMountPoint').style.display = 'none';

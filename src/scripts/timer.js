@@ -93,6 +93,8 @@ function addTime(repeats = true, time = 1/10) {
         // set updated current day
         chrome.storage.sync.set({ current_day }, () => {
             log('Added time. Current minutes spent:', current_day.minutes_spent);
+            checkOverLimit((overLimit, reason) => overLimit && blockNetflixScreen(reason));
+
             timer = null;
             timerStartTime = null
             repeats && setTimer();

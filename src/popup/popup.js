@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     optionsButton.addEventListener('click', () => chrome.runtime.openOptionsPage())
 
-    chrome.storage.sync.get(null, ({
+    chrome.storage.sync.get(['daily_limit', 'current_day', 'days'], ({
         daily_limit,
         current_day,
         days
