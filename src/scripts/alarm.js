@@ -22,3 +22,16 @@ chrome.alarms.onAlarm.addListener(alarm => {
             break;
     }
 });
+
+// add alarms
+// chrome.alarms.get('netflix-screen-blocker', (alarm) => {
+//     // prevent duplicates
+//     if (alarm) return;
+
+    chrome.storage.sync.get(['block_type', 'block_interval'], ({ block_type, block_interval }) => {
+        if (block_type === BlockTypeEnum.RANDOM) return;
+        chrome.alarms.create('netflix-screen-blocker', { periodInMinutes: Number(block_interval) });
+    });
+// })
+
+// update alarms when options are changed
