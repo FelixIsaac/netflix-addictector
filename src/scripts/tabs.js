@@ -1,9 +1,6 @@
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, (tabs) => {
+      chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { method: "time" }, (response) => { 
           console.info(`Timer initialized. Response from content script: ${response || 'No response'}`);
           showBadge(tabId);

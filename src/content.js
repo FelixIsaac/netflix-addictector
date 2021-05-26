@@ -4,5 +4,8 @@ chrome.runtime.onMessage.addListener(({ method, tabId }, sender, sendResponse) =
             initTimer(tabId);
             sendResponse('Timer initialized at tab', tabId)
             break;
+        case 'remove-netflix-screen':
+            removeNetflixScreen();
+            break;
     }
 }); 
