@@ -7,16 +7,28 @@ const BlockTypeEnum = Object.freeze({
 chrome.alarms.onAlarm.addListener(alarm => {
     switch (alarm.name) {
         case 'netflix-screen-blocker':
-            chrome.storage.sync.get('block_type', ({ block_type }) => {
-                // for random alarm   
-                if (block_type === BlockTypeEnum.RANDOM) return; 
-
-                chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
-                    if (!tabs.length) return;
-                    chrome.tabs.sendMessage(tabs[0].id, { method: 'remove-netflix-screen' });
-                });
+            sendBlockMessage();
+            break;
+        case 'random-netflix-screen-blocker':
+            chrome.alarms.get('random-netflix-blocker-product', alarm => {
+                if (alarm) return;
+                
+                const randomMinutes = Math.max(Math.floor(Math.random() * 7), 2);
+                chrome.alarms.create('random-netflix-blocker-product', { delayInMinutes: randomMinutes });
             });
             break;
+        case 'random-netflix-blocker-product':
+            sendBlockMessage();
+            break;
+    }
+
+    function sendBlockMessage() {
+        chrome.storage.sync.get('block_type', () => {
+            chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
+                if (!tabs.length) return;
+                chrome.tabs.sendMessage(tabs[0].id, { method: 'remove-netflix-screen' });
+            });
+        });
     }
 });
 
@@ -35,7 +47,6 @@ function createNetflixScreenAlarm(block_type, block_interval) {
     });
 
     function createAlarm(block_type, block_interval) {
-        console.log(block_type, block_interval)
         if (block_type === BlockTypeEnum.RANDOM || block_type === BlockTypeEnum.BOTH) {
             chrome.alarms.create('random-netflix-screen-blocker', { periodInMinutes: 5 });
         }
