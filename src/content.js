@@ -32,11 +32,33 @@ document.onreadystatechange = () => {
         const [video] = [...(videoContainer?.children[0]?.children[0]?.children || [])].filter(children => children.tagName === "VIDEO");
 
         if (!video) return;
-
-        observer.disconnect();
         window.video.video = video;
     }
 };
+
+chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_button }) => {
+    if (!block_next_episode_button) return;
+    
+    window.video.addListener(() => {
+        addObserver();
+        document.getElementsByClassName('button-nfplayerNextEpisode')[0].parentElement.remove();
+        document.getElementsByClassName('button-nfplayerEpisodes')[0].parentElement.remove();
+    });
+    
+    function addObserver() {
+        const observer = new MutationObserver(observe);
+        const config = { attributes: true, attributeFilter: ["style"] };
+        observer.observe(document.getElementsByClassName('current-progress')[0], config);
+    
+        function observe() {
+            const nextEpisodeButton = document.querySelector('button[data-uia=next-episode-seamless-button]')
+            if (!nextEpisodeButton) return;
+
+            nextEpisodeButton.remove();
+            observer.disconnect();
+        }
+    };
+});
 
 chrome.runtime.onMessage.addListener(({ method, tabId }, sender, sendResponse) => {
     switch(method.toLowerCase()) {
