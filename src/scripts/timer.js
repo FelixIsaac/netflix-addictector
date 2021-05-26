@@ -52,10 +52,9 @@ function startTimer(video) {
  * @returns void
  */
 function stopTimer(video) {
-    if (!video.paused) return;
+    if (!video.paused || !timer) return;
     
     // reset timer
-    log('Timer start time', (Date.now() - timerStartTime)/60000)
     addTime(false, (Date.now() - timerStartTime)/60000);
     clearTimeout(timer);
     timer = null;
@@ -96,8 +95,6 @@ function addTime(repeats = true, time = 1/10) {
             }
         };
 
-        log('Adding time. current time:', current_day.minutes_spent)
-
         current_day = {
             ...current_day,
             minutes_spent: current_day.minutes_spent += time // defaults to 6 seconds / 60 seconds (1 minute)
@@ -105,7 +102,7 @@ function addTime(repeats = true, time = 1/10) {
 
         // set updated current day
         chrome.storage.sync.set({ current_day }, () => {
-            log('added time');
+            log('Added time. Current minutes spent:', current_day.minutes_spent);
             timer = null;
             timerStartTime = null
             repeats && setTimer();
