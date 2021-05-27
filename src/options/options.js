@@ -21,12 +21,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const blockInterval = document.getElementById('block-interval');
     const resetSettingsBtn = document.getElementById('reset-settings')
     const saveSettingsBtn = document.getElementById('save-settings');
+    const timeRangeCheck = document.getElementById('time-range');
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
 
     blockType.onchange = (e) => {
         blockInterval.disabled = e.target.selectedIndex === BlockTypeEnum['RANDOM'];
     };
+
+    timeRangeCheck.onchange = (e) => {
+        const { checked } = e.target;
+        timeRangeStart.disabled = !checked;
+        timeRangeEnd.disabled = !checked;
+    }
 
     resetSettingsBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -45,6 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
         chrome.storage.sync.set({
             daily_limit: Number(dailyLimit.value),
             weekly_limit: Number(weeklyLimit.value),
+            time_range: {
+                enabled: timeRangeCheck.checked,
+                end: Number(timeRangeEnd.value),
+                start: Number(timeRangeStart.value)
+            },
             block_type: blockType.selectedIndex,
             block_interval: Number(blockInterval.value),
             block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
@@ -67,7 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
         blockType.selectedIndex = data.block_type;
         blockInterval.value = data.block_interval;
         blockInterval.disabled = blockType.selectedIndex === BlockTypeEnum['RANDOM'];
+        timeRangeCheck.checked = data.time_range.enabled;
         timeRangeStart.value = data.time_range.start;
+        timeRangeStart.disabled = !timeRangeStart.value
         timeRangeEnd.value = data.time_range.end;
+        timeRangeEnd.disabled = !timeRangeStart.value
     });
 });
