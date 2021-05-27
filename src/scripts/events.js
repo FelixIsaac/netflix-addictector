@@ -1,6 +1,10 @@
 const initialOptions = Object.freeze({
   daily_limit: 60, // in minutes
   weekly_limit: 500, // in minutes
+  time_range: {
+    start: 19,
+    end: 22
+  },
   block_type: 0, // enum: FIXED: 0, RANDOM: 0, BOTH: 0
   block_interval: 10, // in minutes
   block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button

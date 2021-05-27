@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const blockInterval = document.getElementById('block-interval');
     const resetSettingsBtn = document.getElementById('reset-settings')
     const saveSettingsBtn = document.getElementById('save-settings');
+    const timeRangeStart = document.getElementById('time-range-start');
+    const timeRangeEnd = document.getElementById('time-range-end');
 
     blockType.onchange = (e) => {
         blockInterval.disabled = e.target.selectedIndex === BlockTypeEnum['RANDOM'];
@@ -65,5 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         blockType.selectedIndex = data.block_type;
         blockInterval.value = data.block_interval;
         blockInterval.disabled = blockType.selectedIndex === BlockTypeEnum['RANDOM'];
+        timeRangeStart.value = data.time_range.start;
+        timeRangeEnd.value = data.time_range.end;
     });
 });
