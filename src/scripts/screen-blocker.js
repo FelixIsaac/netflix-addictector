@@ -7,7 +7,7 @@ function removeNetflixScreen(reason, seconds = 30) {
     const wasVideoPlaying = !video.paused;
     const reasons = [
         'Take a break for 30 seconds, take this time to not think about the show.',
-        '1Literally, really, take a break, go for a walk, get coffee'
+        'Literally, really, take a break, go for a walk, get coffee'
     ]
 
     reason ||= reasons.join('\n');

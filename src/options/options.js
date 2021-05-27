@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
             weekly_limit: Number(weeklyLimit.value),
             time_range: {
                 enabled: timeRangeCheck.checked,
-                end: Number(timeRangeEnd.value),
-                start: Number(timeRangeStart.value)
+                end: timeRangeEnd.value,
+                start: timeRangeStart.value
             },
             block_type: blockType.selectedIndex,
             block_interval: Number(blockInterval.value),

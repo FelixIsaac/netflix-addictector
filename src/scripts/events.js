@@ -3,8 +3,8 @@ const initialOptions = Object.freeze({
   weekly_limit: 500, // in minutes
   time_range: {
     enabled: true,
-    start: 19,
-    end: 22
+    start: '19:00',
+    end: '22:00'
   },
   block_type: 0, // enum: FIXED: 0, RANDOM: 0, BOTH: 0
   block_interval: 10, // in minutes

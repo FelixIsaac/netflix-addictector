@@ -84,15 +84,19 @@ function checkOverLimit(callback) {
 function checkInRange(callback) {
     chrome.storage.sync.get('time_range', ({ time_range }) => {
         let reason;
-        const inRange = Math.sign(time_range.end - new Date().getHours()) >= 0 &&
-        Math.sign(time_range.start - new Date().getHours()) <= 0;
+        const inRange = Math.sign(toMin(time_range.end) - toMin()) >= 0 &&
+        Math.sign(toMin(time_range.start) - toMin()) <= 0;
 
         if (!inRange) {
-            const isPM = time_range.start > 12;
-            reason = `It is not ${isPM ? time_range.start - 12 : time_range.start} ${isPM ? 'PM' : 'AM'} yet.`
-        }
+            const date = new Date(`${new Date().toDateString()}, ${time_range.start}`).toLocaleTimeString();
+            reason = `It is not ${date} yet.`
+        } 
 
-        console.log(time_range.enabled, inRange, reason);
         callback(time_range.enabled && inRange, reason);
     });
+
+    function toMin(formattedTime = `${new Date().getHours()}:${new Date().getMinutes()}`) {
+        const [hours, minutes] = formattedTime.split(':').map(Number);
+        return (hours * 60) + minutes;
+    };
 }
