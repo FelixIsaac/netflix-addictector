@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const blockNextEpisodeBtnCheckbox = document.getElementById('block-next-epi-btn');
     const blockNextEpisodeCheckbox = document.getElementById('block-next-epi');
     const blockType = document.getElementById('block-type');
+    const blockTypeToolTip = document.querySelector('label[for="block-type"] .tooltip-toggle');
     const blockInterval = document.getElementById('block-interval');
     const resetSettingsBtn = document.getElementById('reset-settings')
     const saveSettingsBtn = document.getElementById('save-settings');
@@ -25,15 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
 
-    blockType.onchange = (e) => {
-        blockInterval.disabled = e.target.selectedIndex === BlockTypeEnum['RANDOM'];
-    };
+    blockType.onchange = (e) => blockTypeFormLogic(e.target);
 
-    timeRangeCheck.onchange = (e) => {
-        const { checked } = e.target;
-        timeRangeStart.disabled = !checked;
-        timeRangeEnd.disabled = !checked;
-    }
+    timeRangeCheck.onchange = (e) => timeRangeFormLogic(e.target);
 
     resetSettingsBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -78,11 +73,31 @@ document.addEventListener('DOMContentLoaded', function () {
         blockNextEpisodeCheckbox.checked = data.block_next_episode;
         blockType.selectedIndex = data.block_type;
         blockInterval.value = data.block_interval;
-        blockInterval.disabled = blockType.selectedIndex === BlockTypeEnum['RANDOM'];
         timeRangeCheck.checked = data.time_range.enabled;
         timeRangeStart.value = data.time_range.start;
-        timeRangeStart.disabled = !timeRangeStart.value
         timeRangeEnd.value = data.time_range.end;
-        timeRangeEnd.disabled = !timeRangeStart.value
+
+        blockTypeFormLogic(blockType);
+        timeRangeFormLogic(timeRangeCheck);
     });
+
+    function blockTypeFormLogic(target) {
+        const { selectedIndex, value } = target;
+    
+        const tooltip = [
+            'blocks Netflix episode screen every set interval for 30 seconds.',
+            'blocks Netflix episode screen randomly, without a set interval',
+            'blocks Netflix episode screen every set interval for 30 seconds and at random'
+        ][selectedIndex]
+    
+    
+        blockTypeToolTip.setAttribute('aria-label', `'${value}' type, ${tooltip}`);
+        blockInterval.disabled = selectedIndex === BlockTypeEnum['RANDOM'];
+    }
+
+    function timeRangeFormLogic(target) {
+        const { checked } = target;
+        timeRangeStart.disabled = !checked;
+        timeRangeEnd.disabled = !checked;
+    }
 });

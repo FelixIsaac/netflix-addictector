@@ -5,7 +5,12 @@ function removeNetflixScreen(reason, seconds = 30) {
     if (!video) return window.video.addListener(() => removeNetflixScreen(reason, seconds), true);
 
     const wasVideoPlaying = !video.paused;
-    reason ||= 'Take a break for 30 seconds, take this time to not think about the show.\nLiterally take a break, go for a walk, get coffee';
+    const reasons = [
+        'Take a break for 30 seconds, take this time to not think about the show.',
+        '1Literally, really, take a break, go for a walk, get coffee'
+    ]
+
+    reason ||= reasons.join('\n');
 
     // add overlay and pauses video
     replaceScreen(reason);
