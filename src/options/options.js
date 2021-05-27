@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         weeklyLimit.value = weekly_limit;
                     }
                     
-                    alert([...customMessages, ...messages].join('\n\n'));
                     save('Reverted watch time limit changes and saved other extension settings');
                 })
             } else save();
@@ -132,5 +131,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const { checked } = target;
         timeRangeStart.disabled = !checked;
         timeRangeEnd.disabled = !checked;
+    }
+
+    function showError(element, errorMessage) {
+        const { parentElement } = element;
+        const errorMessages = [...parentElement.children].filter(children => children.className === 'error-message');
+       
+        if (errorMessages.length > 1) errorMessages.slice(1).forEach(e => e.remove());
+        if (errorMessages[0]) return errorMessages[0].children[0].innerText = errorMessage;
+        
+        // only one element or do have
+        parentElement.insertAdjacentHTML('afterbegin', `<div class="error-message"><p>${errorMessage}</p></div>`)
     }
 });

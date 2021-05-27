@@ -108,3 +108,27 @@ div.flex-2 > * {
     opacity: 1;
     transition: all 0.75s ease;
 }
+
+.error-message {
+    background-color: #FFCCCC;
+    border-left: 9px solid #ff0033;
+    color: #2c3e50;
+    padding: 15px 4px 10px 10px;
+    font-size: 21px;
+    font-weight: bolder;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-message::before {
+    content: url(../../options/warning.svg);
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 4px 8px 0 0;
+}
+
+.error-message p {
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
