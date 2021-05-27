@@ -45,19 +45,19 @@ function stopTimer(video) {
     if (!video.paused || !timer) return;
     
     // reset timer
-    addTime(video, false, (Date.now() - timerStartTime)/60000);
+    addTime(false, (Date.now() - timerStartTime)/60000);
     clearTimeout(timer);
     timer = null;
     timerStartTime = null
     log('Stopping timer');
 };
 
-function setTimer(video) {
+function setTimer() {
     try {
         if (timer) return;
         
         timerStartTime = Date.now();
-        timer = setTimeout(() => addTime(video), 6000);
+        timer = setTimeout(() => addTime(), 6000);
     } catch (err) {
         setTimer();
         console.error(err);
@@ -65,10 +65,8 @@ function setTimer(video) {
     }
 };
 
-function addTime(video, repeats = true, time = 1/10) {
+function addTime(repeats = true, time = 1/10) {
     chrome.storage.sync.get('current_day', ({ current_day }) => {
-        if (video.paused) return;
-
         if (!current_day || msToDate(current_day?.day) !== msToDate(Date.now())) {
             // new day, push current day to day records and set new day object
             if (current_day) {

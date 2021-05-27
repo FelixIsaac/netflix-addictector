@@ -43,20 +43,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
     saveSettingsBtn.addEventListener('click', (e) => {
         e.preventDefault();
+
+        checkOverLimit((overLimit, reason) => {
+            // prevents user from increasing limit when limit is reached
+            if (overLimit) {
+                const isBlockTypeDaily = reason.includes('daily');
+    
+                chrome.storage.sync.get(['daily_limit', 'weekly_limit'], ({ daily_limit, weekly_limit }) => {
+                    let customMessages = [];
+                    const messages = [
+                        'When it is no longer exceeding, you can change your daily watch time limit.',
+                        'For now, go do something nice to yourself, something meaningful, productive.',
+                        'Something like, your a hobby (don\'t have one? that\'s fine, go online and search for one).',
+                        'Or try something new, do some exercises, hangout with friends and family, take a shower :)'
+                        // insert motivational quote
+                    ];
+    
+                    if (isBlockTypeDaily) {
+                        if (daily_limit === dailyLimit.value) return;
+                        customMessages.push('Your daily limit has exceeded');
+                        dailyLimit.value = daily_limit;
+                    } else {
+                        if (weekly_limit === weeklyLimit.value) return;
+                        customMessages.push('Your weekly limit has exceeded');
+                        weeklyLimit.value = weekly_limit;
+                    }
+                    
+                    alert([...customMessages, ...messages].join('\n'));
+                    save();
+                })
+            } else save();
+
+            function save() {
+                chrome.storage.sync.set({
+                    daily_limit: Number(dailyLimit.value),
+                    weekly_limit: Number(weeklyLimit.value),
+                    time_range: {
+                        enabled: timeRangeCheck.checked,
+                        end: timeRangeEnd.value,
+                        start: timeRangeStart.value
+                    },
+                    block_type: blockType.selectedIndex,
+                    block_interval: Number(blockInterval.value),
+                    block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
+                    block_next_episode: blockNextEpisodeCheckbox.checked,
+                }, () => alert('Saved extension settings'));
+            }
+        });
         
-        chrome.storage.sync.set({
-            daily_limit: Number(dailyLimit.value),
-            weekly_limit: Number(weeklyLimit.value),
-            time_range: {
-                enabled: timeRangeCheck.checked,
-                end: timeRangeEnd.value,
-                start: timeRangeStart.value
-            },
-            block_type: blockType.selectedIndex,
-            block_interval: Number(blockInterval.value),
-            block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
-            block_next_episode: blockNextEpisodeCheckbox.checked,
-        }, () => alert('Saved extension settings'))
     });
 
     chrome.storage.sync.get(null, (data) => {
