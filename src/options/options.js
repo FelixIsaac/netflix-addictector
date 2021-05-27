@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeRangeCheck = document.getElementById('time-range');
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
+    updateHTML();
 
     blockType.onchange = (e) => blockTypeFormLogic(e.target);
 
@@ -69,14 +70,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         weeklyLimit.value = weekly_limit;
                     }
                     
+                    alert([...customMessages, ...messages].join('\n\n'));
                     save('Reverted watch time limit changes and saved other extension settings');
                 })
             } else save();
 
             function save(message = 'Saved extension settings') {
-                chrome.storage.sync.set({
-                    daily_limit: Number(dailyLimit.value),
-                    weekly_limit: Number(weeklyLimit.value),
+                const saving = {
+                    daily_limit: Math.max(Number(dailyLimit.value) || 0, 1),
+                    weekly_limit: Math.max(Number(weeklyLimit.value) || 0, 1),
                     time_range: {
                         enabled: timeRangeCheck.checked,
                         end: timeRangeEnd.value,
@@ -86,32 +88,63 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_interval: Number(blockInterval.value),
                     block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
                     block_next_episode: blockNextEpisodeCheckbox.checked,
-                }, () => alert(message));
+                };
+
+                if (Math.sign(Number(weeklyLimit.value) - (Number(dailyLimit.value) * 7)) === -1) {
+                    delete saving.daily_limit;
+                    showError(dailyLimit, 'Daily limit (multiplied by 7) cannot exceed weekly limit');
+                    message = 'Saved extension settings except for settings with errors';
+                }
+
+                if (Number(dailyLimit.value) >= 120) {
+                    showWarning(dailyLimit, 'It is not recommended to set daily watch time limit to more than 2 hours per day')
+                }
+
+                if (Number(weeklyLimit.value) >= 600) {
+                    showWarning(weeklyLimit, 'It is not recommended to set weekly watch time limit to more than 10 hours per week')
+                }
+
+                if (Number(blockInterval.value) >= 15) {
+                    const warningMessage = [
+                        'It is not recommended to set more than 15 minutes per Netflix screen block/rest',
+                        ', as one episode could be as low as 20 minutes'
+                    ].join('');
+
+                    showWarning(blockInterval, warningMessage)
+                }
+                
+
+                chrome.storage.sync.set(saving, () => {
+                    updateHTML();
+                    alert(message);
+                });
             }
         });
     });
 
-    chrome.storage.sync.get(null, (data) => {
-        /**
-         * Limit watch time section
-         */
-        dailyLimit.value = data.daily_limit;
-        weeklyLimit.value = data.weekly_limit;
-
-        /**
-         * Screen block section
-         */
-        blockNextEpisodeBtnCheckbox.checked = data.block_next_episode_button;
-        blockNextEpisodeCheckbox.checked = data.block_next_episode;
-        blockType.selectedIndex = data.block_type;
-        blockInterval.value = data.block_interval;
-        timeRangeCheck.checked = data.time_range.enabled;
-        timeRangeStart.value = data.time_range.start;
-        timeRangeEnd.value = data.time_range.end;
-
-        blockTypeFormLogic(blockType);
-        timeRangeFormLogic(timeRangeCheck);
-    });
+    function updateHTML() {
+        chrome.storage.sync.get(null, (data) => {
+            /**
+             * Limit watch time section
+             */
+            dailyLimit.value = data.daily_limit;
+            weeklyLimit.value = data.weekly_limit;
+    
+            /**
+             * Screen block section
+             */
+            blockNextEpisodeBtnCheckbox.checked = data.block_next_episode_button;
+            blockNextEpisodeCheckbox.checked = data.block_next_episode;
+            blockType.selectedIndex = data.block_type;
+            blockInterval.value = data.block_interval;
+            timeRangeCheck.checked = data.time_range.enabled;
+            timeRangeStart.value = data.time_range.start;
+            timeRangeEnd.value = data.time_range.end;
+    
+            blockTypeFormLogic(blockType);
+            timeRangeFormLogic(timeRangeCheck);
+        });
+    }
 
     function blockTypeFormLogic(target) {
         const { selectedIndex, value } = target;
