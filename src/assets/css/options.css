@@ -55,3 +55,45 @@ div.flex-2 {
 div.flex-2 > * {
     width: calc(50% - 16px)
 }
+
+.button-group {
+    margin-top: 60px;
+    text-align: right;
+}
+
+button.primary,
+button.secondary {
+    text-transform: uppercase;
+    font-size: 17px;
+    padding: .75rem 17.33333333px;
+    min-width: 98px;
+    min-height: 37px;
+    margin-right: .5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: auto;
+    line-height: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 0;
+}
+
+button.primary:active,
+button.secondary:active {
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
+}
+
+button.primary {
+    color: #fff;
+    background-color: #e50914;
+}
+
+/* button.primary:active {
+    background-color: #e50914;
+} */
+
+button.secondary {
+    color: #000;
+    background-color: #ccc;
+}

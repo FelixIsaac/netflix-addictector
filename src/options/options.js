@@ -31,7 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const confirmReset = confirm('Do you really want to reset your settings?');
         
         if (!confirmReset) return;
-        chrome.runtime.sendMessage({ type: 'reset-settings' }, console.log);
+        chrome.runtime.sendMessage({ type: 'reset-settings' }, (response) => {
+            console.log(response);
+            location.reload();
+        });
     });
 
     saveSettingsBtn.addEventListener('click', (e) => {
@@ -44,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
             block_interval: Number(blockInterval.value),
             block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
             block_next_episode: blockNextEpisodeCheckbox.checked,
-        })
+        }, () => alert('Saved extension settings'))
     });
 
     chrome.storage.sync.get(null, (data) => {

@@ -1,10 +1,11 @@
 chrome.storage.local.get('removing_screen', ({ removing_screen }) => removing_screen && removeNetflixScreen());
 
-function removeNetflixScreen(reason = 'Take a break for 30 seconds', seconds = 30) {
+function removeNetflixScreen(reason, seconds = 30) {
     const { video } = window.video;
     if (!video) return window.video.addListener(() => removeNetflixScreen(), true);
 
     const wasVideoPlaying = !video.paused;
+    reason ||= 'Take a break for 30 seconds, take this time to not think about the show.\nLiterally take a break, go for a walk, get coffee';
 
     // add overlay and pauses video
     replaceScreen(reason);
