@@ -60,7 +60,7 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
     };
 });
 
-chrome.runtime.onMessage.addListener(({ method, tabId }, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(({ method, tabId, reason }, sender, sendResponse) => {
     switch(method.toLowerCase()) {
         case 'time':
             initTimer(tabId);

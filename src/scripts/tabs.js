@@ -11,7 +11,15 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
           chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason }, (response) => {
             console.info(`Netflix screen block initialized. Response from content script: ${response || 'No response'}`)
-          })
+          });
+        });
+
+        checkInRange((inRange, reason) => {
+          if (!inRange) return;
+
+          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason }, (response) => {
+            console.info(`Netflix time range block initialized. Response from content script: ${response || 'No response'}`)
+          });
         });
 
         showBadge(tabs[0].id);

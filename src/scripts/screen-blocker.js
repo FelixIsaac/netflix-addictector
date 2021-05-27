@@ -2,7 +2,7 @@ chrome.storage.local.get('removing_screen', ({ removing_screen }) => removing_sc
 
 function removeNetflixScreen(reason, seconds = 30) {
     const { video } = window.video;
-    if (!video) return window.video.addListener(() => removeNetflixScreen(), true);
+    if (!video) return window.video.addListener(() => removeNetflixScreen(reason, seconds), true);
 
     const wasVideoPlaying = !video.paused;
     reason ||= 'Take a break for 30 seconds, take this time to not think about the show.\nLiterally take a break, go for a walk, get coffee';
@@ -39,7 +39,7 @@ function removeNetflixScreen(reason, seconds = 30) {
 
 function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netflix') {
     const { video } = window.video;
-    if (!video) return window.video.addListener(() => blockNetflixScreen(), true);
+    if (!video) return window.video.addListener(() => blockNetflixScreen(reason), true);
 
     // add overlay and removes video source
     // due to Chrome still playing audio after video element removal

@@ -2,6 +2,7 @@ const initialOptions = Object.freeze({
   daily_limit: 60, // in minutes
   weekly_limit: 500, // in minutes
   time_range: {
+    enabled: true,
     start: 19,
     end: 22
   },
