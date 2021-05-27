@@ -143,4 +143,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // only one element or do have
         parentElement.insertAdjacentHTML('afterbegin', `<div class="error-message"><p>${errorMessage}</p></div>`)
     }
+
+    function showWarning(element, warningMessage) {
+        const { parentElement } = element;
+        const warningMessages = [...parentElement.children].filter(children => children.className === 'warning-message');
+       
+        if (warningMessages.length > 1) warningMessages.slice(1).forEach(e => e.remove());
+        if (warningMessages[0]) return warningMessages[0].children[0].innerText = warningMessage;
+        
+        // only one element or do have
+        parentElement.insertAdjacentHTML('afterbegin', `<div class="warning-message"><p>${warningMessage}</p></div>`)
+    }
 });
