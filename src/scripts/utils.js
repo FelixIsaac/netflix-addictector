@@ -84,12 +84,15 @@ function checkOverLimit(callback) {
 function checkInRange(callback) {
     chrome.storage.sync.get('time_range', ({ time_range }) => {
         let reason;
-        const inRange = Math.sign(toMin(time_range.end) - toMin()) >= 0 &&
-        Math.sign(toMin(time_range.start) - toMin()) <= 0;
+        const leftRange = Math.sign(toMin(time_range.end) - toMin()) >= 0 
+        const rightRange = Math.sign(toMin(time_range.start) - toMin()) <= 0;
+        const inRange = leftRange && rightRange;
 
         if (!inRange) {
-            const date = new Date(`${new Date().toDateString()}, ${time_range.start}`).toLocaleTimeString();
-            reason = `It is not ${date} yet.`
+            const date = new Date(`${new Date().toDateString()}, ${leftRange ? time_range.start : time_range.end}`)
+                .toLocaleTimeString();
+
+            reason = `It is ${leftRange ? `not ${date} yet` : `past ${date} already :(`}`;
         } 
 
         callback(time_range.enabled && inRange, reason);

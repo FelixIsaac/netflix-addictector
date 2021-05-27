@@ -49,6 +49,7 @@ function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netf
     // add overlay and removes video source
     // due to Chrome still playing audio after video element removal
     replaceScreen(reason);
+    video.pause();
     video.src = "";
 
     // remove video and video controls 

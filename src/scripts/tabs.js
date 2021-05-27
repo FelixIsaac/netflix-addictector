@@ -1,7 +1,7 @@
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
       chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
-        chrome.tabs.sendMessage(tabs[0].id, { method: 'time' }, (response) => { 
+        chrome.tabs.sendMessage(tabs[0].id, { method: 'time', tabId: tabs[0].id }, (response) => { 
           console.info(`Timer initialized. Response from content script: ${response || 'No response'}`);
         });
         
@@ -9,7 +9,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         checkOverLimit((overLimit, reason) => {
           if (!overLimit) return;
 
-          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason }, (response) => {
+          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason, tabId: tabs[0].id }, (response) => {
             console.info(`Netflix screen block initialized. Response from content script: ${response || 'No response'}`)
           });
         });
@@ -17,7 +17,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         checkInRange((inRange, reason) => {
           if (inRange) return;
 
-          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason }, (response) => {
+          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason, tabId: tabs[0].id }, (response) => {
             console.info(`Netflix time range block initialized. Response from content script: ${response || 'No response'}`)
           });
         });

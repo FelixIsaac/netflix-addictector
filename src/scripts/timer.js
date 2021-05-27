@@ -45,27 +45,27 @@ function stopTimer(video) {
     if (!video.paused || !timer) return;
     
     // reset timer
-    addTime(false, (Date.now() - timerStartTime)/60000);
+    addTime(false, (Date.now() - timerStartTime)/60000, video);
     clearTimeout(timer);
     timer = null;
     timerStartTime = null
     log('Stopping timer');
 };
 
-function setTimer() {
+function setTimer(video) {
     try {
         if (timer) return;
         
         timerStartTime = Date.now();
-        timer = setTimeout(() => addTime(), 6000);
+        timer = setTimeout(() => addTime(undefined, undefined, video), 6000);
     } catch (err) {
-        setTimer();
+        setTimer(video);
         console.error(err);
         throw err;
     }
 };
 
-function addTime(repeats = true, time = 1/10) {
+function addTime(repeats = true, time = 1/10, video) {
     chrome.storage.sync.get('current_day', ({ current_day }) => {
         if (!current_day || msToDate(current_day?.day) !== msToDate(Date.now())) {
             // new day, push current day to day records and set new day object
@@ -94,10 +94,11 @@ function addTime(repeats = true, time = 1/10) {
         chrome.storage.sync.set({ current_day }, () => {
             log('Added time. Current minutes spent:', current_day.minutes_spent);
             checkOverLimit((overLimit, reason) => overLimit && blockNetflixScreen(reason));
+            checkInRange((inRange, reason) => !inRange && blockNetflixScreen(reason));
 
             timer = null;
             timerStartTime = null
-            repeats && setTimer();
+            !video.paused && repeats && setTimer(video);
         });
     });
 }
