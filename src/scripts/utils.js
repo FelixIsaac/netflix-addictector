@@ -84,14 +84,15 @@ function checkOverLimit(callback) {
 function checkInRange(callback) {
     chrome.storage.sync.get('time_range', ({ time_range }) => {
         let reason;
-        const inRange = Math.sign(time_range.end - new Date().getHours()) === 1 ||
-        Math.sign(time_range.start - new Date().getHours()) === -1;
+        const inRange = Math.sign(time_range.end - new Date().getHours()) >= 0 &&
+        Math.sign(time_range.start - new Date().getHours()) <= 0;
 
-        if (inRange) {
+        if (!inRange) {
             const isPM = time_range.start > 12;
             reason = `It is not ${isPM ? time_range.start - 12 : time_range.start} ${isPM ? 'PM' : 'AM'} yet.`
         }
 
+        console.log(time_range.enabled, inRange, reason);
         callback(time_range.enabled && inRange, reason);
     });
 }
