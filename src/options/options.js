@@ -47,10 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
         checkOverLimit((overLimit, reason) => {
             // prevents user from increasing limit when limit is reached
             if (overLimit) {
-                const isBlockTypeDaily = reason.includes('daily');
-    
+                
                 chrome.storage.sync.get(['daily_limit', 'weekly_limit'], ({ daily_limit, weekly_limit }) => {
+                    if (daily_limit === Number(dailyLimit?.value) && weekly_limit === Number(weeklyLimit?.value)) return save();
                     let customMessages = [];
+                    const isBlockTypeDaily = reason.includes('daily');
                     const messages = [
                         'When it is no longer exceeding, you can change your daily watch time limit.',
                         'For now, go do something nice to yourself, something meaningful, productive.',
@@ -58,23 +59,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Or try something new, do some exercises, hangout with friends and family, take a shower :)'
                         // insert motivational quote
                     ];
-    
+
+                    
                     if (isBlockTypeDaily) {
-                        if (daily_limit === dailyLimit.value) return;
                         customMessages.push('Your daily limit has exceeded');
                         dailyLimit.value = daily_limit;
                     } else {
-                        if (weekly_limit === weeklyLimit.value) return;
                         customMessages.push('Your weekly limit has exceeded');
                         weeklyLimit.value = weekly_limit;
                     }
                     
-                    alert([...customMessages, ...messages].join('\n'));
-                    save();
+                    alert([...customMessages, ...messages].join('\n\n'));
+                    save('Reverted watch time limit changes and saved other extension settings');
                 })
             } else save();
 
-            function save() {
+            function save(message = 'Saved extension settings') {
                 chrome.storage.sync.set({
                     daily_limit: Number(dailyLimit.value),
                     weekly_limit: Number(weeklyLimit.value),
@@ -87,10 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_interval: Number(blockInterval.value),
                     block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
                     block_next_episode: blockNextEpisodeCheckbox.checked,
-                }, () => alert('Saved extension settings'));
+                }, () => alert(message));
             }
         });
-        
     });
 
     chrome.storage.sync.get(null, (data) => {
