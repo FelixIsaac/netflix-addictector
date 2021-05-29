@@ -41,8 +41,8 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
     
     window.video.addListener(() => {
         addObserver();
-        document.getElementsByClassName('button-nfplayerNextEpisode')[0].parentElement.remove();
-        document.getElementsByClassName('button-nfplayerEpisodes')[0].parentElement.remove();
+        document.getElementsByClassName('button-nfplayerNextEpisode')[0]?.parentElement?.remove();
+        document.getElementsByClassName('button-nfplayerEpisodes')[0]?.parentElement?.remove();
     });
     
     function addObserver() {
@@ -60,14 +60,14 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
     };
 });
 
-chrome.runtime.onMessage.addListener(({ method, tabId, reason }, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(({ method, tabId, reason, seconds }, sender, sendResponse) => {
     switch(method.toLowerCase()) {
         case 'time':
-            initTimer(tabId);
+            initTimer();
             sendResponse(`Timer initialized at tab ${tabId}`)
             break;
         case 'remove-netflix-screen':
-            removeNetflixScreen();
+            removeNetflixScreen(reason, seconds);
             sendResponse(`Removed Netflix screen at tab ${tabId}`)
             break;
         case 'block-netflix-screen':

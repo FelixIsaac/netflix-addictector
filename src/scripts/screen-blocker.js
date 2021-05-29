@@ -1,44 +1,63 @@
 chrome.storage.local.get('removing_screen', ({ removing_screen }) => removing_screen && removeNetflixScreen());
 
+// queue
+const netflixScreenBlockers = [] 
+
 function removeNetflixScreen(reason, seconds = 30) {
     const { video } = window.video;
     if (!video) return window.video.addListener(() => removeNetflixScreen(reason, seconds), true);
 
-    const wasVideoPlaying = !video.paused;
-    const reasons = [
-        'Take a break for 30 seconds, take this time to not think about the show.',
-        'Literally, really, take a break, go for a walk, get coffee, exercise, do some push-ups'
-    ]
+    // adding to queue
+    netflixScreenBlockers.push({ reason, seconds, active: false });
+    blockScreen();
 
-    reason ||= reasons.join('\n');
+    function blockScreen() {
+        if (!netflixScreenBlockers.length) return;
+        if (netflixScreenBlockers.filter(({ active }) => active).length) return;
+        netflixScreenBlockers[0].active = true;
 
-    // add overlay and pauses video
-    replaceScreen(reason);
-    video.pause();
+        let { reason, seconds } = netflixScreenBlockers[0];
+        const wasVideoPlaying = !video.paused;
+        const reasons = [
+            'Take a break for {{seconds}} seconds, take this time to not think about the show.',
+            'Literally, really, take a break, go for a walk, get coffee, exercise, do some push-ups'
+        ]
 
-    // hides video controls
-    document.getElementById('appMountPoint').style.display = 'none';
+        reason ||= reasons.join('\n').replace('{{seconds}}', seconds);
 
-    // prevents user from playing video
-    const controller = new AbortController();
-    const { signal } = controller;
-    video.addEventListener('play', preventPlay, { signal });
-
-    // prevents user from refreshing and bypassing
-    chrome.storage.local.set({ removing_screen: true });
-
-    // after set amount of seconds remove overlay, show video controls, and resumes video
-    setTimeout(() => {
-        chrome.storage.local.set({ removing_screen: false });
-        document.getElementById('content-block').remove();
-        document.getElementById('appMountPoint').style.display = '';
-        controller.abort();
-        if (wasVideoPlaying) video.play();
-    }, seconds * 1000);
-
-    function preventPlay(e) {
-        e.preventDefault();
+        // add overlay and pauses video
+        document.getElementById('content-block')?.remove();
+        replaceScreen(reason);
         video.pause();
+
+        // hides video controls
+        document.getElementById('appMountPoint').style.display = 'none';
+
+        // prevents user from playing video
+        const controller = new AbortController();
+        const { signal } = controller;
+        video.addEventListener('play', preventPlay, { signal });
+
+        // prevents user from refreshing and bypassing
+        chrome.storage.local.set({ removing_screen: true });
+
+        // after set amount of seconds remove overlay, show video controls, and resumes video
+        setTimeout(() => {
+            controller.abort();
+            chrome.storage.local.set({ removing_screen: false });
+            document.getElementById('content-block').remove();
+            document.getElementById('appMountPoint').style.display = '';
+            if (wasVideoPlaying) video.play();
+
+            // updating the queue
+            netflixScreenBlockers.shift();
+            if (netflixScreenBlockers.length) blockScreen();
+        }, seconds * 1000);
+
+        function preventPlay(e) {
+            e.preventDefault();
+            video.pause();
+        }
     }
 }
 
@@ -54,7 +73,7 @@ function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netf
 
     // remove video and video controls 
     document.getElementById('appMountPoint').style.display = 'none';
-    document.getElementsByClassName('sizing-wrapper')[0].remove();
+    document.getElementsByClassName('sizing-wrapper')[0]?.remove();
 }
 
 function replaceScreen(reason) {

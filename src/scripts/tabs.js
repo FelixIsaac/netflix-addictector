@@ -14,6 +14,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
           });
         });
 
+        // block netflix if not in range
         checkInRange((inRange, reason) => {
           if (inRange) return;
 
@@ -21,6 +22,19 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             console.info(`Netflix time range block initialized. Response from content script: ${response || 'No response'}`)
           });
         });
+
+        // block netflix when in next episode
+        chrome.storage.sync.get('block_next_episode', ({ block_next_episode }) => {
+          if (!block_next_episode) return;
+
+          chrome.tabs.sendMessage(tabs[0].id, {
+            method: 'remove-netflix-screen',
+            tabId: tabs[0].id,
+            seconds: 120 // 2 min
+          }, (response) => {
+            console.info(`Netflix next episode block initialized. Response from content script: ${response || 'No response'}`)
+          })
+        })
 
         showBadge(tabs[0].id);
       });
