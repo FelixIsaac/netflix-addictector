@@ -25,10 +25,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeRangeCheck = document.getElementById('time-range');
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
+   
     updateHTML();
-
+    addListeners();
     blockType.onchange = (e) => blockTypeFormLogic(e.target);
-
     timeRangeCheck.onchange = (e) => timeRangeFormLogic(e.target);
 
     resetSettingsBtn.addEventListener('click', (e) => {
@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     updateHTML();
                     alert(message);
                 });
+
+                window.onbeforeunload = null;
             }
         });
     });
@@ -186,5 +188,25 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // only one element or do have
         parentElement.insertAdjacentHTML('afterbegin', `<div class="warning-message"><p>${warningMessage}</p></div>`)
+    }
+
+    function addListeners() {
+        [
+            dailyLimit,
+            weeklyLimit,
+            blockNextEpisodeBtnCheckbox,
+            blockNextEpisodeCheckbox,
+            blockType, 
+            blockInterval,
+            timeRangeCheck, 
+            timeRangeStart,
+            timeRangeEnd
+        ].forEach((element) => element.onchange = changed);
+
+        function changed() {
+            try {
+                window.onbeforeunload = () => ""
+            } catch (err) {}
+        }
     }
 });
