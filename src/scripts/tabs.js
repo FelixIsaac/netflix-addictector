@@ -30,7 +30,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
           chrome.tabs.sendMessage(tabs[0].id, {
             method: 'remove-netflix-screen',
             tabId: tabs[0].id,
-            seconds: 120 // 2 min
+            seconds: 120, // 2 min
+            removing_screen: false
           }, (response) => {
             console.info(`Netflix next episode block initialized. Response from content script: ${response || 'No response'}`)
           })

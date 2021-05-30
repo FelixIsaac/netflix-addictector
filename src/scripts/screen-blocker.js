@@ -3,9 +3,9 @@ chrome.storage.local.get('removing_screen', ({ removing_screen }) => removing_sc
 // queue
 const netflixScreenBlockers = [] 
 
-function removeNetflixScreen(reason, seconds = 30) {
+function removeNetflixScreen(reason, seconds = 30, removing_screen = true) {
     const { video } = window.video;
-    if (!video) return window.video.addListener(() => removeNetflixScreen(reason, seconds), true);
+    if (!video) return window.video.addListener(() => removeNetflixScreen(reason, seconds, removing_screen), true);
 
     // adding to queue
     netflixScreenBlockers.push({ reason, seconds, active: false });
@@ -39,7 +39,7 @@ function removeNetflixScreen(reason, seconds = 30) {
         video.addEventListener('play', preventPlay, { signal });
 
         // prevents user from refreshing and bypassing
-        chrome.storage.local.set({ removing_screen: true });
+        chrome.storage.local.set({ removing_screen });
 
         // after set amount of seconds remove overlay, show video controls, and resumes video
         setTimeout(() => {
