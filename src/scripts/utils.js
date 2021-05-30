@@ -95,7 +95,7 @@ function checkInRange(callback) {
             reason = `It is ${leftRange ? `not ${date} yet` : `past ${date} already :(`}`;
         } 
 
-        callback(time_range.enabled && inRange, reason);
+        callback(!time_range.enabled || inRange, reason);
     });
 
     function toMin(formattedTime = `${new Date().getHours()}:${new Date().getMinutes()}`) {
