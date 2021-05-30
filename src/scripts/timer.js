@@ -71,10 +71,27 @@ function addTime(repeats = true, time = 1/10, video) {
             // new day, push current day to day records and set new day object
             if (current_day) {
                 chrome.storage.sync.get('days', ({ days }) => {
-                    chrome.storage.sync.set(
-                        { days: [...days, current_day] },
-                        () => log('New day, created day entry')
-                    );
+                    // check if max days
+                    if (days.length + 1 >= 140) {
+                        // arhieve day array
+                        chrome.storage.sync.get(null, data => {
+                            const arhieveEntries = Object.keys(data).filter(keyName => keyName.startsWith('days_arhieve_'));
+                            const dayArhieveKey =  `days_arhieve_${arhieveEntries.length}`;
+                            chrome.storage.sync.set({ [dayArhieveKey]: days });
+
+                               // resets days
+                            chrome.storage.sync.set(
+                                { days: [current_day] },
+                                () => log('New day, created day entry')
+                            );
+                        });
+                    } else {
+                        // noraml appending current day to day entries
+                        chrome.storage.sync.set(
+                            { days: [...days, current_day] },
+                            () => log('New day, created day entry')
+                        );
+                    }
                 });
             }
 

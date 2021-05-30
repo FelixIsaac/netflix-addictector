@@ -22,18 +22,18 @@ const initialData = {
 
 chrome.runtime.onInstalled.addListener(() => {
   // set init data
-  chrome.storage.sync.get(initialData, (data) => {
+  chrome.storage.sync.get(Object.keys(initialData), (data) => {
     // Do not override initialized day history data on install
-    for (let key of Object.keys(initialData)) {
-      if (!data[key]) chrome.storage.sync.set({ [key]: data[key]});
+    for (let key in initialData) {
+      if (!data[key]) chrome.storage.sync.set({ [key]: initialData[key] });
     }
   });
 
   // set init settings
-  chrome.storage.sync.get(initialOptions, (options) => {
+  chrome.storage.sync.get(Object.keys(initialOptions), (options) => {
     // Do not override synced options on install
-    for (let key of Object.keys(initialOptions)) {
-      if (!options[key]) chrome.storage.sync.set({ [key]: options[key] });
+    for (let key in initialOptions) {
+      if (!options[key]) chrome.storage.sync.set({ [key]: initialOptions[key] });
     }
   });
 });
