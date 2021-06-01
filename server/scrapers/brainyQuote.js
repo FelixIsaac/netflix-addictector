@@ -2,6 +2,7 @@ import { promises as fs, existsSync } from 'fs';
 import { resolve as resolvePath } from 'path';
 import cheerio from 'cheerio';
 import axios from '../utils/axiosWrapper.js';
+import { getUniqueListBy } from '../utils/functions.js';
 
 /**
  * Get quotes from topic page
@@ -69,7 +70,8 @@ export async function saveQuotes(quotes, quotesFileName = './quotes/quotes.json'
 
 		// update data and write to file
  		async function saveFile(data = []) {
- 			const writeData = JSON.stringify(data.concat(quotes), null, 4);
+ 			const uniqueData = getUniqueListBy(data.concat(quotes), 'quote');
+ 			const writeData = JSON.stringify(uniqueData, null, 4);
 			await fs.writeFile(path, writeData, { encoding: 'utf8', flag: 'w' });
  		}
 
@@ -86,7 +88,7 @@ export async function saveQuotes(quotes, quotesFileName = './quotes/quotes.json'
  */
 export async function getAllQuotesFromSite() {
 	try {
-		const topics = ['binge-quotes', 'motivational-quotes', 'attitude-quotes', 'inspirational-quotes', 'positive-quotes', 'life-quotes'];
+        const topics = ['binge-quotes', 'motivational-quotes', 'attitude-quotes', 'inspirational-quotes', 'positive-quotes', 'life-quotes', 'age-quotes'];
 
 		topics.forEach(async (topic) => {
 			const quotes = await getQuotesFromTopic(topic);
