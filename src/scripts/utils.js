@@ -103,3 +103,58 @@ function checkInRange(callback) {
         return (hours * 60) + minutes;
     };
 }
+
+function addTime(repeats = true, time = 1/10, video) {
+    chrome.storage.sync.get('current_day', ({ current_day }) => {
+        if (!current_day || msToDate(current_day?.day) !== msToDate(Date.now())) {
+            // new day, push current day to day records and set new day object
+            if (current_day) {
+                chrome.storage.sync.get('days', ({ days }) => {
+                    // check if max days
+                    if (days.length + 1 >= 140) {
+                        // arhieve day array
+                        chrome.storage.sync.get(null, data => {
+                            const arhieveEntries = Object.keys(data).filter(keyName => keyName.startsWith('days_arhieve_'));
+                            const dayArhieveKey =  `days_arhieve_${arhieveEntries.length}`;
+                            chrome.storage.sync.set({ [dayArhieveKey]: days });
+
+                               // resets days
+                            chrome.storage.sync.set(
+                                { days: [current_day] },
+                                () => log('New day, created day entry')
+                            );
+                        });
+                    } else {
+                        // noraml appending current day to day entries
+                        chrome.storage.sync.set(
+                            { days: [...days, current_day] },
+                            () => log('New day, created day entry')
+                        );
+                    }
+                });
+            }
+
+            // day not found
+            current_day = {
+                day: Date.now(),
+                minutes_spent: 0
+            }
+        };
+
+        current_day = {
+            ...current_day,
+            minutes_spent: current_day.minutes_spent += time // defaults to 6 seconds / 60 seconds (1 minute)
+        }
+
+        // set updated current day
+        chrome.storage.sync.set({ current_day }, () => {
+            log('Added time. Current minutes spent:', current_day.minutes_spent);
+            checkOverLimit((overLimit, reason) => overLimit && blockNetflixScreen(reason));
+            checkInRange((inRange, reason) => !inRange && blockNetflixScreen(reason));
+
+            timer = null;
+            timerStartTime = null
+            repeats && !video?.paused && setTimer(video);
+        });
+    });
+}

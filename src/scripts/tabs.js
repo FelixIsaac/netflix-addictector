@@ -5,6 +5,9 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
           console.info(`Timer initialized. Response from content script: ${response || 'No response'}`);
         });
         
+        // check if new day by adding time
+        addTime(false, 0);
+
         // block netflix if over limit
         checkOverLimit((overLimit, reason) => {
           if (!overLimit) return;
