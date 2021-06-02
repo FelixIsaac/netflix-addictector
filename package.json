@@ -1,6 +1,7 @@
 {
   "name": "netflix-addictector-server",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "author": "https://felixisaac.dev",
   "main": "server.js",
