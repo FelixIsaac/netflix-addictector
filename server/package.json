@@ -11,6 +11,7 @@
   "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.9"
+    "cheerio": "^1.0.0-rc.9",
+    "fastify": "^3.17.0"
   }
 }
