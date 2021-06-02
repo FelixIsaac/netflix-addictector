@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="../assets/css/index.css">
     <link rel="stylesheet" href="../assets/css/popup.css">
+    <script src="../scripts/utils.js"></script>
     <script src="popup.js"></script>
   </head>
   <body>
@@ -30,6 +31,12 @@
       </div>
     </section>
     <section>
+      <figure>
+          <blockquote>{{quote}}</blockquote>
+          <figcaption>&mdash; {{author}}</figcaption>
+      </figure>
+    </section>
+    <section>
       <h2>Hours spent this week: <span id="week-hours"></span> hours</h2>
     </section>
     <section>
@@ -38,6 +45,6 @@
     <section>
       <h2>Hours since installation: <span id="installation-hours"></span> hours</h2>
     </section>
-    <button class="primary" id="options">Options</button>
+    <button class="secondary" id="options" style="margin-top: 10px;">Options</button>
   </body>
 </html>
