@@ -117,6 +117,7 @@ export async function getAllQuotesFromSite() {
 			};
 
 			getTopic();
+			(i === topics.length - 1) && console.info('Scraping finished');
 		});
 
 		return true;
