@@ -1,17 +1,18 @@
-// Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
-const handler = async (event) => {
-  try {
-    const subject = event.queryStringParameters.name || 'World'
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: `Hello ${subject}` }),
-      // // more keys you can return:
-      // headers: { "headerName": "headerValue", ... },
-      // isBase64Encoded: true,
-    }
-  } catch (error) {
-    return { statusCode: 500, body: error.toString() }
-  }
-}
+import { promises as fs } from 'fs';
+import { resolve } from 'path';
 
-module.exports = { handler }
+export default handler = async (event) => {
+    try {
+        const quoteFiles = await fs.readdir(resolve('../../quotes/'));
+        console.log(quoteFiles);
+        return {
+            status: 200,
+            body: JSON.stringify(quoteFiles);
+        }
+    } catch (error) {
+        return {
+          statusCode: 500,
+          body: error.toString()
+        };
+    }
+}
