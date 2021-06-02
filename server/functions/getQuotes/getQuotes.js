@@ -1,9 +1,9 @@
-import { promises as fs } from 'fs';
-import { resolve } from 'path';
+const { promises: fs } = require('fs');
+const { resolve: resolvePath } = require('path');
 
-export default handler = async (event) => {
+const handler = async (event) => {
     try {
-        const quoteFiles = await fs.readdir(resolve('../../quotes/'));
+        const quoteFiles = await fs.readdir(resolvePath('../../quotes/'));
         console.log(quoteFiles);
         return {
             status: 200,
@@ -16,3 +16,5 @@ export default handler = async (event) => {
         };
     }
 }
+
+module.exports = { handler }
