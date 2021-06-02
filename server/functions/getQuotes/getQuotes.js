@@ -5,9 +5,10 @@ const handler = async (event) => {
     try {
         const quoteFiles = await fs.readdir(resolvePath('../../quotes/'));
         console.log(quoteFiles);
+        
         return {
             status: 200,
-            body: JSON.stringify(quoteFiles);
+            body: JSON.stringify(quoteFiles)
         }
     } catch (error) {
         return {
