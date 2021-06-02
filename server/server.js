@@ -3,7 +3,7 @@ import helmet from 'fastify-helmet';
 import cors from 'fastify-cors';
 import { getQuotes, getQuotesFromCategory } from './utils/server-utils.js';
 
-const fastify = Fastify({ logger: false });
+const fastify = Fastify({ logger: true });
 
 fastify.register(helmet);
 fastify.register(cors);
