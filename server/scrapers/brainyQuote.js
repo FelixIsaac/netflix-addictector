@@ -2,7 +2,7 @@ import { promises as fs, existsSync } from 'fs';
 import { resolve as resolvePath } from 'path';
 import cheerio from 'cheerio';
 import axios from '../utils/axiosWrapper.js';
-import { getUniqueListBy } from '../utils/functions.js';
+import { getUniqueListBy, factory } from '../utils/functions.js';
 
 /**
  * Get quotes from topic page
@@ -25,7 +25,8 @@ export async function getQuotesFromPage(topic, page) {
 
 		return quotes;
 	} catch (err) {
-		console.error(err);
+		console.error(err.message);
+		throw err;
 	}
 }
 
@@ -46,12 +47,12 @@ export async function getQuotesFromTopic(topic) {
 				.map((i, element) => $(element).text())
 				.get()
 				
-		pages.unshift('1') // get current page
-
-		const quotes = Promise.all(pages.map(async (page) => (await getQuotesFromPage(topic, page)).get()));
+		const newPages = new Array(Number(pages[pages.length - 1])).fill().map((d, i) => i + 1) // get all pages and make new array from 1 to max
+		const quotes = Promise.all(newPages.map(async (page) => (await getQuotesFromPage(topic, page))?.get()));
 		return (await quotes).flat();
 	} catch (err) {
-		console.error(err);
+		console.error(err.message);
+		throw err;
 	}
 }
 
@@ -77,8 +78,8 @@ export async function saveQuotes(quotes, quotesFileName = './quotes/quotes.json'
 
 		return true;
 	} catch (err) {
-		console.error(err);
-		return false;
+		console.error(err.message);
+		throw err;
 	}
 }
 
@@ -88,11 +89,34 @@ export async function saveQuotes(quotes, quotesFileName = './quotes/quotes.json'
  */
 export async function getAllQuotesFromSite() {
 	try {
-        const topics = ['binge-quotes', 'motivational-quotes', 'attitude-quotes', 'inspirational-quotes', 'positive-quotes', 'life-quotes', 'age-quotes'];
+		const limiter = factory(10000, 5);
+        const topics = [
+        	'binge-quotes', 'motivational-quotes', 'attitude-quotes', 'inspirational-quotes', 'positive-quotes', 'life-quotes', 'age-quotes',
+        	'failure-quotes', 'great-quotes', 'happiness-quotes', 'health-quotes', 'history-quotes', 'intelligence-quotes', 'experience-quotes', 
+        	'dreams-quotes', 'courage-quotes' ,'change-quotes' ,'chance-quotes', 'business-quotes' ,'amazing-quotes', 'morning-quotes', 'positive-quotes',
+        	'sad-quotes', 'success-quotes', 'sympathy-quotes' , 'time-quotes' ,'wisdom-quotes', 'work-quotes'
+        ];
 
-		topics.forEach(async (topic) => {
-			const quotes = await getQuotesFromTopic(topic);
-			saveQuotes(quotes, `./quotes/${topic}.json`);
+		topics.forEach((topic, i) => {
+			function getTopic() {
+				limiter(async () => {
+					try {
+						console.log('Getting topic', topic);
+						const quotes = await getQuotesFromTopic(topic);
+
+						console.info(`Got ${quotes.length} quotes from topic ${topic}`)
+						saveQuotes(quotes, `./quotes/${topic}.json`);
+					} catch (err) {
+						console.error('An error occured', err.message);
+						if (err?.response?.status !== 429) return;
+						
+						console.log('Retrying topic')
+						getTopic();
+					}
+				})
+			};
+
+			getTopic();
 		});
 
 		return true;
