@@ -1,22 +1,47 @@
 import Fastify from 'fastify';
-import serverless from 'serverless-http';
-const fastify = Fastify({ logger: true });
+import helmet from 'fastify-helmet';
+import cors from 'fastify-cors';
+import { getQuotes, getQuotesFromCategory } from './utils/server-utils.js';
 
-fastify.get('/', async (request, reply) => {
-	reply.send({ hello: 'world' });
-});
+const fastify = Fastify({ logger: false });
 
-// fastify.use('/.netlify/functions/server', fastify); 
+fastify.register(helmet);
+fastify.register(cors);
 
-const handler = serverless(fastify);
-export default fastify;
-export { handler };
+fastify.get('/', async function (response, reply) {
+	const quotes = await getQuotes();
+	
+	return {
+		message: 'List of categories of quotes',
+		statusCode: 200,
+		quotes
+	};
+})
 
-// Run the server!
-fastify.listen(3000, function (err, address) {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-  fastify.log.info(`server listening on ${address}`)
+fastify.get('/quotes', async function (response, reply) {
+	const { limit, after } = response.query;
+	const quotes = await getQuotesFromCategory(undefined, limit, after);
+
+	return {
+		message: 'Random category quotes',
+		statusCode: 200,
+		quotes
+	};
+})
+
+fastify.get('/quotes/:category', async function (response, reply) {
+	const { category } = response.params;
+	const { limit, after } = response.query;
+	const quotes = await getQuotesFromCategory(category, limit, after);
+
+	return {
+		message: 'Category quotes',
+		statusCode: 200,
+		quotes
+	};
+})
+
+fastify.listen(process.env.PORT || 3000, function (err, address) {
+	if (err) fastify.log.error(err);
+	fastify.log.info(`Server listening on ${address}`)
 })
