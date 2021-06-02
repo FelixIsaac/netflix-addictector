@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "author": "https://felixisaac.dev",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.9",
-    "fastify": "^3.17.0"
+    "fastify": "^3.17.0",
+    "serverless-http": "^2.7.0"
   }
 }
