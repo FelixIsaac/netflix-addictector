@@ -104,12 +104,17 @@ function checkInRange(callback) {
     };
 }
 
-async function generateQuotes(callback) {
-    const { quotes } = await (await fetch('https://netflix-addictector-api.herokuapp.com/quotes')).json();
+function generateQuotes(callback) {
+    chrome.storage.sync.get('enabled_quotes', async ({ enabled_quotes }) => {
+        const randomCategory = enabled_quotes[Math.floor(Math.random() * enabled_quotes.length)];
+        const url = `https://netflix-addictector-api.herokuapp.com/quotes/${randomCategory}`;
+        const { quotes } = await (await fetch(url).json());
     
-    return chrome.storage.local.set({
-        quotes: quotes.map((quote) => ({ ...quote, seen: false }))
-    }, callback);
+
+        chrome.storage.local.set({
+            quotes: quotes.map((quote) => ({ ...quote, seen: false }))
+        }, callback);
+    });
 }
 
 function getQuote(callback) {
