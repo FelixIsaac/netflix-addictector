@@ -209,4 +209,42 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (err) {}
         }
     }
+
+    async function renderQuotes() {
+        const { quotes: quotesCategories } = await ((await fetch('https://netflix-addictector-api.herokuapp.com/')).json());
+
+        chrome.storage.sync.get('enabled_quotes', ({ enabled_quotes }) => {
+            const html = quotesCategories.map((category) => {
+                // <div>
+                //   <input type="checkbox" class="quote-category" data-key="" id="quotes-category"/>
+                //   <label for="quotes-category"></label>
+                // </div>
+                
+                return `<div>
+                  <input
+                    type="checkbox"
+                    class="quote-category"
+                    data-key="${category}"
+                    id="quotes-category-${category}"
+                    ${enabled_quotes.includes(category) ? 'checked' : ''}
+                  />
+                  <label
+                    for="quotes-category-${category}">
+                    ${generateName(category)}
+                  </label>
+                </div>`
+            });
+
+            return quotesContainer.innerHTML = html.join('\n');
+        });
+
+
+        function generateName(name) {
+            let newName = name.split('.')[0].split('-').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+            if (newName === "Quotes") newName = "General Quotes";
+            return newName;
+        }
+    }
+
+    renderQuotes();
 });

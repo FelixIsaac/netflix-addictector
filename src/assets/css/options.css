@@ -147,3 +147,13 @@ div.flex-2 > * {
     border-left: 9px solid #ffecb5;
     color: #664d03;
 }
+
+#quotes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+#quotes-container > * {
+    width:  calc(33% - 2rem);
+}
