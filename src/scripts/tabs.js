@@ -6,7 +6,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         });
         
         // check if new day by adding time
-        addTime(false, 0);
+        chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' });
 
         // block netflix if over limit
         checkOverLimit((overLimit, reason) => {

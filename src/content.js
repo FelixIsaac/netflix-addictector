@@ -76,5 +76,8 @@ chrome.runtime.onMessage.addListener((args, sender, sendResponse) => {
             blockNetflixScreen(reason);
             sendResponse(`Blocked Netflix screen at tab ${tabId}`)
             break;
+        case 'update-time':
+            addTime(false, 0);
+            break;
     }
 }); 

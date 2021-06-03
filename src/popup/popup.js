@@ -75,5 +75,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// update overview if there's new day entry
-addTime(false, 0);
+// check if new day by adding time
+chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
+    if (!tabs.length) return;
+    chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' });
+});
