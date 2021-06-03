@@ -8,7 +8,7 @@ let timerStartTime = null;
 function initTimer() {
     // attach event listeners to video
     const { video } = window.video;
-    if (!video) return window.video.addListener(initTimer, true);
+    if (!video) return window.video.addListener(initTimer);
 
     video.addEventListener('playing', (e => {
         const netflixSource = /(blob:)?http(s)?:\/\/(www\.)?netflix\.com\/(\w*(-)?)*/;
