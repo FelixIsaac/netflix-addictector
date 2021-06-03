@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeRangeCheck = document.getElementById('time-range');
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
+    const quotesContainer = document.getElementById('quotes-container');
    
     updateHTML();
     addListeners();
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_interval: Number(blockInterval.value),
                     block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
                     block_next_episode: blockNextEpisodeCheckbox.checked,
+                    enabled_quotes: [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key)
                 };
 
                 if (Math.sign(Number(weeklyLimit.value) - (Number(dailyLimit.value) * 7)) === -1) {

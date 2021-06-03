@@ -10,6 +10,37 @@ const initialOptions = Object.freeze({
   block_interval: 10, // in minutes
   block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button
   block_next_episode: true, // show s block screen before an episode starts
+  enabled_quotes: [
+    "age-quotes.json",
+    "amazing-quotes.json",
+    "attitude-quotes.json",
+    "binge-quotes.json",
+    "business-quotes.json",
+    "chance-quotes.json",
+    "change-quotes.json",
+    "courage-quotes.json",
+    "dreams-quotes.json",
+    "experience-quotes.json",
+    "failure-quotes.json",
+    "great-quotes.json",
+    "happiness-quotes.json",
+    "health-quotes.json",
+    "history-quotes.json",
+    "inspirational-quotes.json",
+    "intelligence-quotes.json",
+    "life-quotes.json",
+    "morning-quotes.json",
+    "motivational-quotes.json",
+    "positive-quotes.json",
+    "quotes.json",
+    "sad-quotes.json",
+    "success-quotes.json",
+    "sympathy-quotes.json",
+    "time-quotes.json",
+    "typefitCOM-quotes.json",
+    "wisdom-quotes.json",
+    "work-quotes.json"
+  ], // array of enabled quotes
 });
 
 const initialData = {
