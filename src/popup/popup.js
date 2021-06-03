@@ -56,17 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
-    function getQuote(callback) {
-        chrome.storage.local.get('quotes', async ({ quotes }) => {
-            if (!quotes) {
-                const { quotes } = await (await fetch('https://netflix-addictector-api.herokuapp.com/quotes')).json();
-                return chrome.storage.local.set({ quotes }, () => getQuote(callback));
-            }
-
-            return callback(quotes[Math.floor(Math.random() * quotes.length - 1)]);
-        });
-    }
-
     function updateQuote() {
         getQuote(({ quote, author }) => {
             quoteContent.innerText = quoteContent.innerText.replace('{{quote}}', quote);

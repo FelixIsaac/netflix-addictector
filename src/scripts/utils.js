@@ -103,3 +103,29 @@ function checkInRange(callback) {
         return (hours * 60) + minutes;
     };
 }
+
+async function generateQuotes(callback) {
+    const { quotes } = await (await fetch('https://netflix-addictector-api.herokuapp.com/quotes')).json();
+    
+    return chrome.storage.local.set({
+        quotes: quotes.map((quote) => ({ ...quote, seen: false }))
+    }, callback);
+}
+
+function getQuote(callback) {
+    chrome.storage.local.get('quotes', async ({ quotes }) => {
+        // generate quotes if none in local storage, else gives a random quote
+        if (!quotes || !quotes?.length) return generateQuotes(() => getQuote(callback));
+
+        const unseenQuotes = quotes.filter(({ seen }) => !seen);
+
+        // regenerates quotes if all is seen
+        if (!unseenQuotes.length) return generateQuotes(() => getQuote(callback));
+
+        const randomIndex = Math.floor(Math.random() * unseenQuotes.length);
+        const randomQuote = unseenQuotes[randomIndex];
+        quotes[quotes.findIndex(({ quote }) => quote === randomQuote.quote)].seen = true; // mark quote as seen
+        chrome.storage.local.set({ quotes });
+        callback(randomQuote)
+    });
+}

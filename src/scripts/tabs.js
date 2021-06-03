@@ -1,12 +1,12 @@
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
       chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
+        // check if new day by adding time
+        chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' });
+
         chrome.tabs.sendMessage(tabs[0].id, { method: 'time', tabId: tabs[0].id }, (response) => { 
           console.info(`Timer initialized. Response from content script: ${response || 'No response'}`);
         });
-        
-        // check if new day by adding time
-        chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' });
 
         // block netflix if over limit
         checkOverLimit((overLimit, reason) => {
