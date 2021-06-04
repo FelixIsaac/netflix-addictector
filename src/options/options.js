@@ -116,12 +116,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 
 
-                chrome.storage.sync.set(saving, () => {
-                    updateHTML();
-                    alert(message);
-                });
-
-                window.onbeforeunload = null;
+                chrome.storage.sync.get(null, (data) => {
+                    // keep unset settings
+                    chrome.storage.sync.set({ ...data, ...saving }, () => {
+                        updateHTML();
+                        alert(message);
+                        window.onbeforeunload = null;
+                    });
+                })
             }
         });
     });
@@ -213,7 +215,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function renderQuotes() {
-        const { quotes: quotesCategories } = await ((await fetch('https://netflix-addictector-api.herokuapp.com/')).json());
+        const { quotes: quotesCategories } = await (await fetch('https://netflix-addictector-api.herokuapp.com/'))?.json();
+
+        if (!quotesCategories) return renderQuotes();
 
         chrome.storage.sync.get('enabled_quotes', ({ enabled_quotes }) => {
             const html = quotesCategories.map((category) => {

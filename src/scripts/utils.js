@@ -105,12 +105,19 @@ function checkInRange(callback) {
 }
 
 function generateQuotes(callback) {
-    chrome.storage.sync.get('enabled_quotes', async ({ enabled_quotes }) => {
+    chrome.storage.sync.get(['enabled_quotes', 'quotes_index'], async ({ enabled_quotes, quotes_index }) => {
         const randomCategory = enabled_quotes[Math.floor(Math.random() * enabled_quotes.length)];
-        const url = `https://netflix-addictector-api.herokuapp.com/quotes/${randomCategory}`;
-        const { quotes } = await (await fetch(url).json());
+        const after = quotes_index[randomCategory] || 0;
+        const url = `https://netflix-addictector-api.herokuapp.com/quotes/${randomCategory}?after=${after}`;
+        const { quotes } = await (await fetch(url)).json();
     
+        if (!quotes) return generateQuotes(callback);
 
+        // update quotes index
+        quotes_index[randomCategory] = (quotes_index[randomCategory] || 0) + 30;
+        chrome.storage.sync.set({ quotes_index });
+
+        // set local storage quotes, storing 30 quotes
         chrome.storage.local.set({
             quotes: quotes.map((quote) => ({ ...quote, seen: false }))
         }, callback);

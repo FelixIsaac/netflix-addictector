@@ -41,6 +41,7 @@ const initialOptions = Object.freeze({
     "wisdom-quotes.json",
     "work-quotes.json"
   ], // array of enabled quotes
+  quotes_index: {} // key, value object; key representing quote JSON and value is number after index
 });
 
 const initialData = {
