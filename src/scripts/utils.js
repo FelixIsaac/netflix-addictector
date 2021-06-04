@@ -111,6 +111,12 @@ function generateQuotes(callback) {
         const url = `https://netflix-addictector-api.herokuapp.com/quotes/${randomCategory}?after=${after}`;
         const { quotes } = await (await fetch(url)).json();
     
+        if (!quotes.length) {
+            // no more quotes in the "?after" index, reset index
+            quotes_index[randomCategory] = 0;
+            return chrome.storage.sync.set({ quotes_index }, () => generateQuotes(callback));
+        }
+
         if (!quotes) return generateQuotes(callback);
 
         // update quotes index
