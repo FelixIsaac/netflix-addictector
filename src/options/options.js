@@ -26,11 +26,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
     const quotesContainer = document.getElementById('quotes-container');
+    const regenerateQuotesBtn = document.getElementById('regenerate-quotes');
    
     updateHTML();
     addListeners();
     blockType.onchange = (e) => blockTypeFormLogic(e.target);
     timeRangeCheck.onchange = (e) => timeRangeFormLogic(e.target);
+
+    regenerateQuotesBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        generateQuotes(() => alert('Regenerated quotes based on enabled quotes'));
+    })
 
     resetSettingsBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -89,8 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_interval: Number(blockInterval.value),
                     block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
                     block_next_episode: blockNextEpisodeCheckbox.checked,
-                    enabled_quotes: [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key)
                 };
+
+                if (!loadingQuotes) [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key);
 
                 if (Math.sign(Number(weeklyLimit.value) - (Number(dailyLimit.value) * 7)) === -1) {
                     delete saving.daily_limit;
@@ -249,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let newName = name.split('.')[0].split('-').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(' ');
             if (newName === "Quotes") newName = "General Quotes";
             return newName;
-        }
+        };
     }
 
     renderQuotes();
