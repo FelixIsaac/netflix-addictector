@@ -68,6 +68,8 @@ chrome.runtime.onInstalled.addListener(() => {
       if (!options[key]) chrome.storage.sync.set({ [key]: initialOptions[key] });
     }
   });
+
+  chrome.runtime.setUninstallURL('https://forms.gle/D2fJi82TjC1UtVRv8', () => {});
 });
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {

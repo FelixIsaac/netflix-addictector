@@ -1,7 +1,8 @@
 {
   "name": "Netflix Addictector",
   "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction",
-  "version": "1.0",
+  "version": "1.0.1",
+  "version_name": "1.0 beta",
   "author": "https://felixisaac.dev",
   "homepage_url": "https://projects.felixisaac.dev/netflix-addictector",
   "manifest_version": 3,
