@@ -106,7 +106,7 @@ function checkInRange(callback) {
 
 function generateQuotes(callback) {
     chrome.storage.sync.get(['enabled_quotes', 'quotes_index'], async ({ enabled_quotes, quotes_index }) => {
-        const randomCategory = enabled_quotes[Math.floor(Math.random() * enabled_quotes.length)];
+        const randomCategory = enabled_quotes[Math.floor(Math.random() * enabled_quotes.length)] || 'quotes.json';
         const after = quotes_index[randomCategory] || 0;
         const url = `https://netflix-addictector-api.herokuapp.com/quotes/${randomCategory}?after=${after}`;
         const { quotes } = await (await fetch(url)).json();

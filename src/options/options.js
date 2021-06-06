@@ -11,6 +11,8 @@ const BlockTypeEnum = Object.freeze({
     BOTH: 2
 });
 
+let loadingQuotes = true;
+
 document.addEventListener('DOMContentLoaded', function () {
     // get page elements
     const dailyLimit = document.getElementById('daily-limit');
@@ -227,28 +229,33 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!quotesCategories) return renderQuotes();
 
         chrome.storage.sync.get('enabled_quotes', ({ enabled_quotes }) => {
-            const html = quotesCategories.map((category) => {
+            // remove loading quotes options text
+            quotesContainer.children[0].remove();
+
+            quotesCategories.forEach((category) => {
                 // <div>
                 //   <input type="checkbox" class="quote-category" data-key="" id="quotes-category"/>
                 //   <label for="quotes-category"></label>
                 // </div>
                 
-                return `<div>
-                  <input
-                    type="checkbox"
-                    class="quote-category"
-                    data-key="${category}"
-                    id="quotes-category-${category}"
-                    ${enabled_quotes.includes(category) ? 'checked' : ''}
-                  />
-                  <label
-                    for="quotes-category-${category}">
-                    ${generateName(category)}
-                  </label>
-                </div>`
-            });
+                const quoteContainer = document.createElement('div');
+                const input = document.createElement('input');
+                const label = document.createElement('label');
 
-            return quotesContainer.innerHTML = html.join('\n');
+                label.for = `quotes-category-${category}`;
+                label.appendChild(document.createTextNode(generateName(category)));
+
+                input.type = 'checkbox';
+                input.className = 'quote-category';
+                input.setAttribute('data-key', category);
+                input.id = `quotes-category-${category}`;
+                input.checked = enabled_quotes.includes(category);
+
+                quoteContainer.appendChild(input);
+                quoteContainer.appendChild(label);
+                quotesContainer.appendChild(quoteContainer);
+                return;
+            });
         });
 
 
@@ -257,6 +264,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (newName === "Quotes") newName = "General Quotes";
             return newName;
         };
+
+        loadingQuotes = false;
     }
 
     renderQuotes();

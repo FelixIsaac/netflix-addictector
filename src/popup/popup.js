@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // overview stats
             const currentPercentage = ((current_day.minutes_spent / daily_limit) * 100).toFixed(2);
-            percentageText.innerHTML = percentageText.innerHTML.replace('{{minutes_spent}}', parseFloat(current_day.minutes_spent.toFixed(1)));
-            percentageAboutText.innerHTML = percentageAboutText.innerHTML.replace('{{time_limit}}', daily_limit);
+            percentageText.textContent = percentageText.textContent.replace('{{minutes_spent}}', parseFloat(current_day.minutes_spent.toFixed(1)));
+            percentageAboutText.children[0].textContent = percentageAboutText.children[0].textContent.replace('{{time_limit}}', daily_limit);
             percentageCircle.style.strokeDasharray = `${currentPercentage}, 100`
 
             // hours spent
