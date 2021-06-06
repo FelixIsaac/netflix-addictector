@@ -35,5 +35,9 @@
     "48": "/assets/images/icon-48.png",
     "128": "/assets/images/icon-128.png"
   },
-  "options_page": "options/options.html"
+  "options_page": "options/options.html",
+  "web_accessible_resources": [{
+    "resources": ["assets/no.svg", "assets/css/blocked.css"],
+    "matches": ["*://*.netflix.com/*"]
+  }]
 }

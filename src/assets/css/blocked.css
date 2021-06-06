@@ -1,0 +1,60 @@
+#content-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: #141414;
+    color: #f5f5f1
+}
+
+#content-block img {
+    width: 400px;
+    height: 400px;
+}
+
+#content-block p {
+    font-size: 3rem;
+}
+
+#content-block p span {
+    color: #e50914;
+}
+
+#content-block .reason {
+    font-size: 2rem;
+}
+
+#content-block .attribute {
+    margin-top: 4rem;
+}
+
+#content-block section figure,
+#content-block section figure blockquote {
+    margin: 0;
+}
+
+#content-block section figure {
+    padding: 8px;
+    background: #e50914;
+    border-radius: .5rem;
+    font-family: sans-serif;
+}
+
+#content-block section figure figcaption {
+  font-weight: bolder;
+  font-size:  1.5rem;
+}
+
+#content-block section figure blockquote {
+    font-style: italic;
+    font-size: 1.8rem;
+}
+
+#content-block section figure blockquote::before {
+    content: '\201C';
+}
+
+#content-block section figure blockquote::after {
+    content: '\201D';
+}
