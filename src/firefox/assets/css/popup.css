@@ -1,0 +1,97 @@
+.flex-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.single-chart {
+  width: 100%;
+  justify-content: space-around;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  max-height: 250px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #564d4d;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circular-chart .circle {
+  stroke: #e50914;
+}
+
+.percentage {
+  fill: #f5f5f1;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
+.percentage-about {
+    fill: #f5f5f1;
+    font-family: sans-serif;
+    font-size: 0.2em;
+    text-anchor: middle;
+}
+
+body {
+  min-width: 300px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #221f1f;
+  color: #f5f5f1;
+}
+
+section h2 {
+  margin: 10px 0;
+}
+
+h1,
+section figure,
+section figure blockquote {
+    margin: 0;
+}
+
+section figure {
+    padding: 8px;
+    background: #e50914;
+    border-radius: 5px;
+    font-family: sans-serif;
+}
+
+section figure figcaption {
+  font-weight: bolder;
+}
+
+section figure blockquote {
+    font-style: italic;
+    font-size: 16px;
+}
+
+section figure blockquote::before {
+    content: '\201C';
+}
+
+section figure blockquote::after {
+    content: '\201D';
+}
+
