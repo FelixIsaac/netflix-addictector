@@ -26,7 +26,11 @@ function removeNetflixScreen(reason, seconds = 30, removing_screen = true) {
         reason ||= reasons.join('\n').replace('{{seconds}}', seconds);
 
         // add overlay
-        getQuote((quote) => replaceScreen(reason, quote));
+        getQuote((quote) => {
+            document.getElementById('content-block')?.remove(); 
+            replaceScreen(reason, quote);
+        });
+
         video.pause();
 
         // hides video controls
@@ -64,9 +68,12 @@ function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netf
     const { video } = window.video;
     if (!video) return window.video.addListener(() => blockNetflixScreen(reason), true);
     
-    // add overlay and removes video source
-    // due to Chrome still playing audio after video element removal
-    getQuote((quote) => replaceScreen(reason, quote));
+    getQuote((quote) => {
+        // add overlay and removes video source
+        // due to Chrome still playing audio after video element removal
+        replaceScreen(reason, quote);
+    });
+
     video.pause();
     video.src = "";
 
@@ -87,7 +94,6 @@ function replaceScreen(reason, quote) {
 
     const html = buildHTML();
 
-    document.getElementById('content-block')?.remove();
     document.body.prepend(html);
     return html;
 
