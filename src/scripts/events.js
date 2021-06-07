@@ -69,6 +69,9 @@ chrome.runtime.onInstalled.addListener(() => {
     }
   });
 
+  // get quotes
+  generateQuotes(() => console.info('Generated quotes'));
+
   chrome.runtime.setUninstallURL('https://forms.gle/D2fJi82TjC1UtVRv8', () => {});
 });
 
