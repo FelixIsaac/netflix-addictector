@@ -6,7 +6,7 @@
   "homepage_url": "https://projects.felixisaac.dev/netflix-addictector",
   "manifest_version": 2,
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["/scripts/events.js", "/scripts/tabs.js", "/scripts/utils.js", "/scripts/alarm.js"]
   },
   "permissions": ["storage", "alarms"],
   "content_scripts": [{
@@ -47,5 +47,11 @@
     "48": "/assets/images/icon-48.png",
     "128": "/assets/images/icon-128.png"
   },
-  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"]
+  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "me@felixisaac.dev",
+      "strict_min_version": "42.0"
+    }
+  }
 }
