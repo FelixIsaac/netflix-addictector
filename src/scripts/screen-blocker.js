@@ -63,6 +63,9 @@ function removeNetflixScreen(reason, seconds = 30, removing_screen = true) {
 function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netflix', quote) {
     const { video } = window.video;
     if (!video) return window.video.addListener(() => blockNetflixScreen(reason, quote), true);
+
+    // updates queue and prevent other blockers from running
+    netflixScreenBlockers.push({ reason, active: true });
     
     // add overlay and removes video source
     // due to Chrome still playing audio after video element removal
