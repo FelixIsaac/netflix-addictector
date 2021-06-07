@@ -1,6 +1,6 @@
 {
-  "name": "Netflix Addictector",
-  "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction",
+  "name": "Netflix Addictector – Netflix Screen Time",
+  "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction. It’s time to push pause on your addiction.",
   "version": "1.0.1",
   "version_name": "1.0 beta",
   "author": "https://felixisaac.dev",
