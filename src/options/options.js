@@ -167,26 +167,40 @@ document.addEventListener('DOMContentLoaded', function () {
         timeRangeEnd.disabled = !checked;
     }
 
-    function showError(element, errorMessage) {
+    function showMessage(element, messageString, type) {
         const { parentElement } = element;
-        const errorMessages = [...parentElement.children].filter(children => children.className === 'error-message');
-       
-        if (errorMessages.length > 1) errorMessages.slice(1).forEach(e => e.remove());
-        if (errorMessages[0]) return errorMessages[0].children[0].innerText = errorMessage;
+        const messageClass = `${type.toLowerCase()}-message`;
         
+        // find duplicates
+        const duplicates = [...parentElement.children]
+            .filter(children => (
+                children.className === messageClass
+                && children.innerText.toLowerCase() === messageString.toLowerCase()
+            ))
+
+        if (duplicates.length) {
+            // toggle error if same error message
+            duplicates.forEach((duplicate) => duplicate.remove());
+            return;
+        }
+       
+        const error = document.createElement('div');
+        const message = document.createElement('p');
+
+        message.appendChild(document.createTextNode(messageString));
+        error.className = messageClass;
+        error.appendChild(message);
+
         // only one element or do have
-        parentElement.insertAdjacentHTML('afterbegin', `<div class="error-message"><p>${errorMessage}</p></div>`)
+        parentElement.prepend(error);
+    }
+
+    function showError(element, errorMessage) {
+        showMessage(element, errorMessage, 'error');
     }
 
     function showWarning(element, warningMessage) {
-        const { parentElement } = element;
-        const warningMessages = [...parentElement.children].filter(children => children.className === 'warning-message');
-       
-        if (warningMessages.length > 1) warningMessages.slice(1).forEach(e => e.remove());
-        if (warningMessages[0]) return warningMessages[0].children[0].innerText = warningMessage;
-        
-        // only one element or do have
-        parentElement.insertAdjacentHTML('afterbegin', `<div class="warning-message"><p>${warningMessage}</p></div>`)
+        showMessage(element, warningMessage, 'warning');
     }
 
     function addListeners() {
