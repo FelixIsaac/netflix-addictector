@@ -34,10 +34,13 @@
   "host_permissions": ["*://*.netflix.com/*"],
   "content_scripts": [{
     "matches": ["*://*.netflix.com/*"],
-    "js": ["content.js", "/scripts/timer.js", "/scripts/utils.js", "/scripts/screen-blocker.js"]
+    "js": ["content.js", "/scripts/utils.js", "/scripts/timer.js", "/scripts/screen-blocker.js"]
   }],
   "options_ui": "options/options.html",
-  "options_page": "options/options.html",
+  "options_page": {
+    "browser_style": true,
+    "page": "options/options.html"
+  },
   "web_accessible_resources": [{
     "resources": ["assets/no.svg", "assets/css/blocked.css"],
     "matches": ["*://*.netflix.com/*"]
