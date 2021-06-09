@@ -16,7 +16,6 @@
       "128": "/assets/images/icon-128.png"
     }
   },
-  "default_locale": "en",
   "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction. It’s time to push pause on your addiction.",
   "icons": {
     "16": "/assets/images/icon-16.png",
