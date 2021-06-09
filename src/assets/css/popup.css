@@ -54,6 +54,8 @@
 
 body {
   min-width: 300px;
+  width: 400px;
+  max-width: 400px;
   justify-content: center;
   align-items: center;
   text-align: center;
