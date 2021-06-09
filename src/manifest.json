@@ -42,5 +42,11 @@
     "js": ["content.js", "/scripts/timer.js", "/scripts/utils.js", "/scripts/screen-blocker.js"]
   }],
   "options_page": "options/options.html",
-  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"]
+  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"],
+  "browser_specific_settings": {
+  "gecko": {
+    "id": "netflix-addictector@felixisaac.dev",
+    "strict_min_version": "79.0"
+  }
+}
 }
