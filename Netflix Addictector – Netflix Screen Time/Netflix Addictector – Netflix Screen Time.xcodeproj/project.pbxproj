@@ -1,0 +1,526 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DC2C4D3726709F67006F2153 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C4D3626709F67006F2153 /* AppDelegate.swift */; };
+		DC2C4D3A26709F67006F2153 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D3826709F67006F2153 /* Main.storyboard */; };
+		DC2C4D3C26709F67006F2153 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C4D3B26709F67006F2153 /* ViewController.swift */; };
+		DC2C4D3E26709F6B006F2153 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D3D26709F6B006F2153 /* Assets.xcassets */; };
+		DC2C4D4526709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DC2C4D4426709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DC2C4D4A26709F6B006F2153 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2C4D4926709F6B006F2153 /* Cocoa.framework */; };
+		DC2C4D4D26709F6B006F2153 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2C4D4C26709F6B006F2153 /* SafariWebExtensionHandler.swift */; };
+		DC2C4D6126709F6C006F2153 /* options in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D5A26709F6C006F2153 /* options */; };
+		DC2C4D6226709F6C006F2153 /* popup in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D5B26709F6C006F2153 /* popup */; };
+		DC2C4D6326709F6C006F2153 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D5C26709F6C006F2153 /* background.js */; };
+		DC2C4D6426709F6C006F2153 /* scripts in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D5D26709F6C006F2153 /* scripts */; };
+		DC2C4D6526709F6C006F2153 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D5E26709F6C006F2153 /* manifest.json */; };
+		DC2C4D6626709F6C006F2153 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D5F26709F6C006F2153 /* content.js */; };
+		DC2C4D6726709F6C006F2153 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = DC2C4D6026709F6C006F2153 /* assets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DC2C4D4626709F6B006F2153 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC2C4D2A26709F67006F2153 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DC2C4D4326709F6B006F2153;
+			remoteInfo = "Netflix Addictector – Netflix Screen Time Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DC2C4D5526709F6B006F2153 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DC2C4D4526709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		DC2C4D3226709F67006F2153 /* Netflix Addictector – Netflix Screen Time.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Netflix Addictector – Netflix Screen Time.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC2C4D3526709F67006F2153 /* Netflix_Addictector___Netflix_Screen_Time.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Netflix_Addictector___Netflix_Screen_Time.entitlements"; sourceTree = "<group>"; };
+		DC2C4D3626709F67006F2153 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DC2C4D3926709F67006F2153 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DC2C4D3B26709F67006F2153 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DC2C4D3D26709F6B006F2153 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DC2C4D3F26709F6B006F2153 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC2C4D4426709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Netflix Addictector – Netflix Screen Time Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC2C4D4926709F6B006F2153 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DC2C4D4C26709F6B006F2153 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		DC2C4D4E26709F6B006F2153 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC2C4D4F26709F6B006F2153 /* Netflix_Addictector___Netflix_Screen_Time_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Netflix_Addictector___Netflix_Screen_Time_Extension.entitlements"; sourceTree = "<group>"; };
+		DC2C4D5A26709F6C006F2153 /* options */ = {isa = PBXFileReference; lastKnownFileType = folder; name = options; path = ../../src/options; sourceTree = "<group>"; };
+		DC2C4D5B26709F6C006F2153 /* popup */ = {isa = PBXFileReference; lastKnownFileType = folder; name = popup; path = ../../src/popup; sourceTree = "<group>"; };
+		DC2C4D5C26709F6C006F2153 /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = ../../src/background.js; sourceTree = "<group>"; };
+		DC2C4D5D26709F6C006F2153 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = ../../src/scripts; sourceTree = "<group>"; };
+		DC2C4D5E26709F6C006F2153 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../src/manifest.json; sourceTree = "<group>"; };
+		DC2C4D5F26709F6C006F2153 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = ../../src/content.js; sourceTree = "<group>"; };
+		DC2C4D6026709F6C006F2153 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../src/assets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DC2C4D2F26709F67006F2153 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC2C4D4126709F6B006F2153 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2C4D4A26709F6B006F2153 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DC2C4D2926709F67006F2153 = {
+			isa = PBXGroup;
+			children = (
+				DC2C4D3426709F67006F2153 /* Netflix Addictector – Netflix Screen Time */,
+				DC2C4D4B26709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension */,
+				DC2C4D4826709F6B006F2153 /* Frameworks */,
+				DC2C4D3326709F67006F2153 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DC2C4D3326709F67006F2153 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DC2C4D3226709F67006F2153 /* Netflix Addictector – Netflix Screen Time.app */,
+				DC2C4D4426709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DC2C4D3426709F67006F2153 /* Netflix Addictector – Netflix Screen Time */ = {
+			isa = PBXGroup;
+			children = (
+				DC2C4D3526709F67006F2153 /* Netflix_Addictector___Netflix_Screen_Time.entitlements */,
+				DC2C4D3626709F67006F2153 /* AppDelegate.swift */,
+				DC2C4D3826709F67006F2153 /* Main.storyboard */,
+				DC2C4D3B26709F67006F2153 /* ViewController.swift */,
+				DC2C4D3D26709F6B006F2153 /* Assets.xcassets */,
+				DC2C4D3F26709F6B006F2153 /* Info.plist */,
+			);
+			path = "Netflix Addictector – Netflix Screen Time";
+			sourceTree = "<group>";
+		};
+		DC2C4D4826709F6B006F2153 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DC2C4D4926709F6B006F2153 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DC2C4D4B26709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DC2C4D5926709F6C006F2153 /* Resources */,
+				DC2C4D4C26709F6B006F2153 /* SafariWebExtensionHandler.swift */,
+				DC2C4D4E26709F6B006F2153 /* Info.plist */,
+				DC2C4D4F26709F6B006F2153 /* Netflix_Addictector___Netflix_Screen_Time_Extension.entitlements */,
+			);
+			path = "Netflix Addictector – Netflix Screen Time Extension";
+			sourceTree = "<group>";
+		};
+		DC2C4D5926709F6C006F2153 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DC2C4D5A26709F6C006F2153 /* options */,
+				DC2C4D5B26709F6C006F2153 /* popup */,
+				DC2C4D5C26709F6C006F2153 /* background.js */,
+				DC2C4D5D26709F6C006F2153 /* scripts */,
+				DC2C4D5E26709F6C006F2153 /* manifest.json */,
+				DC2C4D5F26709F6C006F2153 /* content.js */,
+				DC2C4D6026709F6C006F2153 /* assets */,
+			);
+			name = Resources;
+			path = "Netflix Addictector – Netflix Screen Time Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DC2C4D3126709F67006F2153 /* Netflix Addictector – Netflix Screen Time */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC2C4D5626709F6B006F2153 /* Build configuration list for PBXNativeTarget "Netflix Addictector – Netflix Screen Time" */;
+			buildPhases = (
+				DC2C4D2E26709F67006F2153 /* Sources */,
+				DC2C4D2F26709F67006F2153 /* Frameworks */,
+				DC2C4D3026709F67006F2153 /* Resources */,
+				DC2C4D5526709F6B006F2153 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DC2C4D4726709F6B006F2153 /* PBXTargetDependency */,
+			);
+			name = "Netflix Addictector – Netflix Screen Time";
+			productName = "Netflix Addictector – Netflix Screen Time";
+			productReference = DC2C4D3226709F67006F2153 /* Netflix Addictector – Netflix Screen Time.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DC2C4D4326709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC2C4D5226709F6B006F2153 /* Build configuration list for PBXNativeTarget "Netflix Addictector – Netflix Screen Time Extension" */;
+			buildPhases = (
+				DC2C4D4026709F6B006F2153 /* Sources */,
+				DC2C4D4126709F6B006F2153 /* Frameworks */,
+				DC2C4D4226709F6B006F2153 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Netflix Addictector – Netflix Screen Time Extension";
+			productName = "Netflix Addictector – Netflix Screen Time Extension";
+			productReference = DC2C4D4426709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DC2C4D2A26709F67006F2153 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
+				TargetAttributes = {
+					DC2C4D3126709F67006F2153 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					DC2C4D4326709F6B006F2153 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+				};
+			};
+			buildConfigurationList = DC2C4D2D26709F67006F2153 /* Build configuration list for PBXProject "Netflix Addictector – Netflix Screen Time" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DC2C4D2926709F67006F2153;
+			productRefGroup = DC2C4D3326709F67006F2153 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DC2C4D3126709F67006F2153 /* Netflix Addictector – Netflix Screen Time */,
+				DC2C4D4326709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DC2C4D3026709F67006F2153 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2C4D3E26709F6B006F2153 /* Assets.xcassets in Resources */,
+				DC2C4D3A26709F67006F2153 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC2C4D4226709F6B006F2153 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2C4D6626709F6C006F2153 /* content.js in Resources */,
+				DC2C4D6126709F6C006F2153 /* options in Resources */,
+				DC2C4D6726709F6C006F2153 /* assets in Resources */,
+				DC2C4D6326709F6C006F2153 /* background.js in Resources */,
+				DC2C4D6526709F6C006F2153 /* manifest.json in Resources */,
+				DC2C4D6226709F6C006F2153 /* popup in Resources */,
+				DC2C4D6426709F6C006F2153 /* scripts in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DC2C4D2E26709F67006F2153 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2C4D3C26709F67006F2153 /* ViewController.swift in Sources */,
+				DC2C4D3726709F67006F2153 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC2C4D4026709F6B006F2153 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC2C4D4D26709F6B006F2153 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DC2C4D4726709F6B006F2153 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC2C4D4326709F6B006F2153 /* Netflix Addictector – Netflix Screen Time Extension */;
+			targetProxy = DC2C4D4626709F6B006F2153 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DC2C4D3826709F67006F2153 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DC2C4D3926709F67006F2153 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DC2C4D5026709F6B006F2153 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DC2C4D5126709F6B006F2153 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		DC2C4D5326709F6B006F2153 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Netflix Addictector – Netflix Screen Time Extension/Netflix_Addictector___Netflix_Screen_Time_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Netflix Addictector – Netflix Screen Time Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.felixisaac.projects.Netflix-Addictector---Netflix-Screen-Time.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DC2C4D5426709F6B006F2153 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Netflix Addictector – Netflix Screen Time Extension/Netflix_Addictector___Netflix_Screen_Time_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Netflix Addictector – Netflix Screen Time Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.felixisaac.projects.Netflix-Addictector---Netflix-Screen-Time.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		DC2C4D5726709F6B006F2153 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Netflix Addictector – Netflix Screen Time/Netflix_Addictector___Netflix_Screen_Time.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Netflix Addictector – Netflix Screen Time/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.felixisaac.projects.Netflix-Addictector---Netflix-Screen-Time";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DC2C4D5826709F6B006F2153 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Netflix Addictector – Netflix Screen Time/Netflix_Addictector___Netflix_Screen_Time.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Netflix Addictector – Netflix Screen Time/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.felixisaac.projects.Netflix-Addictector---Netflix-Screen-Time";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DC2C4D2D26709F67006F2153 /* Build configuration list for PBXProject "Netflix Addictector – Netflix Screen Time" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC2C4D5026709F6B006F2153 /* Debug */,
+				DC2C4D5126709F6B006F2153 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DC2C4D5226709F6B006F2153 /* Build configuration list for PBXNativeTarget "Netflix Addictector – Netflix Screen Time Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC2C4D5326709F6B006F2153 /* Debug */,
+				DC2C4D5426709F6B006F2153 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DC2C4D5626709F6B006F2153 /* Build configuration list for PBXNativeTarget "Netflix Addictector – Netflix Screen Time" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC2C4D5726709F6B006F2153 /* Debug */,
+				DC2C4D5826709F6B006F2153 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DC2C4D2A26709F67006F2153 /* Project object */;
+}
