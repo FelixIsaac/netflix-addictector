@@ -236,8 +236,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // user clicked 'Cancel'
             if (!confirmed && !e) return;
 
-            alert('Regenerating quotes...');
             generateQuotes(() => alert('Regenerated quotes based on enabled quotes'));
+            alert('Regenerating quotes...');
         }
 
         function resetSettingsFunc(e) {
