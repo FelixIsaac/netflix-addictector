@@ -1,21 +1,10 @@
 {
+  "manifest_version": 2,
   "name": "Netflix Addictector – Netflix Screen Time",
-  "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction. It’s time to push pause on your addiction.",
+  "short_name": "Netflix Addictector",
   "version": "1.0.1",
   "version_name": "1.0 beta",
-  "author": "https://felixisaac.dev",
-  "homepage_url": "https://projects.felixisaac.dev/netflix-addictector",
-  "manifest_version": 3,
-  "background": {
-    "service_worker": "background.js"
-  },
-  "permissions": ["storage", "alarms"],
-  "host_permissions": ["*://*.netflix.com/*"],
-  "content_scripts": [{
-    "matches": ["*://*.netflix.com/*"],
-    "js": ["content.js", "/scripts/timer.js", "/scripts/utils.js", "/scripts/screen-blocker.js"]
-  }],
-  "action": {
+  "browser_action": {
     "default_title": "",
     "default_popup": "popup/popup.html",
     "default_icon": {
@@ -27,6 +16,7 @@
       "128": "/assets/images/icon-128.png"
     }
   },
+  "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction. It’s time to push pause on your addiction.",
   "icons": {
     "16": "/assets/images/icon-16.png",
     "19": "/assets/images/icon-19.png",
@@ -35,9 +25,22 @@
     "48": "/assets/images/icon-48.png",
     "128": "/assets/images/icon-128.png"
   },
+  "author": "https://felixisaac.dev",
+  "background": {
+    "scripts": [
+      "./scripts/events.js",
+      "./scripts/tabs.js",
+      "./scripts/utils.js",
+      "./scripts/alarm.js"
+    ],
+    "persistent": false
+  },
+  "homepage_url": "https://projects.felixisaac.dev/netflix-addictector",
+  "permissions": ["storage", "alarms", "https://*.netflix.com/*"],
+  "content_scripts": [{
+    "matches": ["*://*.netflix.com/*"],
+    "js": ["content.js", "/scripts/timer.js", "/scripts/utils.js", "/scripts/screen-blocker.js"]
+  }],
   "options_page": "options/options.html",
-  "web_accessible_resources": [{
-    "resources": ["assets/no.svg", "assets/css/blocked.css"],
-    "matches": ["*://*.netflix.com/*"]
-  }]
+  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"]
 }
