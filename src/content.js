@@ -78,6 +78,7 @@ chrome.runtime.onMessage.addListener((args, sender, sendResponse) => {
             break;
         case 'update-time':
             addTime(false, 0);
+            sendResponse('Updated time');
             break;
     }
 }); 

@@ -2,10 +2,10 @@
   "manifest_version": 3,
   "name": "Netflix Addictector – Netflix Screen Time",
   "short_name": "Netflix Addictector",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "version_name": "1.0 beta",
   "action": {
-    "default_title": "",
+    "default_title": "Netflix Addictector",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "/assets/images/icon-16.png",
@@ -37,6 +37,7 @@
     "js": ["content.js", "/scripts/timer.js", "/scripts/utils.js", "/scripts/screen-blocker.js"]
   }],
   "options_ui": "options/options.html",
+  "options_page": "options/options.html",
   "web_accessible_resources": [{
     "resources": ["assets/no.svg", "assets/css/blocked.css"],
     "matches": ["*://*.netflix.com/*"]

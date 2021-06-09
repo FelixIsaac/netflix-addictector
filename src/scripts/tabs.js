@@ -2,23 +2,23 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
       chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
         // update time data: check if new day by adding time
-        chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' }, () => {
-          // block netflix if over limit
-          checkOverLimit((overLimit, reason) => {
-            if (!overLimit) return;
+        chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' }, console.info);
 
-            chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason, tabId: tabs[0].id }, (response) => {
-              console.info(`Netflix screen block initialized. Response from content script: ${response || 'No response'}`)
-            });
+        // block netflix if over limit
+        checkOverLimit((overLimit, reason) => {
+          if (!overLimit) return;
+
+          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason, tabId: tabs[0].id }, (response) => {
+            console.info(`Netflix screen block initialized. Response from content script: ${response || 'No response'}`)
           });
+        });
 
-          // block netflix if not in range
-          checkInRange((inRange, reason) => {
-            if (inRange) return;
+        // block netflix if not in range
+        checkInRange((inRange, reason) => {
+          if (inRange) return;
 
-            chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason, tabId: tabs[0].id }, (response) => {
-              console.info(`Netflix time range block initialized. Response from content script: ${response || 'No response'}`)
-            });
+          chrome.tabs.sendMessage(tabs[0].id, { method: 'block-netflix-screen', reason, tabId: tabs[0].id }, (response) => {
+            console.info(`Netflix time range block initialized. Response from content script: ${response || 'No response'}`)
           });
         });
 
@@ -39,7 +39,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
           }, (response) => {
             console.info(`Netflix next episode block initialized. Response from content script: ${response || 'No response'}`)
           })
-        })
+        });
 
         showBadge(tabs[0].id);
       });
