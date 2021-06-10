@@ -22,19 +22,17 @@ window.video = {
     }
 }
 
-document.onreadystatechange = () => {
-    const observer = new MutationObserver(observe);
-    const config = { subtree: true, childList: true };
-    observer.observe(document.documentElement, config);
+const observer = new MutationObserver(observe);
+const config = { subtree: true, childList: true };
+observer.observe(document.documentElement, config);
 
-    function observe(mutations) {
-        const videoContainer = mutations.filter(mutation => mutation.target.className === 'VideoContainer')[0]?.target;
-        const [video] = [...(videoContainer?.children[0]?.children[0]?.children || [])].filter(children => children.tagName === "VIDEO");
+function observe(mutations) {
+    const videoContainer = mutations.filter(mutation => mutation.target.className === 'VideoContainer')[0]?.target;
+    const [video] = [...(videoContainer?.children[0]?.children[0]?.children || [])].filter(children => children.tagName === "VIDEO");
 
-        if (!video) return;
-        window.video.video = video;
-    }
-};
+    if (!video) return;
+    window.video.video = video;
+}
 
 chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_button }) => {
     if (!block_next_episode_button) return;
