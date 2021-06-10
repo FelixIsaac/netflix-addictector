@@ -91,3 +91,5 @@ chrome.storage.onChanged.addListener(({ block_type, block_interval }) => {
     // otherwise, not random block type
     chrome.alarms.create('netflix-screen-blocker', { periodInMinutes: Number(block_interval?.newValue) });
 });
+
+createNetflixScreenAlarm();
