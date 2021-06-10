@@ -30,26 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const quotesContainer = document.getElementById('quotes-container');
     const regenerateQuotesBtn = document.getElementById('regenerate-quotes');
    
-    updateHTML();
-    addListeners();
-    blockType.onchange = (e) => blockTypeFormLogic(e.target);
-    timeRangeCheck.onchange = (e) => timeRangeFormLogic(e.target);
-
-    regenerateQuotesBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        generateQuotes(() => alert('Regenerated quotes based on enabled quotes'));
-    })
-
-    resetSettingsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const confirmReset = confirm('Do you really want to reset your settings?');
-        
-        if (!confirmReset) return;
-        chrome.runtime.sendMessage({ type: 'reset-settings' }, (response) => {
-            console.log(response);
-            location.reload();
-        });
-    });
+    updateHTML(addListeners);
 
     saveSettingsBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -99,7 +80,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_next_episode: blockNextEpisodeCheckbox.checked,
                 };
 
-                if (!loadingQuotes) [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key);
+                if (!loadingQuotes) {
+                    saving.enabled_quotes = [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key)
+                };
 
                 if (Math.sign(Number(weeklyLimit.value) - (Number(dailyLimit.value) * 7)) === -1) {
                     delete saving.daily_limit;
@@ -128,17 +111,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 chrome.storage.sync.get(null, (data) => {
                     // keep unset settings
                     chrome.storage.sync.set({ ...data, ...saving }, () => {
-                        updateHTML();
-                        alert(message);
+                        alert(message + ', refreshing page...');
                         window.onbeforeunload = null;
+                        location.reload();
                     });
                 })
             }
         });
     });
 
-    function updateHTML() {
-        chrome.storage.sync.get(null, (data) => {
+    function updateHTML(onUpdate) {
+        chrome.storage.sync.get(null, async (data) => {
             /**
              * Limit watch time section
              */
@@ -158,6 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
     
             blockTypeFormLogic(blockType);
             timeRangeFormLogic(timeRangeCheck);
+            await renderQuotes(data.enabled_quotes);
+
+            onUpdate(addListeners);
         });
     }
 
@@ -181,26 +167,40 @@ document.addEventListener('DOMContentLoaded', function () {
         timeRangeEnd.disabled = !checked;
     }
 
-    function showError(element, errorMessage) {
+    function showMessage(element, messageString, type) {
         const { parentElement } = element;
-        const errorMessages = [...parentElement.children].filter(children => children.className === 'error-message');
-       
-        if (errorMessages.length > 1) errorMessages.slice(1).forEach(e => e.remove());
-        if (errorMessages[0]) return errorMessages[0].children[0].innerText = errorMessage;
+        const messageClass = `${type.toLowerCase()}-message`;
         
+        // find duplicates
+        const duplicates = [...parentElement.children]
+            .filter(children => (
+                children.className === messageClass
+                && children.innerText.toLowerCase() === messageString.toLowerCase()
+            ))
+
+        if (duplicates.length) {
+            // toggle error if same error message
+            duplicates.forEach((duplicate) => duplicate.remove());
+            return;
+        }
+       
+        const error = document.createElement('div');
+        const message = document.createElement('p');
+
+        message.appendChild(document.createTextNode(messageString));
+        error.className = messageClass;
+        error.appendChild(message);
+
         // only one element or do have
-        parentElement.insertAdjacentHTML('afterbegin', `<div class="error-message"><p>${errorMessage}</p></div>`)
+        parentElement.prepend(error);
+    }
+
+    function showError(element, errorMessage) {
+        showMessage(element, errorMessage, 'error');
     }
 
     function showWarning(element, warningMessage) {
-        const { parentElement } = element;
-        const warningMessages = [...parentElement.children].filter(children => children.className === 'warning-message');
-       
-        if (warningMessages.length > 1) warningMessages.slice(1).forEach(e => e.remove());
-        if (warningMessages[0]) return warningMessages[0].children[0].innerText = warningMessage;
-        
-        // only one element or do have
-        parentElement.insertAdjacentHTML('afterbegin', `<div class="warning-message"><p>${warningMessage}</p></div>`)
+        showMessage(element, warningMessage, 'warning');
     }
 
     function addListeners() {
@@ -213,60 +213,98 @@ document.addEventListener('DOMContentLoaded', function () {
             blockInterval,
             timeRangeCheck, 
             timeRangeStart,
-            timeRangeEnd
-        ].forEach((element) => element.onchange = changed);
+            timeRangeEnd,
+            ...document.getElementsByClassName('quote-category')
+        ].forEach((element) => {
+            element.removeEventListener('change', changed);
+            element.addEventListener('change', changed)
+        });
 
         function changed() {
             try {
                 window.onbeforeunload = () => ""
             } catch (err) {}
         }
+
+        regenerateQuotesBtn.removeEventListener('click', regenerateQuotes);
+        regenerateQuotesBtn.addEventListener('click', regenerateQuotes);
+
+        resetSettingsBtn.removeEventListener('click', resetSettingsFunc);
+        resetSettingsBtn.addEventListener('click', resetSettingsFunc);
+
+        blockType.removeEventListener('change', ({ target }) => lockTypeFormLogic(target));
+        blockType.addEventListener('change', ({ target }) => lockTypeFormLogic(target));
+        
+        timeRangeCheck.removeEventListener('change', ({ target }) => timeRangeFormLogic(target));
+        timeRangeCheck.addEventListener('change', ({ target }) => timeRangeFormLogic(target));
+
+        function regenerateQuotes(e, confirmed = false) {
+            e?.preventDefault();
+
+            // ask user and alert unsaved changes
+            if (window.onbeforeunload && e && !confirmed) {
+                regenerateQuotes(undefined, confirm('You have may unsaved quotes settings changes, continue?'));
+                return;
+            }
+
+            // user clicked 'Cancel'
+            if (!confirmed && !e) return;
+
+            generateQuotes(() => alert('Regenerated quotes based on enabled quotes'));
+            alert('Regenerating quotes...');
+        }
+
+        function resetSettingsFunc(e) {
+            e.preventDefault();
+            const confirmReset = confirm('Do you really want to reset your settings?');
+            
+            if (!confirmReset) return;
+            chrome.runtime.sendMessage({ type: 'reset-settings' }, () => {
+                window.onbeforeunload = null;
+                location.reload()
+            });
+        }
     }
 
-    async function renderQuotes() {
+    async function renderQuotes(enabled_quotes) {
         const { quotes: quotesCategories } = await (await fetch('https://netflix-addictector-api.herokuapp.com/'))?.json();
 
         if (!quotesCategories) return renderQuotes();
 
-        chrome.storage.sync.get('enabled_quotes', ({ enabled_quotes }) => {
-            // remove loading quotes options text
-            quotesContainer.children[0].remove();
+        // remove children of quotes container
+        quotesContainer.textContent = '';
 
-            quotesCategories.forEach((category) => {
-                // <div>
-                //   <input type="checkbox" class="quote-category" data-key="" id="quotes-category"/>
-                //   <label for="quotes-category"></label>
-                // </div>
-                
-                const quoteContainer = document.createElement('div');
-                const input = document.createElement('input');
-                const label = document.createElement('label');
+        quotesCategories.forEach((category) => {
+            // <div>
+            //   <input type="checkbox" class="quote-category" data-key="" id="quotes-category"/>
+            //   <label for="quotes-category"></label>
+            // </div>
+            
+            const quoteContainer = document.createElement('div');
+            const input = document.createElement('input');
+            const label = document.createElement('label');
 
-                label.for = `quotes-category-${category}`;
-                label.appendChild(document.createTextNode(generateName(category)));
+            label.htmlFor = `quotes-category-${category}`;
+            label.appendChild(document.createTextNode(generateName(category)));
 
-                input.type = 'checkbox';
-                input.className = 'quote-category';
-                input.setAttribute('data-key', category);
-                input.id = `quotes-category-${category}`;
-                input.checked = enabled_quotes.includes(category);
+            input.type = 'checkbox';
+            input.className = 'quote-category';
+            input.setAttribute('data-key', category);
+            input.id = `quotes-category-${category}`;
+            input.checked = enabled_quotes.includes(category);
 
-                quoteContainer.appendChild(input);
-                quoteContainer.appendChild(label);
-                quotesContainer.appendChild(quoteContainer);
-                return;
-            });
+            quoteContainer.appendChild(input);
+            quoteContainer.appendChild(label);
+            quotesContainer.appendChild(quoteContainer);
+            return;
         });
 
+        loadingQuotes = false; 
 
         function generateName(name) {
             let newName = name.split('.')[0].split('-').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(' ');
             if (newName === "Quotes") newName = "General Quotes";
             return newName;
         };
-
-        loadingQuotes = false;
     }
-
-    renderQuotes();
 });

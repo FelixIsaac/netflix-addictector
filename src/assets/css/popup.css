@@ -54,11 +54,14 @@
 
 body {
   min-width: 300px;
+  width: 400px;
+  max-width: 400px;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-color: #221f1f;
   color: #f5f5f1;
+  font-family: sans-serif;
 }
 
 section h2 {

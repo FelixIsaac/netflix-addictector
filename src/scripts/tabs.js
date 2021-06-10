@@ -1,6 +1,8 @@
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.status == 'complete' && tab.url != undefined) {
-      chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
+      chrome.tabs.query({ url: 'https://*.netflix.com/*' }, (tabs) => {
+        if (!tabs.length) return;
+
         // check if new day by adding time
         chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' });
 
@@ -62,12 +64,12 @@ function showBadge(tabId) {
   function updateBadge(minutes_spent) {
     minutes_spent ||= 0;
 
-    chrome.action.setBadgeText({
+    chrome.browserAction.setBadgeText({
       text: `${minutes_spent > 99 ? `99+` : minutes_spent.toFixed()}m`,
       tabId
     });
 
-    chrome.action.setBadgeBackgroundColor({
+    chrome.browserAction.setBadgeBackgroundColor({
       color: '#b81d24',
       tabId
     });

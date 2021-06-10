@@ -106,21 +106,41 @@ function checkInRange(callback) {
 
 function generateQuotes(callback) {
     chrome.storage.sync.get(['enabled_quotes', 'quotes_index'], async ({ enabled_quotes, quotes_index }) => {
-        const randomCategory = enabled_quotes[Math.floor(Math.random() * enabled_quotes.length)] || 'quotes.json';
-        const after = quotes_index[randomCategory] || 0;
-        const url = `https://netflix-addictector-api.herokuapp.com/quotes/${randomCategory}?after=${after}`;
-        const { quotes } = await (await fetch(url)).json();
-    
-        if (!quotes.length) {
-            // no more quotes in the "?after" index, reset index
-            quotes_index[randomCategory] = 0;
-            return chrome.storage.sync.set({ quotes_index }, () => generateQuotes(callback));
+        const url = "https://netflix-addictector-api.herokuapp.com/quotes/fromcategories";
+        const limit = Math.ceil(30 / enabled_quotes.length) || 1;
+
+        const categories = enabled_quotes.map((category) => ({
+            category,
+            after: quotes_index[category],
+            limit
+        }));
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'applcation/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ categories })
         }
 
-        if (!quotes) return generateQuotes(callback);
+        const { quotes, errors } = await (await fetch(url, options)).json();
+        const afterOverflowErrors = errors.filter(({ errorCode }) => errorCode === 3);
+
+        if (afterOverflowErrors.length) {
+            // no more quotes in the "?after" index, reset index
+            afterOverflowErrors.forEach(({ category }) => {
+                // assign -limit as later it will add limit
+                // which will cancel out and become zero
+                quotes_index[category] = -limit;
+            });
+        }
 
         // update quotes index
-        quotes_index[randomCategory] = (quotes_index[randomCategory] || 0) + 30;
+        Object.keys(quotes_index).forEach((category) => {
+            quotes_index[category] = quotes_index[category] + limit
+        });
+
         chrome.storage.sync.set({ quotes_index });
 
         // set local storage quotes, storing 30 quotes

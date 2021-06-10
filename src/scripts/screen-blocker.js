@@ -66,7 +66,10 @@ function removeNetflixScreen(reason, seconds = 30, removing_screen = true) {
 
 function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netflix', quote) {
     const { video } = window.video;
-    if (!video) return window.video.addListener(() => blockNetflixScreen(reason), true);
+    if (!video) return window.video.addListener(() => blockNetflixScreen(reason, quote), true);
+
+    // updates queue and prevent other blockers from running
+    netflixScreenBlockers.push({ reason, active: true });
     
     getQuote((quote) => {
         // add overlay and removes video source
@@ -105,6 +108,7 @@ function replaceScreen(reason, quote) {
         contentBlock.appendChild(buildImage());
         contentBlock.appendChild(buildTitle());
         contentBlock.appendChild(buildReason());
+        contentBlock.appendChild(buildRemainingMinutes());
         contentBlock.appendChild(buildQuote());
         contentBlock.appendChild(buildAttribute());
 
@@ -152,6 +156,21 @@ function replaceScreen(reason, quote) {
             return quoteSection;
         }
 
+        function buildRemainingMinutes() {
+            const p = document.createElement('p');
+            const strong = document.createElement('strong');
+
+            chrome.storage.sync.get(['daily_limit', 'current_day'], ({ daily_limit, current_day }) => {
+                const remaining_minutes = (daily_limit - current_day?.minutes_spent) || 0;
+                if (remaining_minutes <= 0) return;
+
+                strong.appendChild(document.createTextNode(`${remaining_minutes.toFixed(1)} remaining minutes!`));
+                p.appendChild(strong);
+            });
+
+            return p;
+        }
+
         function buildReason() {
             const p = document.createElement('p');
         
@@ -188,7 +207,6 @@ function replaceScreen(reason, quote) {
             link.rel = 'stylesheet';
             link.href = chrome.runtime.getURL('/assets/css/blocked.css');
             
-            console.log(link.href);
             return link;
         }
     }
