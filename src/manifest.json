@@ -46,11 +46,5 @@
     "browser_style": true,
     "page": "options/options.html"
   },
-  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"],
-  "browser_specific_settings": {
-  "gecko": {
-    "id": "netflix-addictector@felixisaac.dev",
-    "strict_min_version": "79.0"
-  }
-}
+  "web_accessible_resources": ["assets/no.svg", "assets/css/blocked.css"]
 }
