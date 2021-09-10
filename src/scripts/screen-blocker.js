@@ -43,6 +43,8 @@ function removeNetflixScreen(reason, seconds = 30, removing_screen = true) {
         // after set amount of seconds remove overlay, show video controls, and resumes video
         setTimeout(() => {
             controller.abort();
+            video.removeEventListener('play', preventPlay);
+
             chrome.storage.local.set({ removing_screen: false });
             document.getElementById('content-block').remove();
             document.getElementById('appMountPoint').style.display = '';

@@ -27,8 +27,8 @@ const config = { subtree: true, childList: true };
 observer.observe(document.documentElement, config);
 
 function observe(mutations) {
-    const videoContainer = mutations.filter(mutation => mutation.target.className === 'VideoContainer')[0]?.target;
-    const [video] = [...(videoContainer?.children[0]?.children[0]?.children || [])].filter(children => children.tagName === "VIDEO");
+    const videoContainer = mutations.filter(mutation => mutation.target.className === 'watch-video')[0]?.target;
+    const video = videoContainer?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0];
 
     if (!video) return;
     window.video.video = video;
@@ -39,24 +39,37 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
     
     window.video.addListener(() => {
         addObserver();
-        document.getElementsByClassName('button-nfplayerNextEpisode')[0]?.parentElement?.remove();
-        document.getElementsByClassName('button-nfplayerEpisodes')[0]?.parentElement?.remove();
+        document.querySelector('button[data-uia="control-episodes"]')?.parentElement?.remove();
+        document.querySelector('button[data-uia="control-next"]')?.parentElement?.remove();
     });
+    
+    function addObserver() {
+        const observer = new MutationObserver(console.log);
+        const config = { attributes: true, attributeFilter: ["style"] };
+        observer.observe(document.querySelector('div[data-uia="player"]'), config);
+    };
+});
+
+// blocks "Next Episode" button at the end of every Netflix episode
+chrome.storage.sync.get('block_next_episode', ({ block_next_episode }) => {
+    if (!block_next_episode) return;
+
+    window.video.addListener(addObserver);
     
     function addObserver() {
         const observer = new MutationObserver(observe);
         const config = { attributes: true, attributeFilter: ["style"] };
-        observer.observe(document.getElementsByClassName('current-progress')[0], config);
+    //     observer.observe(document.getElementsByClassName('current-progress')[0], config);
     
-        function observe() {
-            const nextEpisodeButton = document.querySelector('button[data-uia=next-episode-seamless-button]')
-            if (!nextEpisodeButton) return;
+    //     function observe() {
+    //         const nextEpisodeButton = document.querySelector('button[data-uia=next-episode-seamless-button]')
+    //         if (!nextEpisodeButton) return;
 
-            nextEpisodeButton.remove();
-            observer.disconnect();
-        }
+    //         nextEpisodeButton.remove();
+    //         observer.disconnect();
+    //     }
     };
-});
+})
 
 chrome.runtime.onMessage.addListener((args, sender, sendResponse) => {
     const { method, tabId, reason, seconds } = args;
