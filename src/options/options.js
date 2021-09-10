@@ -232,8 +232,8 @@ document.addEventListener('DOMContentLoaded', function () {
         resetSettingsBtn.removeEventListener('click', resetSettingsFunc);
         resetSettingsBtn.addEventListener('click', resetSettingsFunc);
 
-        blockType.removeEventListener('change', ({ target }) => lockTypeFormLogic(target));
-        blockType.addEventListener('change', ({ target }) => lockTypeFormLogic(target));
+        blockType.removeEventListener('change', ({ target }) => blockTypeFormLogic(target));
+        blockType.addEventListener('change', ({ target }) => blockTypeFormLogic(target));
         
         timeRangeCheck.removeEventListener('change', ({ target }) => timeRangeFormLogic(target));
         timeRangeCheck.addEventListener('change', ({ target }) => timeRangeFormLogic(target));
