@@ -39,37 +39,38 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
     
     window.video.addListener(() => {
         addObserver();
-        document.querySelector('button[data-uia="control-episodes"]')?.parentElement?.remove();
-        document.querySelector('button[data-uia="control-next"]')?.parentElement?.remove();
+        removeControls();
     });
     
     function addObserver() {
-        const observer = new MutationObserver(console.log);
-        const config = { attributes: true, attributeFilter: ["style"] };
+        const observer = new MutationObserver((mutations) => {
+            mutations.some((mutation) => {
+                if (!mutation.addedNodes.length) return false;
+                
+                return Array.from(mutation.addedNodes).some((addedNode) => {
+                    return Array.from(addedNode.children).some((children) => {
+                        const classes = Array.from(children.classList);
+                        const controls = classes.includes("watch-video--bottom-controls-container");
+
+                        if (controls) removeControls();
+                        return controls;
+                    });
+                })
+            })
+        });
+
+        const config = { attributes: true, attributeFilter: ["style"], subtree: true, childList: true };
         observer.observe(document.querySelector('div[data-uia="player"]'), config);
     };
+
+    function removeControls() {
+        document.querySelector('button[data-uia="control-episodes"]')?.parentElement?.remove();
+        document.querySelector('button[data-uia="control-next"]')?.parentElement?.remove();
+    }
+
+    // blocks "Next Episode" button at the end of every Netflix episode
+    
 });
-
-// blocks "Next Episode" button at the end of every Netflix episode
-chrome.storage.sync.get('block_next_episode', ({ block_next_episode }) => {
-    if (!block_next_episode) return;
-
-    window.video.addListener(addObserver);
-    
-    function addObserver() {
-        const observer = new MutationObserver(observe);
-        const config = { attributes: true, attributeFilter: ["style"] };
-    //     observer.observe(document.getElementsByClassName('current-progress')[0], config);
-    
-    //     function observe() {
-    //         const nextEpisodeButton = document.querySelector('button[data-uia=next-episode-seamless-button]')
-    //         if (!nextEpisodeButton) return;
-
-    //         nextEpisodeButton.remove();
-    //         observer.disconnect();
-    //     }
-    };
-})
 
 chrome.runtime.onMessage.addListener((args, sender, sendResponse) => {
     const { method, tabId, reason, seconds } = args;
