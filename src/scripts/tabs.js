@@ -31,14 +31,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         chrome.storage.sync.get('block_next_episode', ({ block_next_episode }) => {
           if (!block_next_episode) return;
 
-          // chrome.tabs.sendMessage(tabs[0].id, {
-          //   method: 'remove-netflix-screen',
-          //   tabId: tabs[0].id,
-          //   seconds: 120, // 2 min
-          //   removing_screen: false
-          // }, (response) => {
-          //   console.info(`Netflix next episode block initialized. Response from content script: ${response || 'No response'}`)
-          // })
+          chrome.tabs.sendMessage(tabs[0].id, {
+            method: 'remove-netflix-screen',
+            tabId: tabs[0].id,
+            seconds: 120, // 2 min
+            removing_screen: false
+          }, (response) => {
+            console.info(`Netflix next episode block initialized. Response from content script: ${response || 'No response'}`)
+          })
         });
 
         showBadge(tabs[0].id);
