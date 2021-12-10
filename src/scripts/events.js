@@ -10,6 +10,10 @@ const initialOptions = Object.freeze({
   block_interval: 10, // in minutes
   block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button
   block_next_episode: true, // show s block screen before an episode starts
+  custom_quotes: {
+    enabled: false,
+    quotes: []
+  },
   enabled_quotes: [
     "age-quotes.json",
     "amazing-quotes.json",

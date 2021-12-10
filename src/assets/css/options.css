@@ -58,6 +58,14 @@ input[type="checkbox"] {
     height: 21px;
 }
 
+div#quotes-custom textarea {
+    width: 100%;
+    font-size: 18px;
+    line-height: 140%;
+    resize: vertical;
+    min-height: 500px;
+}
+
 div.flex-2 {
     display: flex;
     gap: 16px;
