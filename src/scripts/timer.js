@@ -45,11 +45,12 @@ function stopTimer(video) {
     if (!video.paused || !timer) return;
     
     // reset timer
-    addTime(false, (Date.now() - timerStartTime)/60000, video);
+    addTime(false, (Date.now() - timerStartTime) / 60000, video);
+    log('Stopping timer');
+    
     clearTimeout(timer);
     timer = null;
     timerStartTime = null
-    log('Stopping timer');
 };
 
 function setTimer(video) {
@@ -73,7 +74,7 @@ function addTime(repeats = true, time = 1/10, video) {
                 chrome.storage.sync.get('days', ({ days }) => {
                     // check if max days
                     if (days.length + 1 >= 140) {
-                        // arhieve day array
+                        // achieve day array
                         chrome.storage.sync.get(null, data => {
                             const arhieveEntries = Object.keys(data).filter(keyName => keyName.startsWith('days_arhieve_'));
                             const dayArhieveKey =  `days_arhieve_${arhieveEntries.length}`;

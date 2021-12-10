@@ -43,7 +43,12 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
     });
     
     function addObserver() {
-        const observer = new MutationObserver((mutations) => {
+        const observer = new MutationObserver(observe);
+        const config = { attributes: true, attributeFilter: ["style"], subtree: true, childList: true };
+        
+        observer.observe(document.querySelector('div[data-uia="player"]'), config);
+
+        function observe(mutations) {
             mutations.some((mutation) => {
                 if (!mutation.addedNodes.length) return false;
                 
@@ -57,19 +62,20 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
                     });
                 })
             })
-        });
 
-        const config = { attributes: true, attributeFilter: ["style"], subtree: true, childList: true };
-        observer.observe(document.querySelector('div[data-uia="player"]'), config);
+            const nextEpisodeButton = document.querySelector('button[data-uia="next-episode-seamless-button"]')
+            console.log('next episode button', nextEpisodeButton);
+            if (!nextEpisodeButton) return;
+
+            nextEpisodeButton.remove();
+        }
     };
 
     function removeControls() {
         document.querySelector('button[data-uia="control-episodes"]')?.parentElement?.remove();
         document.querySelector('button[data-uia="control-next"]')?.parentElement?.remove();
+        document.querySelector('button[data-uia="next-episode-seamless-button"]')?.remove();
     }
-
-    // blocks "Next Episode" button at the end of every Netflix episode
-    
 });
 
 chrome.runtime.onMessage.addListener((args, sender, sendResponse) => {

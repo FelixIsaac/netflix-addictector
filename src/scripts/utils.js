@@ -74,8 +74,8 @@ function checkOverLimit(callback) {
             .map(days => days.minutes_spent)
             .reduce((a, b) => a + b, 0);
 
-        const overDaily = current_day.minutes_spent >= daily_limit
-        const overWeekly = weekMinutes >= weekly_limit;
+        const overDaily = (current_day.minutes_spent || 0) >= daily_limit
+        const overWeekly = (weekMinutes || 0) >= weekly_limit;
         
         callback(overDaily || overWeekly, `You have exceeded your ${overDaily ? 'daily' : 'weekly'} limit of Netflix`);
     });
