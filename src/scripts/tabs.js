@@ -56,7 +56,8 @@ function showBadge(tabId) {
   chrome.storage.onChanged.addListener(({ current_day }) => {
     let minutes_spent = current_day?.newValue?.minutes_spent;
     if (minutes_spent === undefined || minutes_spent === null) return;
-
+    
+    console.log('badge auto update', minutes_spent);
     updateBadge(minutes_spent)
   });
 

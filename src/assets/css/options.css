@@ -176,13 +176,17 @@ div.flex-2 > * {
 }
 
 .error-message::before {
-  content: url(../../options/warning.svg);
+  content: url(../../options/error.svg);
 }
 
 .warning-message {
   background-color: #fff3cd;
   border-left: 9px solid #ffecb5;
   color: #664d03;
+}
+
+.warning-message::before {
+  content: url(../../options/warning.svg);
 }
 
 #quotes-container {

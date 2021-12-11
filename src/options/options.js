@@ -99,29 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     saving.enabled_quotes = [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key)
                 };
 
-                if (Math.sign(Number(weeklyLimit.value) - (Number(dailyLimit.value) * 7)) === -1) {
+                if (dailyLimit.value > weeklyLimit.value / 7) {
                     delete saving.daily_limit;
-                    showError(dailyLimit, 'Daily limit (multiplied by 7) cannot exceed weekly limit');
                     message = 'Saved extension settings except for settings with errors';
+                    return;
                 }
-
-                if (Number(dailyLimit.value) >= 120) {
-                    showWarning(dailyLimit, 'It is not recommended to set daily watch time limit to more than 2 hours per day')
-                }
-
-                if (Number(weeklyLimit.value) >= 600) {
-                    showWarning(weeklyLimit, 'It is not recommended to set weekly watch time limit to more than 10 hours per week')
-                }
-
-                if (Number(blockInterval.value) >= 15) {
-                    const warningMessage = [
-                        'It is not recommended to set more than 15 minutes per Netflix screen block/rest',
-                        ', as one episode could be as low as 20 minutes'
-                    ].join('');
-
-                    showWarning(blockInterval, warningMessage)
-                }
-                
 
                 chrome.storage.sync.get(null, (data) => {
                     // keep unset settings
@@ -164,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             await renderQuotes(data.enabled_quotes);
 
             onUpdate(addListeners);
+            checkErrors();
         });
     }
 
@@ -187,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
         timeRangeEnd.disabled = !checked;
     }
 
-    function showMessage(element, messageString, type) {
+    function showMessage(element, messageString, type, options) {
         const { parentElement } = element;
         const messageClass = `${type.toLowerCase()}-message`;
         
@@ -200,7 +183,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (duplicates.length) {
             // toggle error if same error message
-            duplicates.forEach((duplicate) => duplicate.remove());
+            duplicates.forEach((duplicate, i) => {
+                if (options.disableToggle && i === 0) return;
+                duplicate.remove()
+            });
+
             return;
         }
        
@@ -215,12 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
         parentElement.prepend(error);
     }
 
-    function showError(element, errorMessage) {
-        showMessage(element, errorMessage, 'error');
+    function showError(element, errorMessage, disableToggle = false) {
+        showMessage(element, errorMessage, 'error', { disableToggle });
     }
 
-    function showWarning(element, warningMessage) {
-        showMessage(element, warningMessage, 'warning');
+    function showWarning(element, warningMessage, disableToggle = false) {
+        showMessage(element, warningMessage, 'warning', { disableToggle });
     }
 
     function addListeners() {
@@ -248,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function changed() {
             try {
+                checkErrors();
                 window.onbeforeunload = () => ""
             } catch (err) { }
         }
@@ -266,7 +254,77 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.querySelectorAll('button[data-name="quote-type-toggler"]')
             .forEach((button) => button.addEventListener('click', toggleQuoteTypes));
+        
+        themeTogglerBtn.onclick = function(e) {
+            e.preventDefault();
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark"
+            const newBtnName = currentTheme === "dark" ? "Turn off the lights" : "Turn on the lights"
+            
+            document.documentElement.setAttribute("data-theme", newTheme);
+            themeTogglerBtn.innerHTML = newBtnName;
+        }
 
+        fancyEditorBtn.onclick = function (e) {
+            e.preventDefault();
+
+            // change UI
+            fancyEditorBtn.innerHTML = fancyEditorContainer.hidden ? "Switch back to text editor" : "Switch to <i>Fancy editor</i>"
+            customQuotes.hidden = !customQuotes.hidden;
+            fancyEditorContainer.hidden = !fancyEditorContainer.hidden;
+
+            if (fancyEditorContainer.hidden) {
+                chrome.storage.sync.get('custom_quotes', ({ custom_quotes }) => {
+                    customQuotes.value = custom_quotes.quotes
+                        ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
+                        ?.join('\n');
+                })
+            } else {
+                // change data from text to fancy
+                const quotes = parseQuotes(customQuotes.value);
+        
+                chrome.storage.sync.set({
+                    custom_quotes: { quotes }
+                });
+        
+                renderFancyEditor({ quotes })
+            }
+        }
+
+        fancyEditorAddQuote.onclick = function (e) {
+            e.preventDefault();
+
+            // change data from text to fancy
+            const quotes = parseQuotes(customQuotes.value);
+            
+            quotes.push({
+                quote: fancyEditorNewQuote.value,
+                author: fancyEditorNewQuoteAuthor.value
+            })
+        
+            chrome.storage.sync.set({
+                custom_quotes: { quotes }
+            });
+        
+            renderFancyEditor({ quotes });
+
+            fancyEditorNewQuote.value = "";
+            fancyEditorNewQuoteAuthor.value = "";
+        }
+
+        if (debugMode) {
+            // debug UI
+            const parseQuotesBtn = document.getElementById('parse-quotes');
+            parseQuotesBtn.hidden = false;
+            
+            parseQuotesBtn.onclick = function (e) {
+                e.preventDefault();
+                
+                const result = parseQuotes(customQuotes.value);
+                console.log(result);
+            }
+        }
+        
         function regenerateQuotes(e, confirmed = false) {
             e?.preventDefault();
 
@@ -299,6 +357,30 @@ document.addEventListener('DOMContentLoaded', function () {
             
             quotesGeneratedSection.hidden = !quotesGeneratedSection.hidden;
             quotesCustomSection.hidden = !quotesCustomSection.hidden;
+        }
+    }
+
+    function checkErrors() {
+        if (dailyLimit.value > weeklyLimit.value / 7) {
+            showError(dailyLimit, 'Daily limit (multiplied by 7) cannot exceed weekly limit', true);
+        }
+
+        if (Number(dailyLimit.value) >= 120) {
+            showWarning(dailyLimit, 'It is not recommended to set daily watch time limit to more than 2 hours per day', true)
+        }
+
+        if (Number(weeklyLimit.value) >= 600) {
+            const message = 'It is not recommended to set weekly watch time limit to more than 10 hours per week';
+            showWarning(weeklyLimit, message, true);
+        }
+        
+        if (Number(blockInterval.value) >= 15) {
+            const warningMessage = [
+                'It is not recommended to set more than 15 minutes per Netflix screen block/rest',
+                ', as one episode could be as low as 20 minutes'
+            ].join('');
+
+            showWarning(blockInterval, warningMessage, true)
         }
     }
 
@@ -366,6 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quoteInput.placeholder = "Quote/Message";
             quoteInput.value = quote.quote;
 
+            quoteInput.removeEventListener('input', actionBtnToEdit);
             quoteInput.addEventListener('input', actionBtnToEdit)
 
             authorInput.type = "text";
@@ -373,6 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
             authorInput.placeholder = "Author (optional)";
             authorInput.value = quote?.author;
 
+            authorInput.removeEventListener('input', actionBtnToEdit)
             authorInput.addEventListener('input', actionBtnToEdit)
 
             actionBtn.style = "width: 100px"
@@ -434,76 +518,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     quotes: updatedQuotes
                 }
             })
-        }
-    }
-
-    themeTogglerBtn.onclick = function(e) {
-        e.preventDefault();
-        const currentTheme = document.documentElement.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark"
-        const newBtnName = currentTheme === "dark" ? "Turn off the lights" : "Turn on the lights"
-        
-        document.documentElement.setAttribute("data-theme", newTheme);
-        themeTogglerBtn.innerHTML = newBtnName;
-    }
-
-    fancyEditorBtn.onclick = function (e) {
-        e.preventDefault();
-
-        // change UI
-        fancyEditorBtn.innerHTML = fancyEditorContainer.hidden ? "Switch back to text editor" : "Switch to <i>Fancy editor</i>"
-        customQuotes.hidden = !customQuotes.hidden;
-        fancyEditorContainer.hidden = !fancyEditorContainer.hidden;
-
-        if (fancyEditorContainer.hidden) {
-            chrome.storage.sync.get('custom_quotes', ({ custom_quotes }) => {
-                customQuotes.value = custom_quotes.quotes
-                    ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
-                    ?.join('\n');
-            })
-        } else {
-            // change data from text to fancy
-            const quotes = parseQuotes(customQuotes.value);
-    
-            chrome.storage.sync.set({
-                custom_quotes: { quotes }
-            });
-    
-            renderFancyEditor({ quotes })
-        }
-    }
-
-    fancyEditorAddQuote.onclick = function (e) {
-        e.preventDefault();
-
-        // change data from text to fancy
-        const quotes = parseQuotes(customQuotes.value);
-        
-        quotes.push({
-            quote: fancyEditorNewQuote.value,
-            author: fancyEditorNewQuoteAuthor.value
-        })
-    
-        chrome.storage.sync.set({
-            custom_quotes: { quotes }
-        });
-    
-        renderFancyEditor({ quotes });
-
-        fancyEditorNewQuote.value = "";
-        fancyEditorNewQuoteAuthor.value = "";
-    }
-
-    if (debugMode) {
-        // debug UI
-        const parseQuotesBtn = document.getElementById('parse-quotes');
-        parseQuotesBtn.hidden = false;
-        
-        parseQuotesBtn.onclick = function (e) {
-            e.preventDefault();
-            
-            const result = parseQuotes(customQuotes.value);
-            console.log(result);
         }
     }
 });
