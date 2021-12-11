@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const blockInterval = document.getElementById('block-interval');
     const resetSettingsBtn = document.getElementById('reset-settings')
     const saveSettingsBtn = document.getElementById('save-settings');
+    const themeTogglerBtn = document.getElementById('theme-toggler')
     const timeRangeCheck = document.getElementById('time-range');
     const timeRangeStart = document.getElementById('time-range-start');
     const timeRangeEnd = document.getElementById('time-range-end');
@@ -234,6 +235,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ].forEach((element) => {
             element.removeEventListener('change', changed);
             element.addEventListener('change', changed)
+
+            element.removeEventListener('input', changed);
+            element.addEventListener('input', changed)
         });
 
         function changed() {
@@ -332,6 +336,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (newName === "Quotes") newName = "General Quotes";
             return newName;
         };
+    }
+
+    themeTogglerBtn.onclick = function(e) {
+        e.preventDefault();
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark"
+        
+        document.documentElement.setAttribute("data-theme", newTheme);
     }
 
     if (debugMode) {
