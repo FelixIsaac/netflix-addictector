@@ -29,7 +29,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "homepage_url": "https://projects.felixisaac.dev/netflix-addictector",
+  "homepage_url": "https://github.com/FelixIsaac/netflix-addictector",
   "permissions": ["storage", "alarms"],
   "host_permissions": ["*://*.netflix.com/*"],
   "content_scripts": [{

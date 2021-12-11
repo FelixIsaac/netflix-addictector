@@ -106,6 +106,8 @@ function checkInRange(callback) {
 
 function generateQuotes(callback) {
     chrome.storage.sync.get(['enabled_quotes', 'quotes_index'], async ({ enabled_quotes, quotes_index }) => {
+        if (!enabled_quotes) return;
+
         const url = "https://netflix-addictector-api.herokuapp.com/quotes/fromcategories";
         const limit = Math.ceil(30 / enabled_quotes.length) || 1;
 
