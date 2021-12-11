@@ -1,9 +1,11 @@
+const debugMode = Object.fromEntries(new URLSearchParams(window.location.search).entries()).debug === 'true';
+
 // Remove option page animation
 setTimeout(() => {
     document.getElementById('animation-css').remove();
     document.getElementsByClassName('netflix-animation')[0].remove();
     document.getElementsByTagName('main')[0].style.display = 'block';
-}, 2730);
+}, debugMode ? 0 : 2730);
 
 const BlockTypeEnum = Object.freeze({
     FIXED: 0,
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const quotesCustomCheckbox = document.getElementById('quotes-custom-enable');
     const quotesCustomSection = document.getElementById('quotes-custom');
     const [customQuotes] = document.getElementsByTagName('textarea');
-   
+
     updateHTML(addListeners);
 
     saveSettingsBtn.addEventListener('click', (e) => {
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_next_episode: blockNextEpisodeCheckbox.checked,
                     custom_quotes: {
                         enabled: quotesCustomCheckbox.checked,
-                        quotes: parseQuotes(customQuotes)
+                        quotes: parseQuotes(customQuotes.value)
                     }
                 };
 
@@ -146,7 +148,11 @@ document.addEventListener('DOMContentLoaded', function () {
             timeRangeCheck.checked = data.time_range.enabled;
             timeRangeStart.value = data.time_range.start;
             timeRangeEnd.value = data.time_range.end;
-            quotesCustomCheckbox.checked = data.custom_quotes.enabled
+            quotesCustomCheckbox.checked = data.custom_quotes.enabled;
+
+            customQuotes.value = data.custom_quotes.quotes
+                ?.map(({ message, author }) => `${message}${author ? ` - ${author}` : ''}`)
+                ?.join('\n');
     
             blockTypeFormLogic(blockType);
             timeRangeFormLogic(timeRangeCheck);
@@ -326,5 +332,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (newName === "Quotes") newName = "General Quotes";
             return newName;
         };
+    }
+
+    if (debugMode) {
+        // debug UI
+        const parseQuotesBtn = document.getElementById('parse-quotes');
+        parseQuotesBtn.hidden = false;
+        
+        parseQuotesBtn.onclick = function (e) {
+            e.preventDefault();
+            parseQuotes(customQuotes.value);
+        }
     }
 });

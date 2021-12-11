@@ -167,3 +167,36 @@ function getQuote(callback) {
         callback(randomQuote)
     });
 }
+
+function parseQuotes(text) {
+    const regex = /(.+)( ?- ?)(.+)|(.+)/gm;
+    const quotes = [];
+    let m = null;
+
+    while ((m = regex.exec(text)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
+        }
+        
+        quotes.push({
+            message: (m[1] || m[4]).trim(),
+            author: m[3]?.trim()
+        });
+    }
+
+    return quotes;
+}
+
+function saveQuotes(quotes) {
+    if (!(quotes && Array.isArray(quotes))) return;
+
+    chrome.storage.sync.get('custom_quotes', async ({ custom_quotes }) => {
+        chrome.storage.sync.set({
+            custom_quotes: {
+                ...custom_quotes,
+                quotes
+            }
+        })
+    })
+}

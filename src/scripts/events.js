@@ -56,8 +56,32 @@ const initialData = {
   days: [], // Array of objects, each object with two fields (day, minutes_spent)
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-  // set init data
+chrome.runtime.onInstalled.addListener(startup);
+
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  switch(message.type) {
+    case 'background-log':
+      console[message.consoleType || 'log'](...message.args);
+      break;
+    case 'reset-settings':
+      sendResponse('Settings reset')
+      resetSettings();
+      break;
+  }
+});
+
+chrome.runtime.onUpdateAvailable.addListener(function () {
+  chrome.runtime.reload();
+});
+
+chrome.runtime.onStartup.addListener(function () {
+  // set init data and settings that are missing due to an update in settings
+  // or just not there...
+  startup();
+})
+
+function startup() {
+    // set init data
   chrome.storage.sync.get(Object.keys(initialData), (data) => {
     // Do not override initialized day history data on install
     for (let key in initialData) {
@@ -81,16 +105,4 @@ chrome.runtime.onInstalled.addListener(() => {
   generateQuotes(() => console.info('Generated quotes'));
 
   chrome.runtime.setUninstallURL('https://forms.gle/D2fJi82TjC1UtVRv8', () => {});
-});
-
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  switch(message.type) {
-    case 'background-log':
-      console[message.consoleType || 'log'](...message.args);
-      break;
-    case 'reset-settings':
-      sendResponse('Settings reset')
-      resetSettings();
-      break;
-  }
-});
+}
