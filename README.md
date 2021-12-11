@@ -1,5 +1,6 @@
 
-# Netflix Addictector
+# Netflix Addictector <img src="./brand-images/netflix-accdictector-logo-2.png" height="32">
+
  A web browser extension that prevents and helps with recovering Netflix addiction
 
 ## Features
@@ -40,9 +41,21 @@
     <img src="https://imgur.com/MQYBSrD.png" width="64" height="64">
 </a>
 
+## Product images
+
+![](https://raw.githubusercontent.com/felixisaac/netflix-addictector/master/brand-images/screenshots/screenshot_1_BRAND-6.jpg "Time tracker")
+![](https://raw.githubusercontent.com/felixisaac/netflix-addictector/master/brand-images/screenshots/screenshot_2_BRAND-3.jpg "Configurable features")
+![](https://raw.githubusercontent.com/felixisaac/netflix-addictector/master/brand-images/screenshots//screenshot_3_BRAND-3.jpg "Motivating quotes")
+![](https://raw.githubusercontent.com/felixisaac/netflix-addictector/master/brand-images/screenshots/screenshot_4.jpg "Screen blocker")
+![](https://raw.githubusercontent.com/felixisaac/netflix-addictector/master/brand-images/screenshots/screenshot_5.jpg "Time range")
+
 ## Support and Feedback
 
+[Contact developer via email](mailto:me@felixisaac.dev)
 
+[Feedback and bug report](https://docs.google.com/forms/d/e/1FAIpQLSc0IyCG9gZ88bewPtj4K4JgVpcUGbhKNCLskL1s3Vsdy5ejVg/viewform)
+
+[Create a new issue](https://github.com/FelixIsaac/netflix-addictector/issues)
 
 ## Description
 
@@ -91,4 +104,4 @@ Do you spend more time streaming shows than fulfilling responsibilities? Do you 
 
 Ever started watching a movie or one episode of a show and suddenly realized that it’s already dark outside... and you have to get up in 6 hours for your job? Well, Netflix Addictector was designed to help you with that.
 
-Don’t Netflix and Chill tonight?
+*Don’t Netflix and Chill tonight?*
