@@ -203,14 +203,20 @@ function parseQuotes(text) {
             regex.lastIndex++;
         }
         
-        quotes.push({
+        const newQuote = {
             quote: (m[1] || m[4]).trim(),
             author: m[3]?.trim() || '',
             seen: false
-        });
+        };
+
+        const isUnique = !quotes.filter(({ quote, author }) => (
+            newQuote.quote === quote && newQuote.author === author
+        )).length
+
+        if (isUnique) quotes.push(newQuote);
     }
 
-    return quotes;
+    return [...quotes];
 }
 
 function saveQuotes(quotes) {

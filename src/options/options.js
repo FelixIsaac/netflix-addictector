@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const quotesCustomCheckbox = document.getElementById('quotes-custom-enable');
     const quotesCustomSection = document.getElementById('quotes-custom');
     const [customQuotes] = document.getElementsByTagName('textarea');
+    const fancyEditorBtn = document.getElementById('fancy-editor');
+    const fancyEditorContainer = document.getElementById('fancy-editor-container');
 
     updateHTML(addListeners);
 
@@ -338,12 +340,103 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
+    async function renderFancyEditor(custom_quotes) {
+        [...fancyEditorContainer.children]
+            .filter((child) => child['data-name'] === "fancy-editor-render")
+            .forEach((child) => child.remove());
+        
+        custom_quotes.quotes.reverse().forEach((quote) => {
+            // <div class="flex-2" style="margin: 14px 0 14px 0;">
+            //     <input type="text" style="width: 70%; text-overflow: ellipsis;" placeholder="Quote/Message"/>
+            //     <input type="text" style="width: 19%; text-overflow: ellipsis;" placeholder="Author (optional)"/>
+            //     <button class="secondary" style="width: 100px">Delete</button>
+            // </div>
+
+            const flexDiv = document.createElement('div');
+            const quoteInput = document.createElement('input');
+            const authorInput = document.createElement('input');
+            const deleteBtn = document.createElement('button');
+            
+            quoteInput.type = "text";
+            quoteInput.style = "width: 70%; text-overflow: ellipsis;";
+            quoteInput.placeholder = "Quote/Message";
+            quoteInput.value = quote.quote;
+
+            authorInput.type = "text";
+            authorInput.style = "width: 19%; text-overflow: ellipsis;";
+            authorInput.placeholder = "Author (optional)";
+            authorInput.value = quote?.author;
+
+            deleteBtn.className = "secondary"
+            deleteBtn.style = "width: 100px"
+            deleteBtn.innerText = "DELETE";
+            
+            deleteBtn.onclick = (e) => {
+                e.preventDefault();
+
+                flexDiv.remove();
+                deleteQuote(quote);
+            }
+
+            flexDiv.className = "flex-2";
+            flexDiv['data-name'] = "fancy-editor-render"
+            flexDiv.style = "margin: 14px 0 14px 0;";
+            flexDiv.appendChild(quoteInput);
+            flexDiv.appendChild(authorInput);
+            flexDiv.appendChild(deleteBtn);
+
+            fancyEditorContainer.prepend(flexDiv);
+        });
+
+        function deleteQuote(quoteToDelete) {
+            const updatedQuotes = custom_quotes.quotes.filter((quote) => (
+                quoteToDelete.quote !== quote.quote &&
+                quoteToDelete?.author !== quote?.author
+            ));
+
+            chrome.storage.sync.set({
+                custom_quotes: {
+                    ...custom_quotes,
+                    quotes: updatedQuotes
+                }
+            })
+        }
+    }
+
     themeTogglerBtn.onclick = function(e) {
         e.preventDefault();
         const currentTheme = document.documentElement.getAttribute("data-theme");
         const newTheme = currentTheme === "dark" ? "light" : "dark"
+        const newBtnName = currentTheme === "dark" ? "Turn off the lights" : "Turn on the lights"
         
         document.documentElement.setAttribute("data-theme", newTheme);
+        themeTogglerBtn.innerHTML = newBtnName;
+    }
+
+    fancyEditorBtn.onclick = function (e) {
+        e.preventDefault();
+
+        // change UI
+        fancyEditorBtn.innerHTML = fancyEditorContainer.hidden ? "Switch back to text editor" : "Switch to <i>Fancy editor</i>"
+        customQuotes.hidden = !customQuotes.hidden;
+        fancyEditorContainer.hidden = !fancyEditorContainer.hidden;
+
+        if (fancyEditorContainer.hidden) {
+            chrome.storage.sync.get('custom_quotes', ({ custom_quotes }) => {
+                customQuotes.value = custom_quotes.quotes
+                    ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
+                    ?.join('\n');
+            })
+        } else {
+            // change data from text to fancy
+            const quotes = parseQuotes(customQuotes.value);
+    
+            chrome.storage.sync.set({
+                custom_quotes: { quotes }
+            });
+    
+            renderFancyEditor({ quotes })
+        }
     }
 
     if (debugMode) {

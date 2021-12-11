@@ -64,7 +64,7 @@ label {
 input,
 select {
   font-size: 21px;
-  width: 100%;
+  width: 99%;
 }
 
 /* Double-sized Checkboxes */
@@ -74,7 +74,7 @@ input[type="checkbox"] {
 }
 
 section#quotes-custom textarea {
-  width: 100%;
+  width: 99%;
   font-size: 18px;
   line-height: 140%;
   resize: vertical;
