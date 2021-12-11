@@ -202,6 +202,13 @@ document.addEventListener('DOMContentLoaded', function () {
         parentElement.prepend(error);
     }
 
+    function removeMessage(element, messageString) {
+        const duplicates = [...element.parentElement.children]
+            .filter(children => children.innerText.toLowerCase() === messageString.toLowerCase())
+
+        duplicates.forEach((duplicate) => duplicate.remove());
+    }
+
     function showError(element, errorMessage, disableToggle = false) {
         showMessage(element, errorMessage, 'error', { disableToggle });
     }
@@ -361,26 +368,47 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function checkErrors() {
-        if (dailyLimit.value > weeklyLimit.value / 7) {
-            showError(dailyLimit, 'Daily limit (multiplied by 7) cannot exceed weekly limit', true);
+        {
+            const message = 'Daily limit (multiplied by 7) cannot exceed weekly limit'
+
+            if (dailyLimit.value > weeklyLimit.value / 7) {
+                showError(dailyLimit, message, true);
+            } else {
+                removeMessage(dailyLimit, message);
+            }
         }
 
-        if (Number(dailyLimit.value) >= 120) {
-            showWarning(dailyLimit, 'It is not recommended to set daily watch time limit to more than 2 hours per day', true)
+        {
+            const message = 'It is not recommended to set daily watch time limit to more than 2 hours per day';
+
+            if (Number(dailyLimit.value) >= 120) {
+                showWarning(dailyLimit, message, true);
+            } else {
+                removeMessage(dailyLimit, message);
+            }
         }
 
-        if (Number(weeklyLimit.value) >= 600) {
+        {
             const message = 'It is not recommended to set weekly watch time limit to more than 10 hours per week';
-            showWarning(weeklyLimit, message, true);
+           
+            if (Number(weeklyLimit.value) >= 600) {
+                showWarning(weeklyLimit, message, true);
+            } else {
+                removeMessage(weeklyLimit, message);
+            }
         }
         
-        if (Number(blockInterval.value) >= 15) {
+        {
             const warningMessage = [
                 'It is not recommended to set more than 15 minutes per Netflix screen block/rest',
                 ', as one episode could be as low as 20 minutes'
             ].join('');
 
-            showWarning(blockInterval, warningMessage, true)
+            if (Number(blockInterval.value) >= 15) {
+                showWarning(blockInterval, warningMessage, true)
+            } else {
+                removeMessage(blockInterval, warningMessage);
+            }
         }
     }
 
