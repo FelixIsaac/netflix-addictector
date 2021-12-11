@@ -176,7 +176,7 @@ div.flex-2 > * {
 }
 
 .error-message::before {
-  content: url(../../options/error.svg);
+  content: url(../../assets/images/error.svg);
 }
 
 .warning-message {
@@ -186,7 +186,7 @@ div.flex-2 > * {
 }
 
 .warning-message::before {
-  content: url(../../options/warning.svg);
+  content: url(../../assets/images/warning.svg);
 }
 
 #quotes-container {

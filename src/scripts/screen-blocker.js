@@ -192,7 +192,7 @@ function replaceScreen(reason, quote) {
             const image = document.createElement('img');
             const imageContainer = document.createElement('div');
 
-            image.src = chrome.runtime.getURL('/assets/no.svg');
+            image.src = chrome.runtime.getURL('/assets/images/no.svg');
             imageContainer.appendChild(image);
 
             return imageContainer;
