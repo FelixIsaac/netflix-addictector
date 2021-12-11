@@ -26,14 +26,13 @@ h1 span {
   color: var(--text-color);
 }
 
-h1 span sup {
+sup {
   font-size: 18px;
   padding: 3px;
   margin: 3px;
   background-color: var(--text-color);
   border-radius: 3px;
   color: var(--background-color);
-  text-transform: uppercase;
 }
 
 h2 {

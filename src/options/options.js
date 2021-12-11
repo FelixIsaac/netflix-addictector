@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         });
 
-        loadingQuotes = false; 
+        loadingQuotes = false;
 
         function generateName(name) {
             let newName = name.split('.')[0].split('-').map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(' ');
@@ -359,37 +359,67 @@ document.addEventListener('DOMContentLoaded', function () {
             const flexDiv = document.createElement('div');
             const quoteInput = document.createElement('input');
             const authorInput = document.createElement('input');
-            const deleteBtn = document.createElement('button');
+            const actionBtn = document.createElement('button');
             
             quoteInput.type = "text";
             quoteInput.style = "width: 70%; text-overflow: ellipsis;";
             quoteInput.placeholder = "Quote/Message";
             quoteInput.value = quote.quote;
 
+            quoteInput.addEventListener('input', actionBtnToEdit)
+
             authorInput.type = "text";
             authorInput.style = "width: 19%; text-overflow: ellipsis;";
             authorInput.placeholder = "Author (optional)";
             authorInput.value = quote?.author;
 
-            deleteBtn.className = "secondary"
-            deleteBtn.style = "width: 100px"
-            deleteBtn.innerText = "DELETE";
-            
-            deleteBtn.onclick = (e) => {
-                e.preventDefault();
+            authorInput.addEventListener('input', actionBtnToEdit)
 
-                flexDiv.remove();
-                deleteQuote(quote);
-            }
+            actionBtn.style = "width: 100px"
+            actionBtnToDelete();
 
             flexDiv.className = "flex-2";
             flexDiv['data-name'] = "fancy-editor-render"
             flexDiv.style = "margin: 14px 0 14px 0;";
             flexDiv.appendChild(quoteInput);
             flexDiv.appendChild(authorInput);
-            flexDiv.appendChild(deleteBtn);
+            flexDiv.appendChild(actionBtn);
 
             fancyEditorContainer.prepend(flexDiv);
+
+            function actionBtnToEdit() {
+                actionBtn.innerText = "EDIT";
+                actionBtn.className = "edit"
+
+                actionBtn.onclick = (e) => {
+                    e.preventDefault();
+
+                    // save changes
+                    const quoteIndex = custom_quotes.quotes.findIndex((quoteToFind) => (
+                        quoteToFind.quote === quote.quote && quoteToFind?.author === quote?.author
+                    ));
+
+                    custom_quotes.quotes[quoteIndex].quote = quoteInput.value;
+                    custom_quotes.quotes[quoteIndex].author = authorInput.value;
+
+                    chrome.storage.sync.set({ custom_quotes });
+
+                    // back to delete button
+                    actionBtnToDelete();
+                }
+            }
+
+            function actionBtnToDelete() {
+                actionBtn.className = "secondary"
+                actionBtn.innerText = "DELETE";
+                
+                actionBtn.onclick = (e) => {
+                    e.preventDefault();
+
+                    flexDiv.remove();
+                    deleteQuote(quote);
+                }
+            }
         });
 
         function deleteQuote(quoteToDelete) {

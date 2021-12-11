@@ -1,45 +1,51 @@
 .button-group {
-    margin-top: 60px;
-    text-align: right;
+  margin-top: 60px;
+  text-align: right;
 }
 
 button.primary,
-button.secondary {
-    text-transform: uppercase;
-    font-size: 17px;
-    padding: .75rem 17.33333333px;
-    min-width: 98px;
-    min-height: 37px;
-    margin-right: .5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    width: auto;
-    line-height: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    border: 0;
+button.secondary,
+button.edit {
+  text-transform: uppercase;
+  font-size: 17px;
+  padding: 0.75rem 17.33333333px;
+  min-width: 98px;
+  min-height: 37px;
+  margin-right: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: auto;
+  line-height: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 0;
 }
 
 button.primary:active,
 button.secondary:active {
-    box-shadow: 0 2px #666;
-    transform: translateY(2px);
+  box-shadow: 0 2px #666;
+  transform: translateY(2px);
 }
 
 button.primary {
-    color: #fff;
-    background-color: #e50914;
+  color: #fff;
+  background-color: #e50914;
 }
 
 button.primary:active {
-    background-color: #b81d24;
+  background-color: #b81d24;
 }
 
 button.secondary {
-    color: #000;
-    background-color: #ccc;
+  color: #000;
+  background-color: #ccc;
 }
 
 button.secondary:active {
-    background-color: #bdbdbd
+  background-color: #bdbdbd;
+}
+
+button.edit {
+  color: #f5f5f1;
+  background-color: #564d4d;
 }
