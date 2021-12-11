@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const [customQuotes] = document.getElementsByTagName('textarea');
     const fancyEditorBtn = document.getElementById('fancy-editor');
     const fancyEditorContainer = document.getElementById('fancy-editor-container');
+    const [fancyEditorNewQuote, fancyEditorNewQuoteAuthor, fancyEditorAddQuote]
+        = document.getElementById("fancy-editor--new-quote").children;
 
     updateHTML(addListeners);
 
@@ -233,6 +235,8 @@ document.addEventListener('DOMContentLoaded', function () {
             timeRangeStart,
             timeRangeEnd,
             customQuotes,
+            fancyEditorNewQuote,
+            fancyEditorNewQuoteAuthor,
             ...document.getElementsByClassName('quote-category')
         ].forEach((element) => {
             element.removeEventListener('change', changed);
@@ -437,6 +441,27 @@ document.addEventListener('DOMContentLoaded', function () {
     
             renderFancyEditor({ quotes })
         }
+    }
+
+    fancyEditorAddQuote.onclick = function (e) {
+        e.preventDefault();
+
+        // change data from text to fancy
+        const quotes = parseQuotes(customQuotes.value);
+        
+        quotes.push({
+            quote: fancyEditorNewQuote.value,
+            author: fancyEditorNewQuoteAuthor.value
+        })
+    
+        chrome.storage.sync.set({
+            custom_quotes: { quotes }
+        });
+    
+        renderFancyEditor({ quotes });
+
+        fancyEditorNewQuote.value = "";
+        fancyEditorNewQuoteAuthor.value = "";
     }
 
     if (debugMode) {
