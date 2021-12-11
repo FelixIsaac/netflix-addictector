@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
             quotesCustomCheckbox.checked = data.custom_quotes.enabled;
 
             customQuotes.value = data.custom_quotes.quotes
-                ?.map(({ message, author }) => `${message}${author ? ` - ${author}` : ''}`)
+                ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
                 ?.join('\n');
     
             blockTypeFormLogic(blockType);
@@ -341,7 +341,9 @@ document.addEventListener('DOMContentLoaded', function () {
         
         parseQuotesBtn.onclick = function (e) {
             e.preventDefault();
-            parseQuotes(customQuotes.value);
+            
+            const result = parseQuotes(customQuotes.value);
+            console.log(result);
         }
     }
 });

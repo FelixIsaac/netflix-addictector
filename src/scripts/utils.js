@@ -151,20 +151,44 @@ function generateQuotes(callback) {
 }
 
 function getQuote(callback) {
-    chrome.storage.local.get('quotes', async ({ quotes }) => {
-        // generate quotes if none in local storage, else gives a random quote
-        if (!quotes || !quotes?.length) return generateQuotes(() => getQuote(callback));
-
-        const unseenQuotes = quotes.filter(({ seen }) => !seen);
-
-        // regenerates quotes if all is seen
-        if (!unseenQuotes.length) return generateQuotes(() => getQuote(callback));
-
-        const randomIndex = Math.floor(Math.random() * unseenQuotes.length);
-        const randomQuote = unseenQuotes[randomIndex];
-        quotes[quotes.findIndex(({ quote }) => quote === randomQuote.quote)].seen = true; // mark quote as seen
-        chrome.storage.local.set({ quotes });
-        callback(randomQuote)
+    chrome.storage.sync.get('custom_quotes', async ({ custom_quotes }) => {
+        if (custom_quotes.enabled && Math.random() > 0.8 && custom_quotes.quotes.length) {
+            const unseenQuotes = custom_quotes.quotes.filter(({ seen }) => !seen);
+    
+            // mark all as unseen if all is seen
+            if (!unseenQuotes.length) {
+                custom_quotes.quotes.forEach(quote => {
+                    quote.seen = false;
+                });
+    
+                chrome.storage.sync.set({ custom_quotes });
+                return getQuote(callback);
+            };
+    
+            const randomIndex = Math.floor(Math.random() * unseenQuotes.length);
+            const randomQuote = unseenQuotes[randomIndex];
+    
+            custom_quotes.quotes[custom_quotes.quotes.findIndex(({ quote }) => quote === randomQuote.quote)].seen = true; // mark quote as seen
+            chrome.storage.sync.set({ custom_quotes });
+            callback({ ...randomQuote, custom: true });
+        } else {
+            chrome.storage.local.get(['quotes'], async ({ quotes }) => {
+                // generate quotes if none in local storage, else gives a random quote
+                if (!quotes || !quotes?.length) return generateQuotes(() => getQuote(callback));
+        
+                const unseenQuotes = quotes.filter(({ seen }) => !seen);
+        
+                // regenerates quotes if all is seen
+                if (!unseenQuotes.length) return generateQuotes(() => getQuote(callback));
+        
+                const randomIndex = Math.floor(Math.random() * unseenQuotes.length);
+                const randomQuote = unseenQuotes[randomIndex];
+        
+                quotes[quotes.findIndex(({ quote }) => quote === randomQuote.quote)].seen = true; // mark quote as seen
+                chrome.storage.local.set({ quotes });
+                callback(randomQuote);
+            });
+        };
     });
 }
 
@@ -180,8 +204,9 @@ function parseQuotes(text) {
         }
         
         quotes.push({
-            message: (m[1] || m[4]).trim(),
-            author: m[3]?.trim()
+            quote: (m[1] || m[4]).trim(),
+            author: m[3]?.trim() || '',
+            seen: false
         });
     }
 
