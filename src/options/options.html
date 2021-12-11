@@ -2,141 +2,144 @@
 <html>
 
 <head>
-  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-  <meta content="utf-8" http-equiv="encoding">
-  <link rel="stylesheet" href="../assets/css/index.css">
-  <link rel="stylesheet" href="../assets/css/options.css">
-  <link rel="stylesheet" href="../assets/css/animation.css" id="animation-css">
-  <script src="options.js"></script>
-  <script src="../scripts/utils.js"></script>
-  <title>Netflix Addictector</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/options.css">
+    <link rel="stylesheet" href="../assets/css/animation.css" id="animation-css">
+    <script src="options.js"></script>
+    <script src="../scripts/utils.js"></script>
+    <title>Netflix Addictector</title>
 </head>
 
 <body>
-  <div class="netflix-animation">NETFLIX ADDICTECTOR</div>
-  <main style="display:none">
-    <h1>Welcome to <span>Netflix Addictector<sup>public beta</sup></span> options page</h1>
-    <hr />
-    <form>
-      <section>
-        <h2>Limit watch time</h2>
-        <div>
-          <label for="daily-limit">
-            Daily watch time limit:
-            <span class="tooltip-toggle" tabindex="0"
-              aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per day">
-              <img src="./info.svg" />
-            </span>
-          </label>
-          <input id="daily-limit" type="number" />
-        </div>
-        <div>
-          <label for="weekly-limit">
-            Weekly watch time limit:
-            <span class="tooltip-toggle" tabindex="0"
-              aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per week">
-              <img src="./info.svg" />
-            </span>
-          </label>
-          <input id="weekly-limit" type="number" />
-        </div>
-      </section>
-      <hr />
-      <section>
-        <h2>Screen block</h2>
-        <div>
-          <div>
-            <input type="checkbox" id="block-next-epi-btn" />
-            <label for="block-next-epi-btn">
-              Block next episode button
-              <span class="tooltip-toggle" tabindex="0"
-                aria-label="Highly recommended: Completely removes all 'Next Episode' button; including the episode list">
-                <img src="./info.svg" />
-              </span>
-            </label>
-          </div>
-          <div>
-            <input type="checkbox" id="block-next-epi" />
-            <label for="block-next-epi">
-              Block next episode
-              <span class="tooltip-toggle" tabindex="0"
-                aria-label="Highly recommended: When the next episode starts, it blocks your screen for 2 minutes">
-                <img src="./info.svg" />
-              </span>
-            </label>
-          </div>
-          <div class="flex-2">
-            <div>
-              <label for="block-type">
-                Block type:
-                <span class="tooltip-toggle" tabindex="0">
-                  <img src="./info.svg" />
-                </span>
-              </label>
-              <select id="block-type">
-                <option>Fixed</option>
-                <option>Random</option>
-                <option>Both</option>
-              </select>
-            </div>
-            <div>
-              <label for="block-interval">
-                Block interval
-                <span class="tooltip-toggle" tabindex="0"
-                  aria-label="In every set many minutes, the extension will block the screen">
-                  <img src="./info.svg" />
-                </span>
-              </label>
-              <input id="block-interval" type="number" />
-            </div>
-          </div>
-          <div>
-            <input type="checkbox" id="time-range" />
-            <label for="time-range">
-              Time range
-              <span class="tooltip-toggle" tabindex="0"
-                aria-label="Sets the time range, when you can watch Netflix, defaults to 7 PM to 10 PM">
-                <img src="./info.svg" />
-              </span>
-            </label>
-          </div>
-          <div class="flex-2">
-            <div>
-              <label for="time-range-start">
-                Time range start
-                <span class="tooltip-toggle" tabindex="0"
-                  aria-label="In system time format, this sets the time of when you can start watching Netflix">
-                  <img src="./info.svg" />
-                </span>
-              </label>
-              <input type="time" step="1" id="time-range-start" />
-            </div>
-            <div>
-              <label for="time-range-end">
-                Time range end
-                <span class="tooltip-toggle" tabindex="0"
-                  aria-label="In your system time format, this sets the time of when you stop watching Netflix">
-                  <img src="./info.svg" />
-                </span>
-              </label>
-              <input type="time" step="1" id="time-range-end" />
-            </div>
-          </div>
-        </div>
-      </section>
-      <hr />
-      <section>
-        <h2>Quotes</h2>
-        <div id="quotes-container">
-          <!-- quotes category content -->
-          <i style="font-size: 20px;">Loading quotes options...</i>
-        </div>
-        <div id="quotes-custom" style="display: none;">
-          <!-- <div style="margin-top: 0;">
-            <button class="primary">Save Quotes</button>
-            <button class="secondary">Switch to <i>Fancy</i> editor</button>
-          </div> -->
-          <textarea placeholder="Quotes are separated by ENTER. To credit an author separate the quote and author with a DASH (-). For example...
+    <div class="netflix-animation">NETFLIX ADDICTECTOR</div>
+    <main style="display:none">
+        <h1>Welcome to <span>Netflix Addictector<sup>public beta</sup></span> options page</h1>
+        <hr />
+        <form>
+            <section>
+                <h2>Limit watch time</h2>
+                <div>
+                    <label for="daily-limit">
+                        Daily watch time limit:
+                        <span class="tooltip-toggle" tabindex="0"
+                            aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per day">
+                            <img src="./info.svg" />
+                        </span>
+                    </label>
+                    <input id="daily-limit" type="number" />
+                </div>
+                <div>
+                    <label for="weekly-limit">
+                        Weekly watch time limit:
+                        <span class="tooltip-toggle" tabindex="0"
+                            aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per week">
+                            <img src="./info.svg" />
+                        </span>
+                    </label>
+                    <input id="weekly-limit" type="number" />
+                </div>
+            </section>
+            <hr />
+            <section>
+                <h2>Screen block</h2>
+                <div>
+                    <div>
+                        <input type="checkbox" id="block-next-epi-btn" />
+                        <label for="block-next-epi-btn">
+                            Block next episode button
+                            <span class="tooltip-toggle" tabindex="0"
+                                aria-label="Highly recommended: Completely removes all 'Next Episode' button; including the episode list">
+                                <img src="./info.svg" />
+                            </span>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="block-next-epi" />
+                        <label for="block-next-epi">
+                            Block next episode
+                            <span class="tooltip-toggle" tabindex="0"
+                                aria-label="Highly recommended: When the next episode starts, it blocks your screen for 2 minutes">
+                                <img src="./info.svg" />
+                            </span>
+                        </label>
+                    </div>
+                    <div class="flex-2">
+                        <div>
+                            <label for="block-type">
+                                Block type:
+                                <span class="tooltip-toggle" tabindex="0">
+                                    <img src="./info.svg" />
+                                </span>
+                            </label>
+                            <select id="block-type">
+                                <option>Fixed</option>
+                                <option>Random</option>
+                                <option>Both</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="block-interval">
+                                Block interval
+                                <span class="tooltip-toggle" tabindex="0"
+                                    aria-label="In every set many minutes, the extension will block the screen">
+                                    <img src="./info.svg" />
+                                </span>
+                            </label>
+                            <input id="block-interval" type="number" />
+                        </div>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="time-range" />
+                        <label for="time-range">
+                            Time range
+                            <span class="tooltip-toggle" tabindex="0"
+                                aria-label="Sets the time range, when you can watch Netflix, defaults to 7 PM to 10 PM">
+                                <img src="./info.svg" />
+                            </span>
+                        </label>
+                    </div>
+                    <div class="flex-2">
+                        <div>
+                            <label for="time-range-start">
+                                Time range start
+                                <span class="tooltip-toggle" tabindex="0"
+                                    aria-label="In system time format, this sets the time of when you can start watching Netflix">
+                                    <img src="./info.svg" />
+                                </span>
+                            </label>
+                            <input type="time" step="1" id="time-range-start" />
+                        </div>
+                        <div>
+                            <label for="time-range-end">
+                                Time range end
+                                <span class="tooltip-toggle" tabindex="0"
+                                    aria-label="In your system time format, this sets the time of when you stop watching Netflix">
+                                    <img src="./info.svg" />
+                                </span>
+                            </label>
+                            <input type="time" step="1" id="time-range-end" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <hr />
+            <section>
+                <h2>Quotes</h2>
+                <section id="quotes-generated">
+                    <div id="quotes-container">
+                        <!-- quotes category content -->
+                        <i style="font-size: 20px;">Loading quotes options...</i>
+                    </div>
+                    <div style="margin-top: 50px;">
+                        <button class="secondary" id="regenerate-quotes">Force regenerate quotes</button>
+                        <button class="primary" data-name="quote-type-toggler">Custom Quotes</button>
+                    </div>
+                </section>
+                <section id="quotes-custom" hidden>
+                    <!-- text area -->
+                    <textarea placeholder="Quotes are separated by ENTER. To credit an author separate the quote and author with a DASH (-). For example...
 
 The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela
 The way to get started is to quit talking and begin doing. - Walt Disney
@@ -145,23 +148,27 @@ If life were predictable it would cease to be life, and be without flavor. - Ele
 If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough. - Oprah Winfrey
 If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success. - James Cameron
 Life is what happens when you're busy making other plans. - John Lennon"></textarea>
-        </div>
-        <div style="margin-top: 50px;">
-          <button class="secondary" id="regenerate-quotes">Force regenerate quotes</button>
-          <button class="primary">Custom Quotes</button>
-        </div>
-      </section>
-      <hr />
-      <div class="button-group">
-        <a class="secondary" href="https://www.comparitech.com/tv-streaming/time-spent-streaming"
-          target="_blank">Examine your Netflix viewing history</a>
-        <a href="https://forms.gle/D2fJi82TjC1UtVRv8" target="_blank" style="margin: 0 16px; font-size: 13px;">Feedback
-          or bug report?</a>
-        <button class="secondary" id="reset-settings">Reset settings</button>
-        <button class="primary" id="save-settings">Save settings</button>
-      </div>
-    </form>
-  </main>
+                    <!-- options -->
+                    <div style="margin-top: 50px;">
+                        <button class="secondary" id="fancy-editor">Switch to <i>Fancy editor</i></button>
+                        <button class="primary" data-name="quote-type-toggler">Back to Generated Quotes</button>
+                        <input type="checkbox" id="quotes-custom-enable" />
+                        <label for="quotes-custom-enable">Enable Custom Quotes</label>
+                    </div>
+                </section>
+            </section>
+            <hr />
+            <div class="button-group">
+                <a class="secondary" href="https://www.comparitech.com/tv-streaming/time-spent-streaming"
+                    target="_blank">Examine your Netflix viewing history</a>
+                <a href="https://forms.gle/D2fJi82TjC1UtVRv8" target="_blank"
+                    style="margin: 0 16px; font-size: 13px;">Feedback
+                    or bug report?</a>
+                <button class="secondary" id="reset-settings">Reset settings</button>
+                <button class="primary" id="save-settings">Save settings</button>
+            </div>
+        </form>
+    </main>
 </body>
 
 </html>

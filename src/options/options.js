@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeRangeEnd = document.getElementById('time-range-end');
     const quotesContainer = document.getElementById('quotes-container');
     const regenerateQuotesBtn = document.getElementById('regenerate-quotes');
+    const quotesGeneratedSection = document.getElementById('quotes-generated');
+    const quotesCustomCheckbox = document.getElementById('quotes-custom-enable');
+    const quotesCustomSection = document.getElementById('quotes-custom');
+    const [customQuotes] = document.getElementsByTagName('textarea');
    
     updateHTML(addListeners);
 
@@ -78,6 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     block_interval: Number(blockInterval.value),
                     block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
                     block_next_episode: blockNextEpisodeCheckbox.checked,
+                    custom_quotes: {
+                        enabled: quotesCustomCheckbox.checked,
+                        quotes: parseQuotes(customQuotes)
+                    }
                 };
 
                 if (!loadingQuotes) {
@@ -138,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timeRangeCheck.checked = data.time_range.enabled;
             timeRangeStart.value = data.time_range.start;
             timeRangeEnd.value = data.time_range.end;
+            quotesCustomCheckbox.checked = data.custom_quotes.enabled
     
             blockTypeFormLogic(blockType);
             timeRangeFormLogic(timeRangeCheck);
@@ -209,11 +218,12 @@ document.addEventListener('DOMContentLoaded', function () {
             weeklyLimit,
             blockNextEpisodeBtnCheckbox,
             blockNextEpisodeCheckbox,
-            blockType, 
+            blockType,
             blockInterval,
-            timeRangeCheck, 
+            timeRangeCheck,
             timeRangeStart,
             timeRangeEnd,
+            customQuotes,
             ...document.getElementsByClassName('quote-category')
         ].forEach((element) => {
             element.removeEventListener('change', changed);
@@ -223,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function changed() {
             try {
                 window.onbeforeunload = () => ""
-            } catch (err) {}
+            } catch (err) { }
         }
 
         regenerateQuotesBtn.removeEventListener('click', regenerateQuotes);
@@ -237,6 +247,9 @@ document.addEventListener('DOMContentLoaded', function () {
         
         timeRangeCheck.removeEventListener('change', ({ target }) => timeRangeFormLogic(target));
         timeRangeCheck.addEventListener('change', ({ target }) => timeRangeFormLogic(target));
+
+        document.querySelectorAll('button[data-name="quote-type-toggler"]')
+            .forEach((button) => button.addEventListener('click', toggleQuoteTypes));
 
         function regenerateQuotes(e, confirmed = false) {
             e?.preventDefault();
@@ -263,6 +276,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.onbeforeunload = null;
                 location.reload()
             });
+        }
+
+        function toggleQuoteTypes(e) {
+            e.preventDefault();
+            
+            quotesGeneratedSection.hidden = !quotesGeneratedSection.hidden;
+            quotesCustomSection.hidden = !quotesCustomSection.hidden;
         }
     }
 
