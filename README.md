@@ -41,6 +41,17 @@
     <img src="https://imgur.com/MQYBSrD.png" width="64" height="64">
 </a>
 
+## Table of contents
+
+- [Features](#features)
+- [Installation](#install-on-browsers)
+- [Table of contents](#table-of-contents)
+- [Product images](#product-images)
+- [Support](#support-and-feedback)
+- [Description](#description)
+  - [Metal & Physical Health](#metal-&-physical-health)
+  - [Netflix bad?](#netflix-content-is-not-that-bad.-just-the-service-and-how-it-makes-you-addicted-to-it.)
+
 ## Product images
 
 ![](https://raw.githubusercontent.com/felixisaac/netflix-addictector/master/brand-images/screenshots/screenshot_1_BRAND-6.jpg "Time tracker")

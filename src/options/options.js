@@ -548,4 +548,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
         }
     }
+
+    // version shown
+    document.querySelector('h1 sup').innerText = `v${chrome.runtime.getManifest().version}`;
 });
