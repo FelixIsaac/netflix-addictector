@@ -1,0 +1,33 @@
+{
+  "name": "netflix-addictector",
+  "version": "1.1.0",
+  "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction. It’s time to push pause on your addiction.",
+  "main": "none",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FelixIsaac/netflix-addictector.git"
+  },
+  "author": "Felix Isaac Lim (https://felixisaac.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FelixIsaac/netflix-addictector/issues"
+  },
+  "homepage": "https://github.com/FelixIsaac/netflix-addictector#readme",
+  "devDependencies": {
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-filter": "^7.0.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "^8.0.0",
+    "gulp-json-editor": "^2.5.6",
+    "gulp-uglify": "^3.0.2",
+    "gulp-zip": "^5.1.0",
+    "webpack": "^5.65.0"
+  },
+  "browserslist": "> 1%, last 6 versions"
+}
