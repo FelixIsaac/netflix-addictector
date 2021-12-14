@@ -7,27 +7,37 @@ const htmlmin = require('gulp-htmlmin');
 const cleanCSS = require('gulp-clean-css');
 const imagemin = import('gulp-imagemin');
 const gulpif = require('gulp-if');
-const filter = require('gulp-filter');
 const jeditor = require("gulp-json-editor");
-const zip = require('gulp-zip');
+const filter = require('gulp-filter');
 const manifest = require('./src/manifest.json');
+const zip = require('gulp-zip');
 
 const paths = {
     src: './src/',
     dist: './dist/',
+    build: './build/',
     cssDir: './src/assets/css/',
 };
 
 /**
  * Build process:
- * 1. Remove unnecessary files (e.g. blocked.html)
+ * 1. Minify everything (js, css, html)
  * 2. Concat files
- * 3. Minify everything (js, css, html)
- * 4. Optimize images
- * 5. Replace things (path to files, etc.)
- * 6. Update manifest to match
+ * 3. Optimize images
+ * 4. Replace things (path to files, etc.)
+ * 5. Update manifest to match
+ * 6. Remove unnecessary files (e.g. blocked.html)
  * 7. Zip files
+ * 8. Push to Chrome, Firefox, Safari
  */
+
+function buildString() {
+
+}
+
+function distFileName(browserName, ext) {
+    return `dist-${browserName}${buildString()}.${ext}`;
+}
 
 gulp.task('cleanup', function () {
     return del(paths.dist);
@@ -107,8 +117,42 @@ gulp.task('optimize-images', async function () {
         .pipe(gulp.dest(paths.dist + "/assets/images"));
 });
 
-gulp.task('default', gulp.series([
+gulp.task('manifest-update', async function () {
+    gulp.src(paths.src + 'manifest.json')
+        .pipe(jeditor(function (json) {
+            const i = json.content_scripts[0].js
+                .findIndex((script) => script.includes("content.js"));
+            json.content_scripts[0].js[i] = "/scripts/content.js";
+
+            return json;
+        }))
+        .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('remove-unnecessary-files', async function () {
+    return del(
+        [
+            'assets/blocked.html'
+        ].map((path) => paths.dist + path)
+    );
+});
+
+gulp.task('zip', async function (browserName) {
+    gulp.src(paths.dist)
+        .pipe(zip(distFileName(browserName, 'zip')))
+        .pipe(gulp.dest(paths.build));
+});
+
+gulp.task('dist', gulp.series([
     'cleanup',
     gulp.parallel(['pack-js', 'pack-css', 'pack-html', 'optimize-images']),
+    gulp.parallel([/**'replace'*/ 'manifest-update', 'remove-unnecessary-files']),
+]));
 
+gulp.task('push-update', gulp.series([
+    'dist',
+    'zip',
+    // gulp.parallel([
+    //     'chrome', 'firefox', 'safari',
+    // ])
 ]));
