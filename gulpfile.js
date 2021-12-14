@@ -8,9 +8,10 @@ const cleanCSS = require('gulp-clean-css');
 const imagemin = import('gulp-imagemin');
 const gulpif = require('gulp-if');
 const jeditor = require("gulp-json-editor");
-const filter = require('gulp-filter');
 const manifest = require('./src/manifest.json');
 const zip = require('gulp-zip');
+const args = require('yargs').argv;
+const bump = require('gulp-bump');
 
 const paths = {
     src: './src/',
@@ -28,15 +29,16 @@ const paths = {
  * 5. Update manifest to match
  * 6. Remove unnecessary files (e.g. blocked.html)
  * 7. Zip files
- * 8. Push to Chrome, Firefox, Safari
+ * 8. Test extension
+ * 9. If tests pass, Push to stores Chrome, Firefox, Safari
  */
 
 function buildString() {
-
+    return manifest.version;
 }
 
-function distFileName(browserName, ext) {
-    return `dist-${browserName}${buildString()}.${ext}`;
+function distFileName(browserName = 'chrome', ext) {
+    return `dist-${browserName}-v${buildString()}.${ext}`;
 }
 
 gulp.task('cleanup', function () {
@@ -146,13 +148,53 @@ gulp.task('zip', async function (browserName) {
 gulp.task('dist', gulp.series([
     'cleanup',
     gulp.parallel(['pack-js', 'pack-css', 'pack-html', 'optimize-images']),
-    gulp.parallel([/**'replace'*/ 'manifest-update', 'remove-unnecessary-files']),
+    gulp.parallel(['manifest-update', 'remove-unnecessary-files'])
 ]));
 
-gulp.task('push-update', gulp.series([
-    'dist',
-    'zip',
-    // gulp.parallel([
-    //     'chrome', 'firefox', 'safari',
-    // ])
-]));
+gulp.task('bump', async function () {
+    /// It bumps revisions
+    /// Usage:
+    /// 1. gulp bump : bumps the package.json and bower.json to the next minor revision.
+    ///   i.e. from 0.1.1 to 0.1.2
+    /// 2. gulp bump --version 1.1.1 : bumps/sets the package.json and bower.json to the 
+    ///    specified revision.
+    /// 3. gulp bump --type major       : bumps 1.0.0 
+    ///    gulp bump --type minor       : bumps 0.1.0
+    ///    gulp bump --type patch       : bumps 0.0.2
+    ///    gulp bump --type prerelease  : bumps 0.0.1-2
+
+    const type = args.type || 'patch';
+    const version = args.version;
+
+    const options = {
+        version, type
+    };
+
+    gulp
+        .src('./package.json')
+        .pipe(bump(options))
+        .pipe(gulp.dest('./'));
+
+    gulp
+        .src(paths.src + 'manifest.json')
+        .pipe(bump(options))
+        .pipe(gulp.dest(paths.src));
+});
+
+// gulp.task('deploy:chrome', function () {
+//     axios.put(`https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID}`, {
+//         headers: {
+//             'Authorization': `Bearer ${TOKEN}`,
+//             'body': ''
+//         }
+//     });
+
+// });
+
+// gulp.task('deploy', gulp.series([
+//     'dist',
+//     'zip',
+//     gulp.parallel([
+//         'chrome', 'firefox', 'safari',
+//     ])
+// ]));
