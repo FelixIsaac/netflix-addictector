@@ -24,7 +24,7 @@
                     <label for="daily-limit">
                         Daily watch time limit:
                         <span class="tooltip-toggle" tabindex="0"
-                            aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per day">
+                            aria-label="How much do you want to watch Netflix per day?">
                             <img src="../assets/images/info.svg" />
                         </span>
                     </label>
@@ -33,8 +33,8 @@
                 <div>
                     <label for="weekly-limit">
                         Weekly watch time limit:
-                        <span class="tooltip-toggle" tabindex="0"
-                            aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per week">
+                        <span class="tooltip-toggle" tabindex="0" aria-label="How much do you want to watch Netflix per week? (Recommended: multiple
+                            daily watch limit by 7 since there are 7 days in a week">
                             <img src="../assets/images/info.svg" />
                         </span>
                     </label>
@@ -45,27 +45,29 @@
             <section>
                 <h2>Screen block</h2>
                 <div>
-                    <div>
-                        <input type="checkbox" id="block-next-epi-btn" />
-                        <label for="block-next-epi-btn">
-                            Block next episode button
-                            <span class="tooltip-toggle" tabindex="0"
-                                aria-label="Highly recommended: Completely removes all 'Next Episode' button; including the episode list">
-                                <img src="../assets/images/info.svg" />
-                            </span>
-                        </label>
+                    <div style="margin-bottom: 21px;">
+                        <div>
+                            <input type="checkbox" id="block-next-epi-btn" />
+                            <label for="block-next-epi-btn">
+                                Block 'Next Episode' button and episode playlist
+                                <span class="tooltip-toggle" tabindex="0"
+                                    aria-label="Removes all 'Next Episode' buttons and the episode playlist">
+                                    <img src="../assets/images/info.svg" />
+                                </span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="block-next-epi" />
+                            <label for="block-next-epi">
+                                Block your screen when a new one starts
+                                <span class="tooltip-toggle" tabindex="0"
+                                    aria-label="Blocks your screen for 2 mins when a new episodes starts">
+                                    <img src="../assets/images/info.svg" />
+                                </span>
+                            </label>
+                        </div>
                     </div>
-                    <div>
-                        <input type="checkbox" id="block-next-epi" />
-                        <label for="block-next-epi">
-                            Block next episode
-                            <span class="tooltip-toggle" tabindex="0"
-                                aria-label="Highly recommended: When the next episode starts, it blocks your screen for 2 minutes">
-                                <img src="../assets/images/info.svg" />
-                            </span>
-                        </label>
-                    </div>
-                    <div class="flex-2">
+                    <div class="flex-2" style="margin-bottom: 21px;">
                         <div>
                             <label for="block-type">
                                 Block type:
@@ -83,7 +85,7 @@
                             <label for="block-interval">
                                 Block interval
                                 <span class="tooltip-toggle" tabindex="0"
-                                    aria-label="In every set many minutes, the extension will block the screen">
+                                    aria-label="In how many minutes do you want the extension to block your screen?">
                                     <img src="../assets/images/info.svg" />
                                 </span>
                             </label>
@@ -95,7 +97,7 @@
                         <label for="time-range">
                             Time range
                             <span class="tooltip-toggle" tabindex="0"
-                                aria-label="Sets the time range, when you can watch Netflix, defaults to 7 PM to 10 PM">
+                                aria-label="What time to what time do you want to watch Netflix? Defaults to 7 PM to 10 PM">
                                 <img src="../assets/images/info.svg" />
                             </span>
                         </label>
@@ -105,7 +107,7 @@
                             <label for="time-range-start">
                                 Time range start
                                 <span class="tooltip-toggle" tabindex="0"
-                                    aria-label="In system time format, this sets the time of when you can start watching Netflix">
+                                    aria-label="When you can start to watch Netflix">
                                     <img src="../assets/images/info.svg" />
                                 </span>
                             </label>
@@ -115,7 +117,7 @@
                             <label for="time-range-end">
                                 Time range end
                                 <span class="tooltip-toggle" tabindex="0"
-                                    aria-label="In your system time format, this sets the time of when you stop watching Netflix">
+                                    aria-label="When you can no longer stop watching Netflix">
                                     <img src="../assets/images/info.svg" />
                                 </span>
                             </label>
@@ -148,14 +150,11 @@
                         </div>
                     </div>
                     <!-- text area -->
-                    <textarea placeholder="Quotes are separated by ENTER. To credit an author separate the quote and author with a DASH (-). For example...
+                    <textarea placeholder="Each quotes is separated by an ENTER. To add an author, separate the quote and author with a DASH (-). For example...
 
 The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela
 The way to get started is to quit talking and begin doing. - Walt Disney
-Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. - Steve Jobs
 If life were predictable it would cease to be life, and be without flavor. - Eleanor Roosevelt
-If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough. - Oprah Winfrey
-If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success. - James Cameron
 Life is what happens when you're busy making other plans. - John Lennon"></textarea>
                     <!-- options -->
                     <div style="margin-top: 50px;">

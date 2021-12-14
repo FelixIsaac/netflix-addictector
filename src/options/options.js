@@ -154,13 +154,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const { selectedIndex, value } = target;
     
         const tooltip = [
-            'blocks Netflix episode screen every set interval for 30 seconds.',
-            'blocks Netflix episode screen randomly, without a set interval',
-            'blocks Netflix episode screen every set interval for 30 seconds and at random'
+            'Blocks Netflix screen every __MINUTES__ for 30 seconds',
+            'Blocks Netflix screen randomly. Without a fixed __MINUTES__ interval',
+            'Blocks Netflix screen every __MINUTES__ for 30 seconds AND at random timings'
         ][selectedIndex]
+            .replace('__MINUTES__', `${blockInterval.value} mins`)
     
-    
-        blockTypeToolTip.setAttribute('aria-label', `'${value}' type, ${tooltip}`);
+        
+        blockTypeToolTip.setAttribute('aria-label', `'${value}' type: ${tooltip}`);
         blockInterval.disabled = selectedIndex === BlockTypeEnum['RANDOM'];
     }
 
@@ -237,13 +238,15 @@ document.addEventListener('DOMContentLoaded', function () {
             element.addEventListener('change', changed)
 
             element.removeEventListener('input', changed);
-            element.addEventListener('input', changed)
+            element.addEventListener('input', changed);
         });
 
-        function changed() {
+        function changed(e) {
             try {
                 checkErrors();
-                window.onbeforeunload = () => ""
+                window.onbeforeunload = () => "";
+                
+                if (e.target === blockInterval) blockTypeFormLogic(blockType);
             } catch (err) { }
         }
 
