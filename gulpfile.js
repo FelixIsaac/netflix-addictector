@@ -26,35 +26,47 @@ const paths = {
  * 4. Optimize images
  * 5. Replace things (path to files, etc.)
  * 6. Update manifest to match
+ * 7. Zip files
  */
 
 gulp.task('cleanup', function () {
     return del(paths.dist);
-})
+});
 
-gulp.task('pack-js', function () {
+function packJS(src, dist, concatName) {
     return gulp.src(
+        Array.isArray(src)
+            ? src.map((path) => paths.src + path)
+            : paths.src + src
+    )
+        .pipe(gulpif(!!concatName, concat(concatName || '404')))
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.dist + dist));
+}
+
+gulp.task('pack-js', async function () {
+    packJS(
         [
             'scripts/events.js',
             'scripts/tabs.js',
             'scripts/utils.js',
             'scripts/alarm.js'
-        ].map((path) => paths.src + path)
-    )
-        .pipe(concat('background.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.dist))
-        .pipe(gulp.src(
-            [
-                "content.js",
-                "scripts/utils.js",
-                "scripts/timer.js",
-                "scripts/screen-blocker.js"
-            ].map((path) => paths.src + path)
-        ))
-        // .pipe(concat('content.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.dist + "scripts"));
+        ],
+        '', 'background.js'
+    );
+
+    packJS(
+        [
+            "content.js",
+            "scripts/utils.js",
+            "scripts/timer.js",
+            "scripts/screen-blocker.js"
+        ],
+        'scripts'
+    );
+
+    packJS('options/options.js', 'options');
+    packJS('popup/popup.js', 'popup');
 });
 
 gulp.task('pack-css', function () {
