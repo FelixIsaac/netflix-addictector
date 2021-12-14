@@ -5,6 +5,7 @@ const uglify = require('gulp-uglify');
 const autoprefixer = require('gulp-autoprefixer');
 const htmlmin = require('gulp-htmlmin');
 const cleanCSS = require('gulp-clean-css');
+const imagemin = import('gulp-imagemin');
 const gulpif = require('gulp-if');
 const filter = require('gulp-filter');
 const jeditor = require("gulp-json-editor");
@@ -23,8 +24,8 @@ const paths = {
  * 2. Concat files
  * 3. Minify everything (js, css, html)
  * 4. Optimize images
- * 5. Replace things
- * 6. Update manifest
+ * 5. Replace things (path to files, etc.)
+ * 6. Update manifest to match
  */
 
 gulp.task('cleanup', function () {
@@ -81,7 +82,21 @@ gulp.task('pack-html', function () {
         .pipe(gulp.dest(paths.dist));
 });
 
+gulp.task('optimize-images', async function () {
+    const imageOptimizer = await imagemin;
+
+    return gulp.src(paths.src + "/assets/images/*")
+        .pipe(
+            imageOptimizer.default([
+                imageOptimizer.optipng({ optimizationLevel: 7 }),
+                imageOptimizer.svgo()
+            ])
+        )
+        .pipe(gulp.dest(paths.dist + "/assets/images"));
+});
+
 gulp.task('default', gulp.series([
     'cleanup',
-    gulp.parallel(['pack-js', 'pack-css', 'pack-html'])
+    gulp.parallel(['pack-js', 'pack-css', 'pack-html', 'optimize-images']),
+
 ]));
