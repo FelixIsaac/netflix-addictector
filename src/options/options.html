@@ -22,21 +22,21 @@
                 <h2>Limit watch time</h2>
                 <div>
                     <label for="daily-limit">
-                        Daily watch time limit:
-                        <span class="tooltip-toggle" tabindex="0"
-                            aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per day">
-                            <img src="../assets/images/info.svg" />
-                        </span>
+                        Daily watch time limit
+                        <small>
+                            Sets the limit of how much Netflix stream time you're allowed to watch
+                            <strong>in minutes per day</strong>.
+                        </small>
                     </label>
                     <input id="daily-limit" type="number" />
                 </div>
                 <div>
                     <label for="weekly-limit">
-                        Weekly watch time limit:
-                        <span class="tooltip-toggle" tabindex="0"
-                            aria-label="Sets the limit of how much Netflix stream time you're allowed to watch in minutes per week">
-                            <img src="../assets/images/info.svg" />
-                        </span>
+                        Weekly watch time limit
+                        <small>
+                            Sets the limit of how much Netflix stream time you're allowed to watch
+                            <strong>in minutes per week</strong>.
+                        </small>
                     </label>
                     <input id="weekly-limit" type="number" />
                 </div>
@@ -45,83 +45,80 @@
             <section>
                 <h2>Screen block</h2>
                 <div>
+                    <input type="checkbox" id="block-next-epi-btn" />
+                    <label for="block-next-epi-btn">
+                        Remove 'Next Episode' button
+                        <small>
+                            Completely removes all 'Next Episode' button and 'Episode List'.
+                        </small>
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" id="block-next-epi" />
+                    <label for="block-next-epi">
+                        Block next episode
+                        <small>
+                            When the next episode starts, it blocks your
+                            screen for 2 minutes.
+                        </small>
+                    </label>
+                </div>
+                <div class="flex-2">
                     <div>
-                        <input type="checkbox" id="block-next-epi-btn" />
-                        <label for="block-next-epi-btn">
-                            Block next episode button
-                            <span class="tooltip-toggle" tabindex="0"
-                                aria-label="Highly recommended: Completely removes all 'Next Episode' button; including the episode list">
-                                <img src="../assets/images/info.svg" />
-                            </span>
+                        <label for="block-type">
+                            Block type
+                            <small>'Fixed' type, blocks Netflix episode screen every 30 seconds.</small>
                         </label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="block-next-epi" />
-                        <label for="block-next-epi">
-                            Block next episode
-                            <span class="tooltip-toggle" tabindex="0"
-                                aria-label="Highly recommended: When the next episode starts, it blocks your screen for 2 minutes">
-                                <img src="../assets/images/info.svg" />
-                            </span>
-                        </label>
-                    </div>
-                    <div class="flex-2">
-                        <div>
-                            <label for="block-type">
-                                Block type:
-                                <span class="tooltip-toggle" tabindex="0">
-                                    <img src="../assets/images/info.svg" />
-                                </span>
-                            </label>
-                            <select id="block-type">
-                                <option>Fixed</option>
-                                <option>Random</option>
-                                <option>Both</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="block-interval">
-                                Block interval
-                                <span class="tooltip-toggle" tabindex="0"
-                                    aria-label="In every set many minutes, the extension will block the screen">
-                                    <img src="../assets/images/info.svg" />
-                                </span>
-                            </label>
-                            <input id="block-interval" type="number" />
-                        </div>
+                        <select id="block-type">
+                            <option>Fixed</option>
+                            <option>Random</option>
+                            <option>Both</option>
+                        </select>
                     </div>
                     <div>
-                        <input type="checkbox" id="time-range" />
-                        <label for="time-range">
-                            Time range
-                            <span class="tooltip-toggle" tabindex="0"
-                                aria-label="Sets the time range, when you can watch Netflix, defaults to 7 PM to 10 PM">
-                                <img src="../assets/images/info.svg" />
-                            </span>
+                        <label for="block-interval">
+                            Block interval
+                            <small>
+                                In every set many minutes, the extension will block the screen.
+                            </small>
                         </label>
+                        <input id="block-interval" type="number" />
                     </div>
-                    <div class="flex-2">
-                        <div>
-                            <label for="time-range-start">
-                                Time range start
-                                <span class="tooltip-toggle" tabindex="0"
-                                    aria-label="In system time format, this sets the time of when you can start watching Netflix">
-                                    <img src="../assets/images/info.svg" />
-                                </span>
-                            </label>
-                            <input type="time" step="1" id="time-range-start" />
-                        </div>
-                        <div>
-                            <label for="time-range-end">
-                                Time range end
-                                <span class="tooltip-toggle" tabindex="0"
-                                    aria-label="In your system time format, this sets the time of when you stop watching Netflix">
-                                    <img src="../assets/images/info.svg" />
-                                </span>
-                            </label>
-                            <input type="time" step="1" id="time-range-end" />
-                        </div>
+                </div>
+            </section>
+            <hr />
+            <section>
+                <h2>Time range</h2>
+                <div>
+                    <input type="checkbox" id="time-range" />
+                    <label for="time-range">
+                        Enabled
+                        <small>
+                            Sets the time range of when you can watch Netflix.
+                            <i>(Defaults to 7 PM to 10 PM)</i>
+                        </small>
+                    </label>
+                </div>
+                <div class="flex-2">
+                    <div>
+                        <label for="time-range-start">
+                            Time range start
+                            <small>
+                                Time of when you can start watching Netflix.
+                            </small>
+                        </label>
+                        <input type="time" step="1" id="time-range-start" />
                     </div>
+                    <div>
+                        <label for="time-range-end">
+                            Time range end
+                            <small>
+                                Time of when you stop watching Netflix.
+                            </small>
+                        </label>
+                        <input type="time" step="1" id="time-range-end" />
+                    </div>
+                </div>
                 </div>
             </section>
             <hr />

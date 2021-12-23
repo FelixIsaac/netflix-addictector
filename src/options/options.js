@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const blockNextEpisodeBtnCheckbox = document.getElementById('block-next-epi-btn');
     const blockNextEpisodeCheckbox = document.getElementById('block-next-epi');
     const blockType = document.getElementById('block-type');
-    const blockTypeToolTip = document.querySelector('label[for="block-type"] .tooltip-toggle');
+    const blockTypeDescription = document.querySelector('label[for="block-type"] small')
     const blockInterval = document.getElementById('block-interval');
     const resetSettingsBtn = document.getElementById('reset-settings')
     const saveSettingsBtn = document.getElementById('save-settings');
@@ -154,13 +154,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const { selectedIndex, value } = target;
     
         const tooltip = [
-            'blocks Netflix episode screen every set interval for 30 seconds.',
+            'blocks Netflix episode screen every 30 seconds.',
             'blocks Netflix episode screen randomly, without a set interval',
             'blocks Netflix episode screen every set interval for 30 seconds and at random'
         ][selectedIndex]
     
     
-        blockTypeToolTip.setAttribute('aria-label', `'${value}' type, ${tooltip}`);
+        blockTypeDescription.innerText = `'${value}' type, ${tooltip}`;
         blockInterval.disabled = selectedIndex === BlockTypeEnum['RANDOM'];
     }
 

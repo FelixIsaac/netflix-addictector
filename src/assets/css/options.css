@@ -92,63 +92,6 @@ div.flex-2 > * {
   width: calc(50% - 16px);
 }
 
-.tooltip-toggle {
-  cursor: help;
-  position: relative;
-}
-
-.tooltip-toggle img {
-  height: 18px;
-  width: 18px;
-}
-
-.tooltip-toggle::before {
-  position: absolute;
-  top: -80px;
-  left: -80px;
-  background-color: #2b222a;
-  border-radius: 5px;
-  color: #fff;
-  content: attr(aria-label);
-  padding: 1rem;
-  text-transform: none;
-  transition: all 0.5s ease;
-  min-width: 160px;
-  width: 500px;
-}
-
-.tooltip-toggle::after {
-  position: absolute;
-  top: -12px;
-  left: 9px;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #2b222a;
-  content: " ";
-  font-size: 0;
-  line-height: 0;
-  margin-left: -5px;
-  width: 0;
-}
-
-.tooltip-toggle::before,
-.tooltip-toggle::after {
-  color: #efefef;
-  font-family: monospace;
-  font-size: 16px;
-  opacity: 0;
-  pointer-events: none;
-  text-align: center;
-}
-
-.tooltip-toggle:focus::before,
-.tooltip-toggle:focus::after,
-.tooltip-toggle:hover::before,
-.tooltip-toggle:hover::after {
-  opacity: 1;
-  transition: all 0.75s ease;
-}
-
 .error-message,
 .warning-message {
   color: #2c3e50;
@@ -208,4 +151,18 @@ a {
 
 a:visited {
   color: var(--secondary-color);
+}
+
+input[type="checkbox"] + label {
+  margin-left: 8px;
+}
+
+label small {
+  display: block;
+  font-size: 16px;
+}
+
+label + input,
+select {
+  margin-top: 8px;
 }
