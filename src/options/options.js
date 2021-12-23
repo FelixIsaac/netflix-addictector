@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
 
             // change UI
-            fancyEditorBtn.innerHTML = fancyEditorContainer.hidden ? "Switch back to text editor" : "Switch to <i>Fancy editor</i>"
+            fancyEditorBtn.innerHTML = fancyEditorContainer.hidden ? "Use text editor" : "Use <i>Fancy editor</i>"
             customQuotes.hidden = !customQuotes.hidden;
             fancyEditorContainer.hidden = !fancyEditorContainer.hidden;
 
