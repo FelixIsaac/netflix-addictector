@@ -14,13 +14,13 @@
 
 <body>
     <div class="netflix-animation">NETFLIX ADDICTECTOR</div>
-    <main style="display:none">
+    <main style="display: none">
         <h1>Welcome to <span>Netflix Addictector<sup>{version}</sup></span> options page</h1>
         <hr />
         <form>
             <section>
                 <h2>Limit watch time</h2>
-                <div>
+                <div class="option">
                     <label for="daily-limit">
                         Daily watch time limit
                         <small>
@@ -30,7 +30,7 @@
                     </label>
                     <input id="daily-limit" type="number" />
                 </div>
-                <div>
+                <div class="option">
                     <label for="weekly-limit">
                         Weekly watch time limit
                         <small>
@@ -44,17 +44,19 @@
             <hr />
             <section>
                 <h2>Screen block</h2>
-                <div>
-                    <input type="checkbox" id="block-next-epi-btn" />
+                <div class="option">
                     <label for="block-next-epi-btn">
                         Remove 'Next Episode' button
                         <small>
                             Completely removes all 'Next Episode' button and 'Episode List'.
                         </small>
                     </label>
+                    <label class="switch">
+                        <input type="checkbox" id="block-next-epi-btn" />
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <div>
-                    <input type="checkbox" id="block-next-epi" />
+                <div class="option">
                     <label for="block-next-epi">
                         Block next episode
                         <small>
@@ -62,8 +64,12 @@
                             screen for 2 minutes.
                         </small>
                     </label>
+                    <label class="switch">
+                        <input type="checkbox" id="block-next-epi" />
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <div class="flex-2">
+                <div class="option flex-2">
                     <div>
                         <label for="block-type">
                             Block type
@@ -89,8 +95,7 @@
             <hr />
             <section>
                 <h2>Time range</h2>
-                <div>
-                    <input type="checkbox" id="time-range" />
+                <div class="option">
                     <label for="time-range">
                         Enabled
                         <small>
@@ -98,8 +103,12 @@
                             <i>(Defaults to 7 PM to 10 PM)</i>
                         </small>
                     </label>
+                    <label class="switch">
+                        <input type="checkbox" id="time-range" />
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <div class="flex-2">
+                <div class="option flex-2">
                     <div>
                         <label for="time-range-start">
                             Time range start
@@ -135,6 +144,13 @@
                     </div>
                 </section>
                 <section id="quotes-custom" hidden>
+                    <div style="margin-bottom: 36px;">
+                        <label for="quotes-custom-enable">Enable Custom Quotes</label>
+                        <label class="switch">
+                            <input type="checkbox" id="quotes-custom-enable" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                     <div id="fancy-editor-container">
                         <div class="flex-2" id="fancy-editor--new-quote">
                             <input type="text" style="width: 70%; text-overflow: ellipsis;"
@@ -156,21 +172,20 @@ If you set your goals ridiculously high and it's a failure, you will fail above 
 Life is what happens when you're busy making other plans. - John Lennon"></textarea>
                     <!-- options -->
                     <div style="margin-top: 50px;">
-                        <button class="secondary" id="fancy-editor">Switch to <i>Fancy editor</i></button>
+                        <button class="secondary" id="fancy-editor">Use text editor</button>
                         <button class="primary" data-name="quote-type-toggler">Back to Generated Quotes</button>
                         <button id="parse-quotes" hidden>Parse quotes</button>
-                        <input type="checkbox" id="quotes-custom-enable" />
-                        <label for="quotes-custom-enable">Enable Custom Quotes</label>
                     </div>
                 </section>
             </section>
             <hr />
             <div class="button-group">
-                <a class="secondary" href="https://www.comparitech.com/tv-streaming/time-spent-streaming"
-                    target="_blank">Examine your Netflix viewing history</a>
-                <a href="https://forms.gle/D2fJi82TjC1UtVRv8" target="_blank"
-                    style="margin: 0 16px; font-size: 13px;">Feedback
-                    or bug report?</a>
+                <a href="https://www.comparitech.com/tv-streaming/time-spent-streaming" target="_blank">
+                    Examine your Netflix viewing history
+                </a>
+                <a href="https://forms.gle/D2fJi82TjC1UtVRv8" target="_blank">
+                    Feedback or bug report?
+                </a>
                 <button class="secondary" id="theme-toggler">Turn off the lights</button>
                 <button class="secondary" id="reset-settings">Reset settings</button>
                 <button class="primary" id="save-settings">Save settings</button>

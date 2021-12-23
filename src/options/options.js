@@ -364,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             quotesGeneratedSection.hidden = !quotesGeneratedSection.hidden;
             quotesCustomSection.hidden = !quotesCustomSection.hidden;
+            renderFancyEditor({ quotes: parseQuotes(customQuotes.value) });
         }
     }
 
