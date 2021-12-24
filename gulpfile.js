@@ -140,8 +140,8 @@ gulp.task('remove-unnecessary-files', async function () {
 });
 
 gulp.task('zip', async function (browserName) {
-    gulp.src(paths.dist)
-        .pipe(zip(distFileName(browserName, 'zip')))
+    gulp.src(paths.dist + '**')
+        .pipe(zip(distFileName('chrome', 'zip')))
         .pipe(gulp.dest(paths.build));
 });
 
