@@ -13,6 +13,57 @@ const BlockTypeEnum = Object.freeze({
     BOTH: 2
 });
 
+const initOptions = {
+    daily_limit: 60, // in minutes
+    weekly_limit: 500, // in minutes
+    time_range: {
+        enabled: true,
+        start: '19:00',
+        end: '22:00'
+    },
+    block_type: 0, // enum: FIXED: 0, RANDOM: 0, BOTH: 0
+    block_interval: 10, // in minutes
+    block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button
+    block_next_episode: true, // show s block screen before an episode starts
+    custom_quotes: {
+        enabled: false,
+        quotes: []
+    },
+    enabled_quotes: [
+        "age-quotes.json",
+        "amazing-quotes.json",
+        "attitude-quotes.json",
+        "binge-quotes.json",
+        "business-quotes.json",
+        "chance-quotes.json",
+        "change-quotes.json",
+        "courage-quotes.json",
+        "dreams-quotes.json",
+        "experience-quotes.json",
+        "failure-quotes.json",
+        "great-quotes.json",
+        "happiness-quotes.json",
+        "health-quotes.json",
+        "history-quotes.json",
+        "inspirational-quotes.json",
+        "intelligence-quotes.json",
+        "life-quotes.json",
+        "morning-quotes.json",
+        "motivational-quotes.json",
+        "positive-quotes.json",
+        "quotes.json",
+        "sad-quotes.json",
+        "success-quotes.json",
+        "sympathy-quotes.json",
+        "time-quotes.json",
+        "typefitCOM-quotes.json",
+        "wisdom-quotes.json",
+        "work-quotes.json"
+    ], // array of enabled quotes
+    quotes_index: {} // key, value object; key representing quote JSON and value is number after index
+};
+
+let changedOptions = { ...initOptions };
 let loadingQuotes = true;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -62,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // insert motivational quote
                     ];
 
-                    
+
                     if (isBlockTypeDaily) {
                         customMessages.push('Your daily limit has exceeded');
                         dailyLimit.value = daily_limit;
@@ -70,35 +121,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         customMessages.push('Your weekly limit has exceeded');
                         weeklyLimit.value = weekly_limit;
                     }
-                    
+
                     alert([...customMessages, ...messages].join('\n\n'));
                     save('Reverted watch time limit changes and saved other extension settings');
                 });
             } else save();
 
             function save(message = 'Saved extension settings') {
-                const saving = {
-                    daily_limit: Math.max(Number(dailyLimit.value) || 0, 1),
-                    weekly_limit: Math.max(Number(weeklyLimit.value) || 0, 1),
-                    time_range: {
-                        enabled: timeRangeCheck.checked,
-                        end: timeRangeEnd.value,
-                        start: timeRangeStart.value
-                    },
-                    block_type: blockType.selectedIndex,
-                    block_interval: Number(blockInterval.value),
-                    block_next_episode_button: blockNextEpisodeBtnCheckbox.checked,
-                    block_next_episode: blockNextEpisodeCheckbox.checked,
-                    custom_quotes: {
-                        enabled: quotesCustomCheckbox.checked,
-                        quotes: parseQuotes(customQuotes.value)
-                    }
-                };
+                updateData();
+                const saving = { ...changedOptions };
 
-                if (!loadingQuotes) {
-                    saving.enabled_quotes = [...document.getElementsByClassName('quote-category')].filter(({ checked }) => checked).map(({ dataset }) => dataset.key)
-                };
-
+                /**
+                 * Disrupt saving on errors
+                 */
                 if (dailyLimit.value > weeklyLimit.value / 7) {
                     delete saving.daily_limit;
                     message = 'Saved extension settings except for settings with errors';
@@ -106,10 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (fancyEditorNewQuote.value || fancyEditorNewQuoteAuthor.value) {
-                    return alert([
-                        'adfasdfsadf',
-                        'v2',
-                    ])
+                    return alert('You did not save your custom quote')
                 }
 
                 chrome.storage.sync.get(null, (data) => {
@@ -126,12 +158,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateHTML(onUpdate) {
         chrome.storage.sync.get(null, async (data) => {
+            // Update data
+            changedOptions = data;
+
             /**
              * Limit watch time section
              */
             dailyLimit.value = data.daily_limit;
             weeklyLimit.value = data.weekly_limit;
-    
+
             /**
              * Screen block section
              */
@@ -139,15 +174,26 @@ document.addEventListener('DOMContentLoaded', function () {
             blockNextEpisodeCheckbox.checked = data.block_next_episode;
             blockType.selectedIndex = data.block_type;
             blockInterval.value = data.block_interval;
+
+            /**
+             * Time range section
+             */
             timeRangeCheck.checked = data.time_range.enabled;
             timeRangeStart.value = data.time_range.start;
             timeRangeEnd.value = data.time_range.end;
+
+            /**
+             * Quotes
+             */
             quotesCustomCheckbox.checked = data.custom_quotes.enabled;
 
             customQuotes.value = data.custom_quotes.quotes
                 ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
                 ?.join('\n');
-    
+
+            /**
+             * Rendering components
+             */
             blockTypeFormLogic(blockType);
             timeRangeFormLogic(timeRangeCheck);
             await renderQuotes(data.enabled_quotes);
@@ -159,14 +205,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function blockTypeFormLogic(target) {
         const { selectedIndex, value } = target;
-    
+
         const tooltip = [
             'blocks Netflix episode screen every 30 seconds.',
             'blocks Netflix episode screen randomly, without a set interval',
             'blocks Netflix episode screen every set interval for 30 seconds and at random'
         ][selectedIndex]
-    
-    
+
+
         blockTypeDescription.innerText = `'${value}' type, ${tooltip}`;
         blockInterval.disabled = selectedIndex === BlockTypeEnum['RANDOM'];
     }
@@ -180,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showMessage(element, messageString, type, options) {
         const { parentElement } = element;
         const messageClass = `${type.toLowerCase()}-message`;
-        
+
         // find duplicates
         const duplicates = [...parentElement.children]
             .filter(children => (
@@ -197,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return;
         }
-       
+
         const error = document.createElement('div');
         const message = document.createElement('p');
 
@@ -235,7 +281,6 @@ document.addEventListener('DOMContentLoaded', function () {
             timeRangeCheck,
             timeRangeStart,
             timeRangeEnd,
-            customQuotes,
             quotesCustomCheckbox,
             ...document.getElementsByClassName('quote-category')
         ].forEach((element) => {
@@ -248,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function changed() {
             try {
+                updateData();
                 checkErrors();
                 window.onbeforeunload = () => ""
             } catch (err) { }
@@ -261,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         blockType.removeEventListener('change', ({ target }) => blockTypeFormLogic(target));
         blockType.addEventListener('change', ({ target }) => blockTypeFormLogic(target));
-        
+
         timeRangeCheck.removeEventListener('change', ({ target }) => timeRangeFormLogic(target));
         timeRangeCheck.addEventListener('change', ({ target }) => timeRangeFormLogic(target));
 
@@ -273,13 +319,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.querySelectorAll('button[data-name="quote-type-toggler"]')
             .forEach((button) => button.addEventListener('click', toggleQuoteTypes));
-        
-        themeTogglerBtn.onclick = function(e) {
+
+        customQuotes.onchange = () => {
+            changedOptions.custom_quotes.quotes = parseQuotes(customQuotes.value);
+        };
+
+        themeTogglerBtn.onclick = function (e) {
             e.preventDefault();
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const newTheme = currentTheme === "dark" ? "light" : "dark"
             const newBtnName = currentTheme === "dark" ? "Turn off the lights" : "Turn on the lights"
-            
+
             document.documentElement.setAttribute("data-theme", newTheme);
             themeTogglerBtn.innerHTML = newBtnName;
         }
@@ -293,19 +343,14 @@ document.addEventListener('DOMContentLoaded', function () {
             fancyEditorContainer.hidden = !fancyEditorContainer.hidden;
 
             if (fancyEditorContainer.hidden) {
-                chrome.storage.sync.get('custom_quotes', ({ custom_quotes }) => {
-                    customQuotes.value = custom_quotes.quotes
-                        ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
-                        ?.join('\n');
-                })
+                customQuotes.value = changedOptions.custom_quotes.quotes
+                    ?.map(({ quote, author }) => `${quote}${author ? ` - ${author}` : ''}`)
+                    ?.join('\n');
             } else {
                 // change data from text to fancy
                 const quotes = parseQuotes(customQuotes.value);
-        
-                chrome.storage.sync.set({
-                    custom_quotes: { quotes }
-                });
-        
+
+                changedOptions.custom_quotes.quotes = quotes;
                 renderFancyEditor({ quotes })
             }
         }
@@ -313,37 +358,35 @@ document.addEventListener('DOMContentLoaded', function () {
         fancyEditorAddQuote.onclick = function (e) {
             e.preventDefault();
 
-            // change data from text to fancy
-            const quotes = parseQuotes(customQuotes.value);
-            
-            quotes.push({
+            changedOptions.custom_quotes.quotes.push({
                 quote: fancyEditorNewQuote.value,
                 author: fancyEditorNewQuoteAuthor.value
             })
-        
-            chrome.storage.sync.set({
-                custom_quotes: { quotes }
+
+            renderFancyEditor({
+                quotes: changedOptions.custom_quotes.quotes
             });
-        
-            renderFancyEditor({ quotes });
 
             fancyEditorNewQuote.value = "";
             fancyEditorNewQuoteAuthor.value = "";
+
+            updateData();
+            checkErrors();
         }
 
         if (debugMode) {
             // debug UI
             const parseQuotesBtn = document.getElementById('parse-quotes');
             parseQuotesBtn.hidden = false;
-            
+
             parseQuotesBtn.onclick = function (e) {
                 e.preventDefault();
-                
+
                 const result = parseQuotes(customQuotes.value);
                 console.log(result);
             }
         }
-        
+
         function regenerateQuotes(e, confirmed = false) {
             e?.preventDefault();
 
@@ -363,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function resetSettingsFunc(e) {
             e.preventDefault();
             const confirmReset = confirm('Do you really want to reset your settings?');
-            
+
             if (!confirmReset) return;
             chrome.runtime.sendMessage({ type: 'reset-settings' }, () => {
                 window.onbeforeunload = null;
@@ -373,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function toggleQuoteTypes(e) {
             e.preventDefault();
-            
+
             quotesGeneratedSection.hidden = !quotesGeneratedSection.hidden;
             quotesCustomSection.hidden = !quotesCustomSection.hidden;
             renderFancyEditor({ quotes: parseQuotes(customQuotes.value) });
@@ -403,14 +446,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         {
             const message = 'It is not recommended to set weekly watch time limit to more than 10 hours per week';
-           
+
             if (Number(weeklyLimit.value) >= 600) {
                 showWarning(weeklyLimit.parentElement, message, true);
             } else {
                 removeMessage(weeklyLimit.parentElement, message);
             }
         }
-        
+
         {
             const warningMessage = [
                 'It is not recommended to set more than 15 minutes per Netflix screen block/rest',
@@ -421,6 +464,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 showWarning(blockInterval, warningMessage, true)
             } else {
                 removeMessage(blockInterval, warningMessage);
+            }
+        }
+
+        {
+            const message = 'You must have at least 1 generate quote OR custom quote';
+
+            if (
+                !changedOptions.enabled_quotes.length
+                && !changedOptions.custom_quotes.enabled
+                && !changedOptions.custom_quotes.quotes.length
+            ) {
+                showError(quotesGeneratedSection, message, true)
+            } else {
+                removeMessage(quotesGeneratedSection, message);
             }
         }
     }
@@ -438,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function () {
             //   <input type="checkbox" class="quote-category" data-key="" id="quotes-category"/>
             //   <label for="quotes-category"></label>
             // </div>
-            
+
             const quoteContainer = document.createElement('div');
             const input = document.createElement('input');
             const label = document.createElement('label');
@@ -471,8 +528,9 @@ document.addEventListener('DOMContentLoaded', function () {
         [...fancyEditorContainer.children]
             .filter((child) => child['data-name'] === "fancy-editor-render")
             .forEach((child) => child.remove());
-        
-        custom_quotes.quotes.reverse().forEach((quote) => {
+
+        const quotesToRender = [...custom_quotes.quotes];
+        quotesToRender.reverse().forEach((quote) => {
             // <div class="flex-2" style="margin: 14px 0 14px 0;">
             //     <input type="text" style="width: 70%; text-overflow: ellipsis;" placeholder="Quote/Message"/>
             //     <input type="text" style="width: 19%; text-overflow: ellipsis;" placeholder="Author (optional)"/>
@@ -483,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const quoteInput = document.createElement('input');
             const authorInput = document.createElement('input');
             const actionBtn = document.createElement('button');
-            
+
             quoteInput.type = "text";
             quoteInput.style = "width: 70%; text-overflow: ellipsis;";
             quoteInput.placeholder = "Quote/Message";
@@ -527,17 +585,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     custom_quotes.quotes[quoteIndex].quote = quoteInput.value;
                     custom_quotes.quotes[quoteIndex].author = authorInput.value;
 
-                    chrome.storage.sync.set({ custom_quotes });
+                    changedOptions.custom_quotes.quotes = custom_quotes.quotes;
 
                     // back to delete button
                     actionBtnToDelete();
+                    updateData();
+                    checkErrors();
                 }
             }
 
             function actionBtnToDelete() {
                 actionBtn.className = "secondary"
                 actionBtn.innerText = "DELETE";
-                
+
                 actionBtn.onclick = (e) => {
                     e.preventDefault();
 
@@ -553,13 +613,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 quoteToDelete?.author !== quote?.author
             ));
 
-            chrome.storage.sync.set({
-                custom_quotes: {
-                    ...custom_quotes,
-                    quotes: updatedQuotes
-                }
-            })
-        }
+            changedOptions.custom_quotes.quotes = updatedQuotes
+            updateData();
+            checkErrors();
+        };
+    }
+
+    function updateData() {
+        changedOptions.daily_limit = Math.max(Number(dailyLimit.value) || 0, 1);
+        changedOptions.weekly_limit = Math.max(Number(weeklyLimit.value) || 0, 1);
+        changedOptions.block_type = blockType.selectedIndex;
+        changedOptions.block_interval = Number(blockInterval.value);
+        changedOptions.block_next_episode_button = blockNextEpisodeBtnCheckbox.checked;
+        changedOptions.block_next_episode = blockNextEpisodeCheckbox.checked;
+
+        changedOptions.time_range = {
+            enabled: timeRangeCheck.checked,
+            end: timeRangeEnd.value,
+            start: timeRangeStart.value
+        },
+
+            changedOptions.custom_quotes.enabled = quotesCustomCheckbox.checked;
+
+        if (!loadingQuotes) {
+            changedOptions.enabled_quotes = [...document.getElementsByClassName('quote-category')]
+                .filter(({ checked }) => checked)
+                .map(({ dataset }) => dataset.key);
+        };
     }
 
     // version shown

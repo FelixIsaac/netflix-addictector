@@ -59,7 +59,7 @@ const initialData = {
 chrome.runtime.onInstalled.addListener(startup);
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  switch(message.type) {
+  switch (message.type) {
     case 'background-log':
       console[message.consoleType || 'log'](...message.args);
       break;
@@ -81,13 +81,13 @@ chrome.runtime.onStartup.addListener(function () {
 })
 
 function startup() {
-    // set init data
+  // set init data
   chrome.storage.sync.get(Object.keys(initialData), (data) => {
     // Do not override initialized day history data on install
     for (let key in initialData) {
       if (data[key] === undefined || data[key] === null) {
         chrome.storage.sync.set({ [key]: initialData[key] });
-      } 
+      }
     }
   });
 
@@ -97,12 +97,12 @@ function startup() {
     for (let key in initialOptions) {
       if (options[key] === undefined || options[key] === null) {
         chrome.storage.sync.set({ [key]: initialOptions[key] });
-      } 
+      }
     }
   });
 
   // get quotes
   generateQuotes(() => console.info('Generated quotes'));
 
-  chrome.runtime.setUninstallURL('https://forms.gle/D2fJi82TjC1UtVRv8', () => {});
+  chrome.runtime.setUninstallURL('https://forms.gle/D2fJi82TjC1UtVRv8', () => { });
 }
