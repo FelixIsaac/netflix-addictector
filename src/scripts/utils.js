@@ -1,6 +1,6 @@
 function log(consoleType = console.log, ...args) {
     if (!(chrome && chrome.runtime)) return;
-    
+
     if (typeof consoleType !== 'function') {
         args.unshift(consoleType);
         consoleType = console.log;
@@ -35,8 +35,8 @@ function msToDate(ms) {
  * @param {string} str Custom padding
  * @returns {string}
  */
-function padLeft(nr, n, str){
-    return Array(n-String(nr).length+1).join(str||'0')+nr;
+function padLeft(nr, n, str) {
+    return Array(n - String(nr).length + 1).join(str || '0') + nr;
 }
 
 /**
@@ -52,7 +52,7 @@ function resetSettings() {
  */
 function populateData(dayCount = 100) {
     const newDays = Array(dayCount).fill().map((d, i) => ({
-        day: Date.now() - (i*8.64e+7),
+        day: Date.now() - (i * 8.64e+7),
         minutes_spent: Math.floor(Math.random() * 60) * 1.3
     })).reverse();
 
@@ -65,10 +65,10 @@ function populateData(dayCount = 100) {
  */
 function checkOverLimit(callback) {
     chrome.storage.sync.get(['daily_limit', 'weekly_limit', 'current_day', 'days'], ({
-      daily_limit,
-      weekly_limit,
-      current_day,
-      days
+        daily_limit,
+        weekly_limit,
+        current_day,
+        days
     }) => {
         const weekMinutes = [...days.splice(days.length - 6), current_day]
             .map(days => days.minutes_spent)
@@ -76,7 +76,7 @@ function checkOverLimit(callback) {
 
         const overDaily = (current_day.minutes_spent || 0) >= daily_limit
         const overWeekly = (weekMinutes || 0) >= weekly_limit;
-        
+
         callback(overDaily || overWeekly, `You have exceeded your ${overDaily ? 'daily' : 'weekly'} limit of Netflix`);
     });
 }
@@ -84,7 +84,7 @@ function checkOverLimit(callback) {
 function checkInRange(callback) {
     chrome.storage.sync.get('time_range', ({ time_range }) => {
         let reason;
-        const leftRange = Math.sign(toMin(time_range.end) - toMin()) >= 0 
+        const leftRange = Math.sign(toMin(time_range.end) - toMin()) >= 0
         const rightRange = Math.sign(toMin(time_range.start) - toMin()) <= 0;
         const inRange = leftRange && rightRange;
 
@@ -93,7 +93,7 @@ function checkInRange(callback) {
                 .toLocaleTimeString();
 
             reason = `It is ${leftRange ? `not ${date} yet` : `past ${date} already :(`}`;
-        } 
+        }
 
         callback(!time_range.enabled || inRange, reason);
     });
@@ -106,7 +106,7 @@ function checkInRange(callback) {
 
 function generateQuotes(callback) {
     chrome.storage.sync.get(['enabled_quotes', 'quotes_index'], async ({ enabled_quotes, quotes_index }) => {
-        if (!enabled_quotes) return;
+        if (!enabled_quotes.length) return;
 
         const url = "https://netflix-addictector-api.herokuapp.com/quotes/fromcategories";
         const limit = Math.ceil(30 / enabled_quotes.length) || 1;
@@ -120,14 +120,14 @@ function generateQuotes(callback) {
         const options = {
             method: 'POST',
             headers: {
-                'Accept': 'applcation/json',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ categories })
         }
 
         const { quotes, errors } = await (await fetch(url, options)).json();
-        const afterOverflowErrors = errors.filter(({ errorCode }) => errorCode === 3);
+        const afterOverflowErrors = errors?.filter(({ errorCode }) => errorCode === 3);
 
         if (afterOverflowErrors.length) {
             // no more quotes in the "?after" index, reset index
@@ -156,20 +156,20 @@ function getQuote(callback) {
     chrome.storage.sync.get('custom_quotes', async ({ custom_quotes }) => {
         if (custom_quotes.enabled && Math.random() > 0.8 && custom_quotes.quotes.length) {
             const unseenQuotes = custom_quotes.quotes.filter(({ seen }) => !seen);
-    
+
             // mark all as unseen if all is seen
             if (!unseenQuotes.length) {
                 custom_quotes.quotes.forEach(quote => {
                     quote.seen = false;
                 });
-    
+
                 chrome.storage.sync.set({ custom_quotes });
                 return getQuote(callback);
             };
-    
+
             const randomIndex = Math.floor(Math.random() * unseenQuotes.length);
             const randomQuote = unseenQuotes[randomIndex];
-    
+
             custom_quotes.quotes[custom_quotes.quotes.findIndex(({ quote }) => quote === randomQuote.quote)].seen = true; // mark quote as seen
             chrome.storage.sync.set({ custom_quotes });
             callback({ ...randomQuote, custom: true });
@@ -177,15 +177,15 @@ function getQuote(callback) {
             chrome.storage.local.get(['quotes'], async ({ quotes }) => {
                 // generate quotes if none in local storage, else gives a random quote
                 if (!quotes || !quotes?.length) return generateQuotes(() => getQuote(callback));
-        
+
                 const unseenQuotes = quotes.filter(({ seen }) => !seen);
-        
+
                 // regenerates quotes if all is seen
                 if (!unseenQuotes.length) return generateQuotes(() => getQuote(callback));
-        
+
                 const randomIndex = Math.floor(Math.random() * unseenQuotes.length);
                 const randomQuote = unseenQuotes[randomIndex];
-        
+
                 quotes[quotes.findIndex(({ quote }) => quote === randomQuote.quote)].seen = true; // mark quote as seen
                 chrome.storage.local.set({ quotes });
                 callback(randomQuote);
@@ -204,7 +204,7 @@ function parseQuotes(text) {
         if (m.index === regex.lastIndex) {
             regex.lastIndex++;
         }
-        
+
         const newQuote = {
             quote: (m[1] || m[4]).trim(),
             author: m[3]?.trim() || '',

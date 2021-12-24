@@ -140,6 +140,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
+                if (
+                    !changedOptions.enabled_quotes.length
+                    && !changedOptions.custom_quotes.enabled
+                    && !changedOptions.custom_quotes.quotes.length
+                ) {
+                    return alert('There are settings with errors. Failed to save settings');
+                }
+
                 if (fancyEditorNewQuote.value || fancyEditorNewQuoteAuthor.value) {
                     return alert('You did not save your custom quote')
                 }
