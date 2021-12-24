@@ -1,3 +1,9 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 :root {
   --background-color: #f5f5f1;
   --text-color: #e50914;
@@ -59,6 +65,25 @@ input,
 select {
   font-size: 21px;
   width: 99%;
+  display: table-cell;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  margin-top: 6;
+  border-radius: 4px;
+}
+
+input[type="checkbox"] + label {
+  margin-left: 8px;
+}
+
+label small {
+  display: block;
+  font-size: 16px;
+}
+
+label + input,
+select {
+  margin-top: 6px;
 }
 
 /* Double-sized Checkboxes */
@@ -92,6 +117,7 @@ div.flex-2 > * {
   font-weight: bolder;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .error-message::before,
@@ -144,20 +170,6 @@ a {
 
 a:visited {
   color: var(--secondary-color);
-}
-
-input[type="checkbox"] + label {
-  margin-left: 8px;
-}
-
-label small {
-  display: block;
-  font-size: 16px;
-}
-
-label + input,
-select {
-  margin-top: 8px;
 }
 
 .switch {
@@ -217,4 +229,69 @@ input:checked + .slider:before {
   margin: 32px 0;
   padding: 16px;
   background-color: #e6e6e6;
+}
+
+.input-group-addon {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.input-group input {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 100%;
+  display: table-cell;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  margin: 0;
+}
+
+.suffix input {
+  border-radius: 4px 0px 0px 4px;
+}
+
+.suffix .input-group-addon {
+  border-left: 0;
+  border-radius: 0px 4px 4px 0px;
+}
+
+.prefix input {
+  border-radius: 0px 4px 4px 0px;
+}
+
+.prefix .input-group-addon {
+  border-right: 0;
+  border-radius: 4px 0px 0px 4px;
+}
+
+.presuffix input {
+  border-radius: 0px;
+}
+
+.input-group-addon.prefix {
+  border-radius: 4px 0px 0px 4px;
+  border-right: 0;
+}
+
+.input-group-addon.suffix {
+  border-radius: 0px 4px 4px 0px;
+  border-left: 0;
+}
+
+.input-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+  margin-top: 6px;
 }

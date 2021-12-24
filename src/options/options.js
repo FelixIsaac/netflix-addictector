@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
         checkOverLimit((overLimit, reason) => {
             // prevents user from increasing limit when limit is reached
             if (overLimit) {
-                
                 chrome.storage.sync.get(['daily_limit', 'weekly_limit'], ({ daily_limit, weekly_limit }) => {
                     if (daily_limit === Number(dailyLimit?.value) && weekly_limit === Number(weeklyLimit?.value)) return save();
                     let customMessages = [];
@@ -74,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     alert([...customMessages, ...messages].join('\n\n'));
                     save('Reverted watch time limit changes and saved other extension settings');
-                })
+                });
             } else save();
 
             function save(message = 'Saved extension settings') {
@@ -386,9 +385,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const message = 'Daily limit (multiplied by 7) cannot exceed weekly limit'
 
             if (dailyLimit.value > weeklyLimit.value / 7) {
-                showError(dailyLimit, message, true);
+                showError(dailyLimit.parentElement, message, true);
             } else {
-                removeMessage(dailyLimit, message);
+                removeMessage(dailyLimit.parentElement, message);
             }
         }
 
@@ -396,9 +395,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const message = 'It is not recommended to set daily watch time limit to more than 2 hours per day';
 
             if (Number(dailyLimit.value) >= 120) {
-                showWarning(dailyLimit, message, true);
+                showWarning(dailyLimit.parentElement, message, true);
             } else {
-                removeMessage(dailyLimit, message);
+                removeMessage(dailyLimit.parentElement, message);
             }
         }
 
@@ -406,9 +405,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const message = 'It is not recommended to set weekly watch time limit to more than 10 hours per week';
            
             if (Number(weeklyLimit.value) >= 600) {
-                showWarning(weeklyLimit, message, true);
+                showWarning(weeklyLimit.parentElement, message, true);
             } else {
-                removeMessage(weeklyLimit, message);
+                removeMessage(weeklyLimit.parentElement, message);
             }
         }
         
