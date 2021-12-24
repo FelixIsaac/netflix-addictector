@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const [customQuotes] = document.getElementsByTagName('textarea');
     const fancyEditorBtn = document.getElementById('fancy-editor');
     const fancyEditorContainer = document.getElementById('fancy-editor-container');
+    const quoteSettings = document.getElementById('quote-settings');
     const [fancyEditorNewQuote, fancyEditorNewQuoteAuthor, fancyEditorAddQuote]
         = document.getElementById("fancy-editor--new-quote").children;
 
@@ -103,6 +104,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     delete saving.daily_limit;
                     message = 'Saved extension settings except for settings with errors';
                     return;
+                }
+
+                if (fancyEditorNewQuote.value || fancyEditorNewQuoteAuthor.value) {
+                    return alert([
+                        'adfasdfsadf',
+                        'v2',
+                    ])
                 }
 
                 chrome.storage.sync.get(null, (data) => {
@@ -229,8 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timeRangeStart,
             timeRangeEnd,
             customQuotes,
-            fancyEditorNewQuote,
-            fancyEditorNewQuoteAuthor,
+            quotesCustomCheckbox,
             ...document.getElementsByClassName('quote-category')
         ].forEach((element) => {
             element.removeEventListener('change', changed);
@@ -258,6 +265,12 @@ document.addEventListener('DOMContentLoaded', function () {
         
         timeRangeCheck.removeEventListener('change', ({ target }) => timeRangeFormLogic(target));
         timeRangeCheck.addEventListener('change', ({ target }) => timeRangeFormLogic(target));
+
+        quoteSettings.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.target.remove();
+            document.getElementById('quotes').hidden = false;
+        })
 
         document.querySelectorAll('button[data-name="quote-type-toggler"]')
             .forEach((button) => button.addEventListener('click', toggleQuoteTypes));

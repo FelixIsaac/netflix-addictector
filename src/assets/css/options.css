@@ -44,16 +44,8 @@ form {
   text-align: left;
 }
 
-form section {
+form > section {
   margin: 50px 0;
-}
-
-form section div {
-  margin: 16px 0;
-}
-
-form section h2 {
-  margin: 24px 0;
 }
 
 label {
@@ -219,4 +211,10 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+.option {
+  margin: 32px 0;
+  padding: 16px;
+  background-color: #e6e6e6;
 }

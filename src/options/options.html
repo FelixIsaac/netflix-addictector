@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/index.css">
     <link rel="stylesheet" href="../assets/css/options.css">
     <link rel="stylesheet" href="../assets/css/animation.css" id="animation-css">
@@ -41,8 +44,8 @@
                     <input id="weekly-limit" type="number" />
                 </div>
             </section>
-            <hr />
             <section>
+                <hr />
                 <h2>Screen block</h2>
                 <div class="option">
                     <label for="block-next-epi-btn">
@@ -92,8 +95,8 @@
                     </div>
                 </div>
             </section>
-            <hr />
             <section>
+                <hr />
                 <h2>Time range</h2>
                 <div class="option">
                     <label for="time-range">
@@ -130,53 +133,65 @@
                 </div>
                 </div>
             </section>
-            <hr />
             <section>
+                <hr />
                 <h2>Quotes</h2>
-                <section id="quotes-generated">
-                    <div id="quotes-container">
-                        <!-- quotes category content -->
-                        <i style="font-size: 20px;">Loading quotes options...</i>
-                    </div>
-                    <div style="margin-top: 50px;">
-                        <button class="secondary" id="regenerate-quotes">Force regenerate quotes</button>
-                        <button class="primary" data-name="quote-type-toggler">Custom Quotes (beta)</button>
-                    </div>
-                </section>
-                <section id="quotes-custom" hidden>
-                    <div style="margin-bottom: 36px;">
-                        <label for="quotes-custom-enable">Enable Custom Quotes</label>
-                        <label class="switch">
-                            <input type="checkbox" id="quotes-custom-enable" />
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div id="fancy-editor-container">
-                        <div class="flex-2" id="fancy-editor--new-quote">
-                            <input type="text" style="width: 70%; text-overflow: ellipsis;"
-                                placeholder="Quote/Message" />
-                            <input type="text" style="width: 19%; text-overflow: ellipsis;"
-                                placeholder="Author (optional)" />
-                            <button class="primary" style="width: 100px">Add</button>
+                <div style="text-align: center;">
+                    <button id="quote-settings" class="primary">
+                        Show quotes settings
+                    </button>
+                </div>
+                <div id="quotes" hidden>
+                    <section id="quotes-generated">
+                        <div id="quotes-container">
+                            <!-- quotes category content -->
+                            <i style="font-size: 20px;">Loading quotes options...</i>
                         </div>
-                    </div>
-                    <!-- text area -->
-                    <textarea hidden placeholder="Quotes are separated by ENTER. To credit an author separate the quote and author with a DASH (-). For example...
+                        <div style="margin-top: 50px;">
+                            <button class="secondary" id="regenerate-quotes">Force regenerate quotes</button>
+                            <button class="primary" data-name="quote-type-toggler">Custom Quotes (beta)</button>
+                        </div>
+                    </section>
+                    <section id="quotes-custom" hidden>
+                        <!-- fancy editor -->
+                        <div id="fancy-editor-container">
+                            <div class="flex-2" id="fancy-editor--new-quote">
+                                <input type="text" style="width: 70%; text-overflow: ellipsis;"
+                                    placeholder="Quote/Message" />
+                                <input type="text" style="width: 19%; text-overflow: ellipsis;"
+                                    placeholder="Author (optional)" />
+                                <button class="primary" style="width: 100px">Add</button>
+                            </div>
+                        </div>
 
-The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela
-The way to get started is to quit talking and begin doing. - Walt Disney
-Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. - Steve Jobs
-If life were predictable it would cease to be life, and be without flavor. - Eleanor Roosevelt
-If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough. - Oprah Winfrey
-If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success. - James Cameron
-Life is what happens when you're busy making other plans. - John Lennon"></textarea>
-                    <!-- options -->
-                    <div style="margin-top: 50px;">
-                        <button class="secondary" id="fancy-editor">Use text editor</button>
-                        <button class="primary" data-name="quote-type-toggler">Back to Generated Quotes</button>
-                        <button id="parse-quotes" hidden>Parse quotes</button>
-                    </div>
-                </section>
+                        <!-- text area -->
+                        <textarea hidden placeholder="Quotes are separated by ENTER. To credit an author separate the quote and author with a DASH (-). For example...
+    
+    The greatest glory in living lies not in never falling, but in rising every time we fall. - Nelson Mandela
+    The way to get started is to quit talking and begin doing. - Walt Disney
+    Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. - Steve Jobs
+    If life were predictable it would cease to be life, and be without flavor. - Eleanor Roosevelt
+    If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough. - Oprah Winfrey
+    If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success. - James Cameron
+    Life is what happens when you're busy making other plans. - John Lennon"></textarea>
+
+                        <!-- custom quote option -->
+                        <div class="option">
+                            <label for="quotes-custom-enable">Enable Custom Quotes</label>
+                            <label class="switch">
+                                <input type="checkbox" id="quotes-custom-enable" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- options -->
+                        <div style="margin-top: 50px;">
+                            <button class="secondary" id="fancy-editor">Use text editor</button>
+                            <button class="primary" data-name="quote-type-toggler">Back to Generated Quotes</button>
+                            <button id="parse-quotes" hidden>Parse quotes</button>
+                        </div>
+                    </section>
+                </div>
             </section>
             <hr />
             <div class="button-group">
