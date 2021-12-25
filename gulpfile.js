@@ -106,6 +106,11 @@ gulp.task('pack-html', function () {
         .pipe(gulp.dest(paths.dist));
 });
 
+gulp.task('pack-audio', function () {
+    return gulp.src(paths.src + "assets/audio/*")
+        .pipe(gulp.dest(paths.dist + "assets/audio"));
+});
+
 gulp.task('optimize-images', async function () {
     const imageOptimizer = await imagemin;
 
@@ -147,7 +152,7 @@ gulp.task('zip', async function (browserName) {
 
 gulp.task('dist', gulp.series([
     'cleanup',
-    gulp.parallel(['pack-js', 'pack-css', 'pack-html', 'optimize-images']),
+    gulp.parallel(['pack-js', 'pack-css', 'pack-html', 'pack-audio', 'optimize-images']),
     gulp.parallel(['manifest-update', 'remove-unnecessary-files'])
 ]));
 
@@ -156,7 +161,7 @@ gulp.task('bump', async function () {
     /// Usage:
     /// 1. gulp bump : bumps the package.json and bower.json to the next minor revision.
     ///   i.e. from 0.1.1 to 0.1.2
-    /// 2. gulp bump --version 1.1.1 : bumps/sets the package.json and bower.json to the 
+    /// 2. gulp bump --ver 1.1.1 : bumps/sets the package.json and bower.json to the 
     ///    specified revision.
     /// 3. gulp bump --type major       : bumps 1.0.0 
     ///    gulp bump --type minor       : bumps 0.1.0
@@ -164,7 +169,7 @@ gulp.task('bump', async function () {
     ///    gulp bump --type prerelease  : bumps 0.0.1-2
 
     const type = args.type || 'patch';
-    const version = args.version;
+    const version = args.ver;
 
     const options = {
         version, type
