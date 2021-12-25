@@ -18,6 +18,11 @@ chrome.storage.local.get('theme', ({ theme }) => {
     if (theme === "dark") toggleTheme();
 });
 
+// plays netflix intro audio
+if (!debugMode) {
+    const audio = new Audio('../assets/audio/intro.mp3');
+    audio.play();
+}
 
 // Remove option page animation
 setTimeout(() => {
