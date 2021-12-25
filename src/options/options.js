@@ -1,5 +1,24 @@
 const debugMode = Object.fromEntries(new URLSearchParams(window.location.search).entries()).debug === 'true';
 
+/**
+ * Dark theme
+ */
+chrome.storage.local.get('theme', ({ theme }) => {
+    if (!theme) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const newColorScheme = e.matches ? "dark" : "light";
+            setTheme(newColorScheme);
+        });
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            toggleTheme();
+        }
+    };
+
+    if (theme === "dark") toggleTheme();
+});
+
+
 // Remove option page animation
 setTimeout(() => {
     document.getElementById('animation-css').remove();
@@ -204,6 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
              */
             blockTypeFormLogic(blockType);
             timeRangeFormLogic(timeRangeCheck);
+            updateThemeBtn(themeTogglerBtn);
             await renderQuotes(data.enabled_quotes);
 
             onUpdate(addListeners);
@@ -332,15 +352,18 @@ document.addEventListener('DOMContentLoaded', function () {
             changedOptions.custom_quotes.quotes = parseQuotes(customQuotes.value);
         };
 
+        /**
+         * Dark mode
+         */
+
         themeTogglerBtn.onclick = function (e) {
             e.preventDefault();
-            const currentTheme = document.documentElement.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark"
-            const newBtnName = currentTheme === "dark" ? "Turn off the lights" : "Turn on the lights"
-
-            document.documentElement.setAttribute("data-theme", newTheme);
-            themeTogglerBtn.innerHTML = newBtnName;
+            toggleTheme(themeTogglerBtn);
         }
+
+        /**
+         * Custom quotes editor
+         */
 
         fancyEditorBtn.onclick = function (e) {
             e.preventDefault();
@@ -653,3 +676,28 @@ document.addEventListener('DOMContentLoaded', function () {
     // version shown
     document.querySelector('h1 sup').innerText = `v${chrome.runtime.getManifest().version}`;
 });
+
+function toggleTheme(btn) {
+    const currentTheme = getTheme();
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    setTheme(newTheme, btn)
+}
+
+function getTheme() {
+    return document.documentElement.getAttribute("data-theme");
+}
+
+function setTheme(newTheme, btn) {
+    document.documentElement.setAttribute("data-theme", newTheme);
+
+    // set theme data
+    chrome.storage.local.set({ theme: newTheme });
+
+    if (btn) updateThemeBtn(btn);
+}
+
+function updateThemeBtn(btn) {
+    const currentTheme = getTheme();
+    const newBtnName = currentTheme === "dark" ? "Turn on the lights" : "Turn off the lights"
+    btn.innerHTML = newBtnName;
+}
