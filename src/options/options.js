@@ -394,10 +394,15 @@ document.addEventListener('DOMContentLoaded', function () {
         fancyEditorAddQuote.onclick = function (e) {
             e.preventDefault();
 
+            const newQuote = fancyEditorNewQuote.value;
+            const newQuoteAuthor = fancyEditorNewQuoteAuthor.value;
+
+            if (!newQuote) return;
+
             changedOptions.custom_quotes.quotes.push({
-                quote: fancyEditorNewQuote.value,
-                author: fancyEditorNewQuoteAuthor.value
-            })
+                quote: newQuote,
+                author: newQuoteAuthor
+            });
 
             renderFancyEditor({
                 quotes: changedOptions.custom_quotes.quotes
@@ -644,12 +649,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         function deleteQuote(quoteToDelete) {
-            const updatedQuotes = custom_quotes.quotes.filter((quote) => (
+            const updatedQuotes = changedOptions.custom_quotes.quotes.filter((quote) => (
                 quoteToDelete.quote !== quote.quote &&
                 quoteToDelete?.author !== quote?.author
             ));
 
-            changedOptions.custom_quotes.quotes = updatedQuotes
+            changedOptions.custom_quotes.quotes = updatedQuotes;
             updateData();
             checkErrors();
         };
