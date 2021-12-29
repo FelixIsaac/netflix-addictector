@@ -19,7 +19,6 @@ function log(consoleType = console.log, ...args) {
  * @returns {String}
  */
 function msToDate(ms) {
-    const pad = "0"
     const date = new Date(ms);
     const day = date.getDate();
     const month = date.getMonth() + 1
@@ -106,7 +105,7 @@ function checkInRange(callback) {
 
 function generateQuotes(callback) {
     chrome.storage.sync.get(['enabled_quotes', 'quotes_index'], async ({ enabled_quotes, quotes_index }) => {
-        if (!enabled_quotes.length) return;
+        if (!enabled_quotes?.length) return;
 
         const url = "https://netflix-addictector-api.herokuapp.com/quotes/fromcategories";
         const limit = Math.ceil(30 / enabled_quotes.length) || 1;

@@ -60,11 +60,10 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
                         if (controls) removeControls();
                         return controls;
                     });
-                })
-            })
+                });
+            });
 
-            const nextEpisodeButton = document.querySelector('button[data-uia="next-episode-seamless-button"]')
-            console.log('next episode button', nextEpisodeButton);
+            const nextEpisodeButton = document.querySelector('button[data-uia="next-episode-seamless-button"]');
             if (!nextEpisodeButton) return;
 
             nextEpisodeButton.remove();
