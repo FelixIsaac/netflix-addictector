@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "Netflix Addictector – Netflix Screen Time",
   "short_name": "Netflix Addictector",
-  "version": "1.1.0",
-  "version_name": "1.1.0",
+  "version": "1.1.1",
+  "version_name": "1.1.1",
   "action": {
     "default_title": "Netflix Addictector",
     "default_popup": "popup/popup.html",

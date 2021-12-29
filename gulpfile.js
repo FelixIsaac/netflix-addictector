@@ -182,7 +182,10 @@ gulp.task('bump', async function () {
 
     gulp
         .src(paths.src + 'manifest.json')
-        .pipe(bump(options))
+        .pipe(bump({
+            keys: ['version', 'version_name'],
+            ...options
+        }))
         .pipe(gulp.dest(paths.src));
 });
 

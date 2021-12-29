@@ -1,6 +1,6 @@
 {
   "name": "netflix-addictector",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A web browser extension that identifies, prevents, and helps with Netflix addiction. It’s time to push pause on your addiction.",
   "main": "none",
   "scripts": {},
