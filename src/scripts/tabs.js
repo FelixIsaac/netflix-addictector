@@ -40,38 +40,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             console.info(`Netflix next episode block initialized. Response from content script: ${response || 'No response'}`)
           })
         });
-
-        showBadge(tabs[0].id);
       });
     }
 });
-
-function showBadge(tabId) {
-  // showing a badge
-  chrome.storage.sync.get('current_day', ({ current_day }) => {
-    updateBadge(current_day.minutes_spent);
-  });
-
-  // badge auto update
-  chrome.storage.onChanged.addListener(({ current_day }) => {
-    let minutes_spent = current_day?.newValue?.minutes_spent;
-    if (minutes_spent === undefined || minutes_spent === null) return;
-    
-    console.log('badge auto update', minutes_spent);
-    updateBadge(minutes_spent)
-  });
-
-  function updateBadge(minutes_spent) {
-    minutes_spent ||= 0;
-
-    chrome.action.setBadgeText({
-      text: `${minutes_spent > 99 ? `99+` : minutes_spent.toFixed()}m`,
-      tabId
-    });
-
-    chrome.action.setBadgeBackgroundColor({
-      color: '#b81d24',
-      tabId
-    });
-  }
-}

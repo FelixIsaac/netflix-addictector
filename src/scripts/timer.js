@@ -43,11 +43,11 @@ function startTimer(video) {
  */
 function stopTimer(video) {
     if (!video.paused || !timer) return;
-    
+
     // reset timer
     addTime(false, (Date.now() - timerStartTime) / 60000, video);
     log('Stopping timer');
-    
+
     clearTimeout(timer);
     timer = null;
     timerStartTime = null
@@ -56,7 +56,7 @@ function stopTimer(video) {
 function setTimer(video) {
     try {
         if (timer) return;
-        
+
         timerStartTime = Date.now();
         timer = setTimeout(() => addTime(undefined, undefined, video), 6000);
     } catch (err) {
@@ -66,7 +66,7 @@ function setTimer(video) {
     }
 };
 
-function addTime(repeats = true, time = 1/10, video) {
+function addTime(repeats = true, time = 1 / 10, video) {
     chrome.storage.sync.get('current_day', ({ current_day }) => {
         if (!current_day || msToDate(current_day?.day) !== msToDate(Date.now())) {
             // new day, push current day to day records and set new day object
@@ -77,10 +77,10 @@ function addTime(repeats = true, time = 1/10, video) {
                         // achieve day array
                         chrome.storage.sync.get(null, data => {
                             const arhieveEntries = Object.keys(data).filter(keyName => keyName.startsWith('days_arhieve_'));
-                            const dayArhieveKey =  `days_arhieve_${arhieveEntries.length}`;
+                            const dayArhieveKey = `days_arhieve_${arhieveEntries.length}`;
                             chrome.storage.sync.set({ [dayArhieveKey]: days });
 
-                               // resets days
+                            // resets days
                             chrome.storage.sync.set(
                                 { days: [current_day] },
                                 () => log('New day, created day entry')
@@ -110,6 +110,11 @@ function addTime(repeats = true, time = 1/10, video) {
 
         // set updated current day
         chrome.storage.sync.set({ current_day }, () => {
+            chrome.runtime.sendMessage({
+                type: 'update-badge',
+                minutes_spent: current_day.minutes_spent
+            })
+            
             log('Added time. Current minutes spent:', current_day.minutes_spent);
             checkOverLimit((overLimit, reason) => overLimit && blockNetflixScreen(reason));
             checkInRange((inRange, reason) => !inRange && blockNetflixScreen(reason));

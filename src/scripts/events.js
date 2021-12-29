@@ -66,6 +66,23 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     case 'reset-settings':
       sendResponse('Settings reset')
       resetSettings();
+
+      break;
+    case 'update-badge':
+      const { minutes_spent } = message;
+      const { id: tabId } = sender.tab;
+
+      chrome.action.setBadgeText({
+        text: `${minutes_spent > 99 ? `99+` : minutes_spent.toFixed()}m`,
+        tabId
+      });
+
+      chrome.action.setBadgeBackgroundColor({
+        color: '#b81d24',
+        tabId
+      });
+
+      sendResponse(true);
       break;
   }
 });
