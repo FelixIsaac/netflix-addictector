@@ -240,9 +240,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const { selectedIndex, value } = target;
 
         const tooltip = [
-            'blocks Netflix episode screen every 30 seconds.',
-            'blocks Netflix episode screen randomly, without a set interval',
-            'blocks Netflix episode screen every set interval for 30 seconds and at random'
+            'pauses Netflix episode screen every 30 seconds.',
+            'pauses Netflix episode screen randomly, without a set interval.',
+            'pauses Netflix episode screen every set interval for 30 seconds and at random.'
         ][selectedIndex]
 
 
