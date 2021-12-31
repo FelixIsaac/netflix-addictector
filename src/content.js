@@ -36,22 +36,22 @@ function observe(mutations) {
 
 chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_button }) => {
     if (!block_next_episode_button) return;
-    
+
     window.video.addListener(() => {
         addObserver();
         removeControls();
     });
-    
+
     function addObserver() {
         const observer = new MutationObserver(observe);
         const config = { attributes: true, attributeFilter: ["style"], subtree: true, childList: true };
-        
+
         observer.observe(document.querySelector('div[data-uia="player"]'), config);
 
         function observe(mutations) {
             mutations.some((mutation) => {
                 if (!mutation.addedNodes.length) return false;
-                
+
                 return Array.from(mutation.addedNodes).some((addedNode) => {
                     return Array.from(addedNode.children).some((children) => {
                         const classes = Array.from(children.classList);
@@ -80,7 +80,7 @@ chrome.storage.sync.get('block_next_episode_button', ({ block_next_episode_butto
 chrome.runtime.onMessage.addListener((args, sender, sendResponse) => {
     const { method, tabId, reason, seconds } = args;
 
-    switch(method.toLowerCase()) {
+    switch (method.toLowerCase()) {
         case 'time':
             initTimer();
             sendResponse(`Timer initialized at tab ${tabId}`)

@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const quoteAuthor = document.querySelector('section figure figcaption');
 
     optionsButton.addEventListener('click', () => chrome.runtime.openOptionsPage());
-    chrome.storage.onChanged.addListener(({ daily_limit, current_day, days }) => (daily_limit || current_day || days) && updatePopup());
-    
+    chrome.storage.onChanged.addListener(updateChanges);
+
     updatePopup();
     updateQuote();
 
@@ -23,13 +23,13 @@ document.addEventListener('DOMContentLoaded', function () {
             current_day,
             days
         }) => {
-            if (!current_day) {
-                current_day = {
-                    day: Date.now(),
-                    minutes_spent: 0
-                }
-
-                chrome.storage.sync.set(current_day);
+            if (!current_day || msToDate(current_day?.day) !== msToDate(Date.now())) {
+                chrome.tabs.query({ active: true }, (tabs) => {
+                    tabs.forEach(tab => {
+                        console.log(tab)
+                        chrome.tabs.sendMessage(tab.id, { method: 'update-time' })
+                    });
+                });
             }
 
             // overview stats
@@ -40,17 +40,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // hours spent
             weekHours.innerText = [...days.splice(days.length - 6), current_day]
-                .map(days => days.minutes_spent/60)
+                .map(days => days.minutes_spent / 60)
                 .reduce((a, b) => a + b, 0)
                 .toFixed(1);
-                
+
             monthHours.innerText = [...days.splice(days.length - 29), current_day]
-                .map(days => days.minutes_spent/60)
+                .map(days => days.minutes_spent / 60)
                 .reduce((a, b) => a + b, 0)
                 .toFixed(1);
-            
+
             installationHours.innerText = [...days, current_day]
-                .map(days => days.minutes_spent/60)
+                .map(days => days.minutes_spent / 60)
                 .reduce((a, b) => a + b, 0)
                 .toFixed(1);
         });
@@ -61,11 +61,11 @@ document.addEventListener('DOMContentLoaded', function () {
             quoteContent.innerText = quoteContent.innerText.replace('{{quote}}', quote);
             quoteAuthor.innerText = quoteAuthor.innerText.replace('{{author}}', author);
         });
-    }
+    };
 });
 
-// check if new day by adding time
-chrome.tabs.query({ url: '*://*.netflix.com/*' }, (tabs) => {
-    if (!tabs.length) return;
-    chrome.tabs.sendMessage(tabs[0].id, { method: 'update-time' });
-});
+window.addEventListener('beforeunload', updateChanges)
+
+function updateChanges({ daily_limit, current_day, days }) {
+    if (daily_limit || current_day || days) updatePopup();
+};
