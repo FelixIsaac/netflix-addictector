@@ -1,7 +1,17 @@
 chrome.storage.local.get('removing_screen', ({ removing_screen }) => removing_screen && removeNetflixScreen());
 
+// todo: sync with chrome local? 
 // queue
-const netflixScreenBlockers = [] 
+const netflixScreenBlockers = new Proxy([], {
+    set: function (target, property, value) {
+        value.id = target.length;
+
+        const duplicates = target.filter(({ reason }) => reason === value.reason);
+        if (!duplicates.length) target[property] = value;
+
+        return true;
+    }
+});
 
 function removeNetflixScreen(reason, seconds = 30, removing_screen = true) {
     const { video } = window.video;
@@ -68,7 +78,7 @@ function blockNetflixScreen(reason = 'You have exceeded your daily limit of Netf
 
     // updates queue and prevent other blockers from running
     netflixScreenBlockers.push({ reason, active: true });
-    
+
     // add overlay and removes video source
     // due to Chrome still playing audio after video element removal
     getQuote((quote) => replaceScreen(reason, quote));
@@ -98,7 +108,7 @@ function replaceScreen(reason, quote) {
 
     function buildHTML() {
         const contentBlock = document.createElement('div');
-        
+
         contentBlock.id = 'content-block';
         contentBlock.appendChild(prepareStyles());
         contentBlock.appendChild(buildImage());
@@ -169,7 +179,7 @@ function replaceScreen(reason, quote) {
 
         function buildReason() {
             const p = document.createElement('p');
-        
+
             p.className = 'reason';
             p.appendChild(document.createTextNode(reason));
 
@@ -202,7 +212,7 @@ function replaceScreen(reason, quote) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = chrome.runtime.getURL('/assets/css/blocked.css');
-            
+
             return link;
         }
     }

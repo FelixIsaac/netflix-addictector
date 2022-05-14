@@ -1,4 +1,5 @@
 const initialOptions = Object.freeze({
+  limit_type: 0,
   daily_limit: 60, // in minutes
   weekly_limit: 500, // in minutes
   time_range: {
