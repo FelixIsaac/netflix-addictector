@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 /**
                  * Disrupt saving on errors
                  */
-                if (dailyLimit.value > weeklyLimit.value / 7) {
+                if (Number(dailyLimit.value) > Number(weeklyLimit.value)) {
                     delete saving.daily_limit;
                     message = 'Saved extension settings except for settings with errors';
                     return;
@@ -466,9 +466,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function checkErrors() {
         {
-            const message = 'Daily limit (multiplied by 7) cannot exceed weekly limit'
+            const message = 'Daily limit cannot exceed weekly limit'
 
-            if (dailyLimit.value > weeklyLimit.value / 7) {
+            if (Number(dailyLimit.value) > Number(weeklyLimit.value)) {
                 showError(dailyLimit.parentElement, message, true);
             } else {
                 removeMessage(dailyLimit.parentElement, message);
