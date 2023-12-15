@@ -4,15 +4,17 @@ const BlockTypeEnum = Object.freeze({
     BOTH: 2
 });
 
+console.log("Adding event listener for alarms");
 chrome.alarms.onAlarm.addListener(alarm => {
     switch (alarm.name) {
         case 'netflix-screen-blocker':
+            console.log('yo yo', alarm);
             sendBlockMessage();
             break;
         case 'random-netflix-screen-blocker':
             chrome.alarms.get('random-netflix-blocker-product', alarm => {
                 if (alarm) return;
-                
+
                 const randomMinutes = Math.max(Math.floor(Math.random() * 7), 2);
                 chrome.alarms.create('random-netflix-blocker-product', { delayInMinutes: randomMinutes });
             });
@@ -60,7 +62,7 @@ function createNetflixScreenAlarm(block_type, block_interval) {
 // update alarms when options are changed
 chrome.storage.onChanged.addListener(({ block_type, block_interval }) => {
     if (!(block_type || block_interval)) return;
-    
+
     chrome.storage.sync.get(['block_type', 'block_interval'], ({
         block_type: _block_type,
         block_interval: _block_interval
@@ -68,7 +70,7 @@ chrome.storage.onChanged.addListener(({ block_type, block_interval }) => {
         const { newValue: blockType } = block_type || { newValue: _block_type };
         const { newValue: blockInterval } = block_interval || { newValue: _block_interval };
 
-        switch(blockType) {
+        switch (blockType) {
             case BlockTypeEnum.FIXED:
                 // remove random alarm, add fixed alarm
                 chrome.alarms.clear('random-netflix-screen-blocker');
@@ -87,7 +89,7 @@ chrome.storage.onChanged.addListener(({ block_type, block_interval }) => {
         chrome.alarms.create('random-netflix-screen-blocker', { periodInMinutes: 5 });
         return chrome.alarms.clear('netflix-screen-blocker');
     };
-    
+
     // otherwise, not random block type
     chrome.alarms.create('netflix-screen-blocker', { periodInMinutes: Number(block_interval?.newValue) });
 });

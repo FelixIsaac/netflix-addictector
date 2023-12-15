@@ -92,6 +92,7 @@ let loadingQuotes = true;
 
 document.addEventListener('DOMContentLoaded', function () {
     // get page elements
+    const limitType = document.getElementById('limit-type');
     const dailyLimit = document.getElementById('daily-limit');
     const weeklyLimit = document.getElementById('weekly-limit');
     const blockNextEpisodeBtnCheckbox = document.getElementById('block-next-epi-btn');
@@ -192,6 +193,9 @@ document.addEventListener('DOMContentLoaded', function () {
         chrome.storage.sync.get(null, async (data) => {
             // Update data
             changedOptions = data;
+
+            // 0 = default, 1 = limit by episodes
+            limitType.checked = data.limit_type;
 
             /**
              * Limit watch time section

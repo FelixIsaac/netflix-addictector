@@ -114,8 +114,8 @@ function addTime(repeats = true, time = 1 / 10, video) {
                 type: 'update-badge',
                 minutes_spent: current_day.minutes_spent
             })
-            
-            log('Added time. Current minutes spent:', current_day.minutes_spent);
+
+            // log('Added time. Current minutes spent:', current_day.minutes_spent);
             checkOverLimit((overLimit, reason) => overLimit && blockNetflixScreen(reason));
             checkInRange((inRange, reason) => !inRange && blockNetflixScreen(reason));
 

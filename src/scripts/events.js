@@ -7,7 +7,7 @@ const initialOptions = Object.freeze({
     start: '19:00',
     end: '22:00'
   },
-  block_type: 0, // enum: FIXED: 0, RANDOM: 0, BOTH: 0
+  block_type: 0, // enum: FIXED: 0, RANDOM: 1, BOTH: 2
   block_interval: 10, // in minutes
   block_next_episode_button: true, // shows block screen before clicking 'NEXT EPISODE' button
   block_next_episode: true, // show s block screen before an episode starts
