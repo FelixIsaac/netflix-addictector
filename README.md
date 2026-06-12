@@ -1,3 +1,8 @@
+> [!NOTE]
+> **📦 Archived — no longer maintained.**
+> A browser extension that actually shipped to the Chrome Web Store and Firefox Add-ons in 2021 — watch-time caps, episode blockers, break timers. Development stalled when I moved to a new laptop and never picked back up; Netflix's DOM changes regularly enough that keeping content-script hooks alive requires active upkeep I'm not going to do.
+> _Revisit if: honestly unlikely — kept as a record._
+
 
 # Netflix Addictector <img src="./brand-images/netflix-accdictector-logo-2.png" height="32">
 
